@@ -1,0 +1,137 @@
+<mvc:View controllerName="com.ibs.bsv.ibsappbsvschemecreation.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:layout="sap.ui.layout"
+    xmlns="sap.uxap" xmlns:m="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified">
+    <m:Page id="page">
+    <m:content>
+    <layout:DynamicSideContent id="DynamicSideContent" class="sapUiSizeCompact" sideContentFallDown="BelowM" showSideContent="false">
+
+    <ObjectPageLayout id="ObjectPageLayout" selectedSection="headerSection" enableLazyLoading="false" showEditHeaderButton="false">
+    <headerTitle>
+        <ObjectPageDynamicHeaderTitle>
+        	<breadcrumbs>
+				<m:Breadcrumbs id="idBredCrumbs" currentLocation="Scheme Creation" >
+				    <m:Link id="idLink" press="onNavBar" text="Scheme"/>
+				</m:Breadcrumbs>
+			</breadcrumbs>
+        	<expandedHeading>
+					<m:HBox id="idHb">
+						<m:Title id="idTxtOrdCre" text="Scheme Creation" wrapping="true"/>
+					</m:HBox>
+			</expandedHeading>
+        </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+    <!-- Section 1 -->
+    <sections>
+    <ObjectPageSection title="Scheme Details" id="headerSection">
+        <subSections>
+            <ObjectPageSubSection >
+                <m:VBox>
+                <f:SimpleForm id="simpleForm1" editable="true" layout="ResponsiveGridLayout" class="formHiddenTitle sapUiFormContainerTitle">
+                     <core:Title text="" />
+                    <m:Label text="Valid From" design="Bold" required="true"/>
+                    <m:DatePicker id="DvalidFromId" placeholder="Select Date" change="onSchemeFrom" class="sapUiSmallMarginBottom" value="{path:'blankJson>/schemeFrom',type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy' }}" minDate="{minDateModel>/minDate}" maxDate="{minDateModel>/maxDate}" width="50%"/>
+    	            <core:Title text="" />
+                    <m:Label text="Valid To" design="Bold" required="true"/>
+                    <m:DatePicker id="DvalidToId" placeholder="Select Date" class="sapUiSmallMarginBottom" value="{path:'blankJson>/schemeFrom',type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy' }}" minDate="{FromModel>/minDate}" maxDate="{FromModel>/maxDate}" width="50%"/>
+                </f:SimpleForm>
+                </m:VBox>
+            </ObjectPageSubSection>
+            </subSections>
+            </ObjectPageSection>
+    </sections>
+
+    <sections>
+    <ObjectPageSection title="Type" id="TypeSection">
+        <subSections>
+            <ObjectPageSubSection >
+        <m:VBox class="sapUiSmallMargin">
+		<m:Label text="Select Scheme/Broadcast" />
+		<m:HBox class="sapUiTinyMarginTopBottom">
+			<m:VBox class="sapUiMediumMarginEnd">
+				<m:RadioButtonGroup id="groupB" valueState="Success" select="onSelect">
+					<m:RadioButton text="Scheme" selected="false"/>
+                    <m:RadioButton text="Broadcast" selected="false"/>
+				</m:RadioButtonGroup>
+			</m:VBox>
+			<!-- <m:VBox class="sapUiMediumMarginEnd">
+				<m:RadioButtonGroup id="groupC" valueState="Success">
+					<m:RadioButton text="Broadcast" selected="false"/>
+				</m:RadioButtonGroup>
+			</m:VBox> -->
+		</m:HBox>
+	</m:VBox>
+    </ObjectPageSubSection>
+            </subSections>
+            </ObjectPageSection>
+    </sections>
+
+    <!-- Section 2 -->
+    <sections>
+     <ObjectPageSection title="Attachment" id="AttachmentSection" visible="false">
+        <subSections>
+      <ObjectPageSubSection title="Attachment">
+            <m:VBox>
+            <m:Table id="priceDifferentTable" items="{schemeJson>/}" class="sapUiSmallMarginBottom" autoPopinMode="true" contextualWidth="auto">
+                    <m:columns>
+                        <m:Column>
+                            <m:Label text="Document to be Uploaded" design="Bold"/>
+                        </m:Column>
+
+                        <m:Column>
+                            <m:Label text="Upload" design="Bold" required="true" id="Uploadid"/>
+                        </m:Column>
+
+                        <m:Column>
+                            <m:Label text="File Name" design="Bold"/>
+                        </m:Column>
+                        <m:Column>
+                            <m:Label text="Action" design="Bold"/>
+                        </m:Column>
+                    </m:columns>
+                    <m:items>
+                        <m:ColumnListItem visible="true">
+                            <m:cells>
+                            <m:Text text="{schemeJson>ATTACH_NAME}"/>
+                            <u:FileUploader id="fileUploaderid" name="myFileUpload" uploadUrl="upload/" buttonOnly="true" buttonText="Choose File" sameFilenameAllowed="true"
+                            change="handleUpload" enabled="true" fileType="txt,jpg,docx,docm,pdf,xlsx"/>
+                            <m:Text text="{schemeJson>FILE_NAME}"/> 
+                            <m:Button press="onDelete" type="Reject" enabled="false" tooltip="Delete" icon="sap-icon://delete"></m:Button>
+                            </m:cells>
+                        </m:ColumnListItem>
+                    </m:items>
+                </m:Table>
+                </m:VBox>
+            </ObjectPageSubSection>
+             </subSections>
+             </ObjectPageSection>
+     </sections>
+     <!-- Section 3 -->
+    <sections>
+     <ObjectPageSection title="Comment" id="CommentSection">
+        <subSections>
+      <ObjectPageSubSection title="Comment">
+                <m:VBox>
+                    <m:VBox>
+                    <m:TextArea id="commentId" required="true" maxLength="150" width="100%" placeholder="Enter text here" change="onReason" value=""/>
+					</m:VBox>
+                </m:VBox>
+            </ObjectPageSubSection>
+             </subSections>
+             </ObjectPageSection>
+     </sections>
+    
+     
+      
+    </ObjectPageLayout>
+    </layout:DynamicSideContent>
+    </m:content>
+    <m:footer>
+	<m:Bar>
+	<m:contentRight>
+		<m:Button id="submitId" text="Submit" press="onSubmit" type="Success" enabled="true"/>
+	</m:contentRight>
+	</m:Bar>
+    </m:footer>
+    </m:Page>
+</mvc:View>

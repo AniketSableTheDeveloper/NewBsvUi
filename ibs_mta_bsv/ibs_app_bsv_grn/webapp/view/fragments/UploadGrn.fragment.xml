@@ -1,0 +1,23 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified">
+        	<Dialog title="Please Enter Remark" titleAlignment="Center">
+        
+        <VBox>
+        <Text width="100%" />
+        <!-- <Text text="Remark"></Text> -->
+        <TextArea id="commentId" required="true" maxLength="1000" width="100%" placeholder="Enter remark here" change="onReason" value=""/>
+	</VBox>
+        <VBox alignContent="Center" alignItems="Center" justifyContent="Center">
+        <Text width="100%" />
+        <!-- <Title text="Upload File"></Title> -->
+        <!-- <u:FileUploader name="myFileUpload" uploadUrl="upload/" buttonOnly="true" buttonText="Choose File" sameFilenameAllowed="true"
+           change="onConfirm" enabled="true" fileType="txt,jpg,docx,docm,pdf,xlsx" icon="sap-icon://upload" id="idFileUploader"/>
+           <Button text="Proceed Without File" press="onWithoutFile" type="Accept"></Button> -->
+           <Button text="Next" press="onWithoutFile" type="Success" icon="sap-icon://open-command-field"></Button>
+           <Button text="Back" press="onBack" type="Reject" icon="sap-icon://nav-back"></Button>
+        </VBox>
+        <!-- <VBox alignContent="End" alignItems="End" justifyContent="End"> -->
+        <!-- <Text width="100%"/> -->
+        
+        <!-- </VBox> -->
+        </Dialog>
+</core:FragmentDefinition>

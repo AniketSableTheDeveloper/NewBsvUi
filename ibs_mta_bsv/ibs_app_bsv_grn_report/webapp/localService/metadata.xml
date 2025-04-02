@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="ideal_bsv_grn_srv" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotation Term="Core.Links">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="GrnHeader" EntityType="ideal_bsv_grn_srv.GrnHeader">
+                    <NavigationPropertyBinding Path="TO_ITEMS_REF" Target="GrnAttachments"/>
+                </EntitySet>
+                <EntitySet Name="GrnAttachments" EntityType="ideal_bsv_grn_srv.GrnAttachments"/>
+                <ActionImport Name="AcceptGrn" Action="ideal_bsv_grn_srv.AcceptGrn"/>
+            </EntityContainer>
+            <EntityType Name="GrnHeader">
+                <Key>
+                    <PropertyRef Name="STOCKIST_ID"/>
+                    <PropertyRef Name="INVOICE_NO"/>
+                </Key>
+                <Property Name="STOCKIST_ID" Type="Edm.String" MaxLength="100" Nullable="false"/>
+                <Property Name="STOCKIST_NAME" Type="Edm.String" MaxLength="100"/>
+                <Property Name="DELIVERY_NO" Type="Edm.String" MaxLength="15"/>
+                <Property Name="INVOICE_NO" Type="Edm.String" MaxLength="15" Nullable="false"/>
+                <Property Name="INVOICE_DATE" Type="Edm.Date"/>
+                <Property Name="DELIVERY_DATE" Type="Edm.Date"/>
+                <Property Name="ACCEPTED_DATE" Type="Edm.Date"/>
+                <Property Name="INVOICE_AMOUNT" Type="Edm.Double"/>
+                <Property Name="STATUS" Type="Edm.Int32"/>
+                <Property Name="SAP_ORDER_NO" Type="Edm.String" MaxLength="10"/>
+                <Property Name="REMARK" Type="Edm.String" MaxLength="50"/>
+                <NavigationProperty Name="TO_ITEMS_REF" Type="ideal_bsv_grn_srv.GrnAttachments">
+                    <ReferentialConstraint Property="INVOICE_NO" ReferencedProperty="INVOICE_NO"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="GrnAttachments">
+                <Key>
+                    <PropertyRef Name="INVOICE_NO"/>
+                </Key>
+                <Property Name="INVOICE_NO" Type="Edm.Int64" Nullable="false"/>
+                <Property Name="FILE_NAME" Type="Edm.String" MaxLength="100"/>
+                <Property Name="FILE_CONTENT" Type="Edm.Stream"/>
+                <Property Name="FILE_MIMETYPE" Type="Edm.String" MaxLength="100"/>
+                <Property Name="FILE_TYPE" Type="Edm.String" MaxLength="100"/>
+            </EntityType>
+            <ComplexType Name="User_Details">
+                <Property Name="USER_ROLE" Type="Edm.String" MaxLength="50"/>
+                <Property Name="USER_ID" Type="Edm.String" MaxLength="50"/>
+            </ComplexType>
+            <Action Name="AcceptGrn" IsBound="false">
+                <Parameter Name="sAction" Type="Edm.String"/>
+                <Parameter Name="aGrnHeader" Type="Collection(ideal_bsv_grn_srv.GrnHeader)" Nullable="true"/>
+                <Parameter Name="aGrnAttachments" Type="Collection(ideal_bsv_grn_srv.GrnAttachments)" Nullable="true"/>
+                <Parameter Name="oUserDetails" Type="ideal_bsv_grn_srv.User_Details"/>
+                <ReturnType Type="Edm.String"/>
+            </Action>
+            <Annotations Target="ideal_bsv_grn_srv.GrnAttachments/FILE_CONTENT">
+                <Annotation Term="Core.ContentDisposition">
+                    <Record Type="Core.ContentDispositionType">
+                        <PropertyValue Property="Filename" Path="FILE_NAME"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.MediaType" Path="FILE_MIMETYPE"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_grn_srv.GrnAttachments/FILE_MIMETYPE">
+                <Annotation Term="Core.IsMediaType" Bool="true"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

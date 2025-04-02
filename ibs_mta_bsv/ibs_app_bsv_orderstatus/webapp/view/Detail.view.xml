@@ -1,0 +1,679 @@
+<mvc:View
+    xmlns:table="sap.ui.table"
+    controllerName="com.ibs.bsv.ibsappbsvorderstatus.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns="sap.uxap"
+    xmlns:layout="sap.ui.layout"
+    xmlns:m="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:commons="sap.suite.ui.commons"
+    xmlns:smartList="sap.ui.comp.smartlist"
+    class="sapUiSizeCompact"
+>
+    <layout:DynamicSideContent
+        id="DynamicSideContent"
+        class="sapUiDSCExplored sapUiSizeCompact"
+        sideContentFallDown="BelowM"
+        sideContentPosition="End"
+        containerQuery="true"
+        showSideContent="false"
+        breakpointChanged="updateToggleButtonState"
+    >
+        <layout:mainContent>
+            <ObjectPageLayout
+                id="idOPLHome"
+                enableLazyLoading="true"
+                showTitleInHeaderContent="true"
+                upperCaseAnchorBar="false"
+                class="sapUiSizeCompact"
+            >
+                <headerTitle>
+                    <ObjectPageDynamicHeaderTitle id="idOPDHt">
+                        <expandedHeading>
+                            <m:Title
+                                id="idOPDHTitle"
+                                text="Sales Order Number"
+                                wrapping="true"
+                            />
+                        </expandedHeading>
+
+                        <snappedHeading>
+                            <m:FlexBox
+                                id="idFB"
+                                fitContainer="true"
+                                alignItems="Center"
+                            >
+                                <m:Title
+                                    id="idAvatarTitle"
+                                    text="Sales Order Number"
+                                    wrapping="true"
+                                />
+                            </m:FlexBox>
+                        </snappedHeading>
+
+                        <expandedContent>
+                            <m:Text
+                                id="idECText"
+                                text="{stockistDetails>/d/results/0/PURCHASE_REQUEST_NO}"
+                            />
+                        </expandedContent>
+
+                        <snappedContent>
+                            <m:Text
+                                id="idSCText"
+                                text="{stockistDetails>/d/results/0/PURCHASE_REQUEST_NO}"
+                            />
+                        </snappedContent>
+
+                        <snappedTitleOnMobile>
+                            <m:Title
+                                id="idSTOMTitle"
+                                text="{stockistDetails>/d/results/0/PURCHASE_REQUEST_NO}"
+                            />
+                        </snappedTitleOnMobile>
+
+                        <actions>
+                            <m:Button
+                                id="idEdit"
+                                text="Edit"
+                                type="Emphasized"
+                                press="onClickEdit"
+                                visible="{PropertyModel>/EditButton}"
+                            />
+                            <m:Button
+                                id="idSave"
+                                text="Save"
+                                type="Emphasized"
+                                press="onClickSave"
+                                visible="{PropertyModel>/SaveButton}"
+                                enabled="{PropertyModel>/SaveButtonEnable}"
+                            />
+                            <m:Button
+                                id="idCancel"
+                                text="Cancel"
+                                type="Transparent"
+                                press="onClickCancel"
+                                visible="{PropertyModel>/CancelButton}"
+                            />
+                            <m:Button
+                                type="Transparent"
+                                press="printReq"
+                                icon="sap-icon://print"
+                            />
+                            <m:Button
+                                id="idViewEvent"
+                                type="Transparent"
+                                text="View Events"
+                                press="onViewEventOpen"
+                            />
+                            <m:Button
+                                id="idFullSc"
+                                press="onFullScreen"
+                                icon=""
+                                type="Transparent"
+                                visible="{FullScreenButton}"
+                            />
+
+                            <m:Button
+                                id="idexit"
+                                icon="sap-icon://decline"
+                                type="Transparent"
+                                press="onExit"
+                            />
+                            <!-- <m:OverflowToolbarButton id="idOTActionBtn" icon="sap-icon://action" type="Transparent" text="{i18n>share}" tooltip="action"/> -->
+                        </actions>
+                    </ObjectPageDynamicHeaderTitle>
+                </headerTitle>
+
+                <headerContent>
+                    <m:FlexBox
+                        id="idFB2"
+                        wrap="Wrap"
+                        fitContainer="true"
+                    >
+                        <layout:VerticalLayout>
+                            <layout:HorizontalLayout class="sapUiTinyMarginTop">
+                                <m:Label
+                                    text="Order Reference"
+                                    design="Bold"
+                                    showColon="true"
+                                    id="idreferc"
+                                />
+                                <m:Text
+                                    text="{stockistDetails>/d/results/0/REFERENCE_ID}"
+                                    class="sapUiTinyMarginBegin"
+                                    id="idreferenced"
+                                />
+                            </layout:HorizontalLayout>
+
+                            <layout:HorizontalLayout class="sapUiTinyMarginTop">
+                                <m:Label
+                                    text="Payment Method"
+                                    design="Bold"
+                                    showColon="true"
+                                />
+
+                                <m:Label
+                                    text="{path:'stockistDetails>/d/results/0/PAYMENT_METHOD_DESCRIPTION'}"
+                                    wrapping="true"
+                                    class="sapUiTinyMarginBegin"
+                                />
+                                <!-- <m:ObjectStatus class="sapUiTinyMarginTop" title="Status" text="Special Order Request Raised"  state="Success"></m:ObjectStatus> -->
+                            </layout:HorizontalLayout>
+
+                            <layout:HorizontalLayout class="sapUiTinyMarginTop">
+                                <m:Label
+                                    text="Order Type"
+                                    design="Bold"
+                                    showColon="true"
+                                />
+                                <m:ObjectStatus
+                                    text="{path:'stockistDetails>/d/results/0/ORDER_TYPE',formatter:'.formatter.ordertypeformat'}"
+                                    state="None"
+                                    id="idOrdertype"
+                                    visible="true"
+                                    class="sapUiTinyMarginBegin"
+                                />
+                                <!-- <m:ObjectStatus  title="Status" text="Request Raised as Special Order"  state="Information"></m:ObjectStatus> -->
+                            </layout:HorizontalLayout>
+
+                            <layout:HorizontalLayout class="sapUiTinyMarginTop">
+                                <m:Label
+                                    text="Status"
+                                    design="Bold"
+                                    showColon="true"
+                                    id="idSpecialOrderText"
+                                    visible="true"
+                                />
+                                <m:ObjectStatus
+                                    text="{stockistDetails>/d/results/0/TO_STATUS/DESC}"
+                                    state="{path: 'stockistDetails>/d/results/0/TO_STATUS/CODE',formatter: '.formatter.formatStatusColor'}"
+                                    id="idSpecialOrderText2"
+                                    visible="true"
+                                    class="sapUiTinyMarginBegin"
+                                />
+                                <!-- <m:ObjectStatus  title="Status" text="Request Raised as Special Order"  state="Information"></m:ObjectStatus> -->
+                            </layout:HorizontalLayout>
+                        </layout:VerticalLayout>
+
+                        <layout:VerticalLayout>
+                            <layout:HorizontalLayout
+                                id="idShipFrom"
+                                class="sapUiTinyMarginTop"
+                            >
+                                <m:Label
+                                    text="Ship From"
+                                    design="Bold"
+                                    showColon="true"
+                                />
+                                <m:Text
+                                    text="{stockistDetails>/d/results/0/SHIP_FROM_NAME}"
+                                    class="sapUiTinyMarginBegin"
+                                />
+                            </layout:HorizontalLayout>
+
+                            <layout:HorizontalLayout
+                                id="idShipTo"
+                                class="sapUiTinyMarginTop"
+                            >
+                                <m:Label
+                                    text="Ship To"
+                                    design="Bold"
+                                    showColon="true"
+                                />
+                                <m:Text
+                                    text="{stockistDetails>/d/results/0/SHIP_NAME}"
+                                    class="sapUiTinyMarginBegin"
+                                />
+                            </layout:HorizontalLayout>
+
+                            <layout:HorizontalLayout
+                                class="sapUiTinyMarginTop sapUiLargeMarginBegin"
+                                id="idsapdoc"
+                            >
+                                <m:Label
+                                    text="BSV Order No"
+                                    design="Bold"
+                                    showColon="true"
+                                />
+                                <m:Text
+                                    text="{stockistDetails>/d/results/0/SAP_SALES_ORDER_NO}"
+                                    class="sapUiTinyMarginBegin"
+                                />
+                            </layout:HorizontalLayout>
+                        </layout:VerticalLayout>
+
+                        <layout:HorizontalLayout class="sapUiTinyMarginTop">
+                            <layout:VerticalLayout id="idTotAmtVLayout">
+                                <m:Title
+                                    id="id_totalAmount"
+                                    text="Total Amount"
+                                />
+                                <m:ObjectStatus
+                                    id="idTotAmtObjStatus"
+                                    text="{path:'stockistDetails>/d/results/0/TOTAL_AMOUNT',formatter:'.formatter.formatterAmount'} ₹"
+                                    state="Indication06"
+                                />
+                            </layout:VerticalLayout>
+
+                            <layout:VerticalLayout id="idTotTaxVLayout">
+                                <m:Title
+                                    id="id_totalTax"
+                                    text="Total Tax"
+                                />
+                                <m:ObjectStatus
+                                    id="idTaxAmtObjStatus"
+                                    text="{path:'stockistDetails>/d/results/0/TAXES_AMOUNT',formatter:'.formatter.formatterAmount'} ₹"
+                                    state="Indication05"
+                                />
+                            </layout:VerticalLayout>
+
+                            <layout:VerticalLayout id="idGrdAmtVLayout">
+                                <m:Title
+                                    id="idGrandTotal"
+                                    text="Grand Total"
+                                    level="H1"
+                                />
+                                <m:ObjectStatus
+                                    id="idGrdAmtObjStatus"
+                                    text="{path:'stockistDetails>/d/results/0/GRAND_TOTAL',formatter:'.formatter.formatterAmount'} ₹"
+                                    state="Indication08"
+                                />
+                            </layout:VerticalLayout>
+                        </layout:HorizontalLayout>
+                    </m:FlexBox>
+                </headerContent>
+
+                <sections>
+                    <ObjectPageSection
+                        titleUppercase="false"
+                        id="idItems"
+                        title="Items"
+                    >
+                        <subSections>
+                            <ObjectPageSubSection
+                                id="idOPSSDelTerm"
+                                title="Items"
+                                titleUppercase="false"
+                                mode="Expanded"
+                            >
+                                <m:Table
+                                    items="{path:'itemsModel>/',sorter : { path : 'MATERIAL_CODE',descending : false}}"
+                                    id="idItemsTable"
+                                    sticky="ColumnHeaders"
+                                >
+                                    <m:headerToolbar>
+                                        <m:Toolbar>
+                                            <m:ToolbarSpacer />
+                                            <m:Button
+                                                text="Add Product"
+                                                iconFirst="false"
+                                                type="Emphasized"
+                                                visible="{PropertyModel>/addButton}"
+                                                press="onClickAdd"
+                                            />
+                                        </m:Toolbar>
+                                    </m:headerToolbar>
+                                    <m:columns>
+                                        <m:Column
+                                            hAlign="Begin"
+                                            width="12rem"
+                                            demandPopin="true"
+                                            minScreenWidth="Phone"
+                                            importance="High"
+                                        >
+                                            <m:Label
+                                                text="{PropertyModel>/count}"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            hAlign="Center"
+                                            width="7rem"
+                                            demandPopin="true"
+                                            minScreenWidth="Desktop"
+                                            importance="High"
+                                            popinDisplay="Inline"
+                                        >
+                                            <m:Label
+                                                text="HSN Code"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            hAlign="End"
+                                            demandPopin="true"
+                                            minScreenWidth="Phone"
+                                            width="7rem"
+                                            importance="High"
+                                        >
+                                            <m:Label
+                                                text="Quantity"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            hAlign="End"
+                                            demandPopin="true"
+                                            minScreenWidth="Phone"
+                                            width="7rem"
+                                            importance="High"
+                                        >
+                                            <m:Label
+                                                text="UOM"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            hAlign="End"
+                                            demandPopin="true"
+                                            minScreenWidth="Phone"
+                                            width="7rem"
+                                            importance="High"
+                                        >
+                                            <m:Label
+                                                text="MRP (₹)"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            hAlign="End"
+                                            demandPopin="true"
+                                            minScreenWidth="Phone"
+                                            width="7rem"
+                                            importance="High"
+                                        >
+                                            <m:Label
+                                                text="NIR (₹)"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            hAlign="End"
+                                            demandPopin="true"
+                                            minScreenWidth="Desktop"
+                                            width="7rem"
+                                            importance="High"
+                                            popinDisplay="Inline"
+                                            visible="{PropertyModel>/RequestRateColumn}"
+                                        >
+                                            <m:Label
+                                                text="REQ.Rate (₹)"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            hAlign="End"
+                                            demandPopin="true"
+                                            minScreenWidth="Desktop"
+                                            importance="High"
+                                            width="7rem"
+                                            popinDisplay="Inline"
+                                        >
+                                            <m:Label
+                                                text="CGST(%)"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            hAlign="End"
+                                            demandPopin="true"
+                                            minScreenWidth="Desktop"
+                                            importance="High"
+                                            width="7rem"
+                                            popinDisplay="Inline"
+                                        >
+                                            <m:Label
+                                                text="SGST(%)"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            hAlign="End"
+                                            demandPopin="true"
+                                            minScreenWidth="Desktop"
+                                            importance="High"
+                                            width="7rem"
+                                            popinDisplay="Inline"
+                                        >
+                                            <m:Label
+                                                text="IGST(%)"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            hAlign="End"
+                                            demandPopin="true"
+                                            minScreenWidth="10000px"
+                                            width="7rem"
+                                            popinDisplay="Inline"
+                                        >
+                                            <m:Label
+                                                text="Amount(₹)"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            hAlign="Center"
+                                            demandPopin="true"
+                                            minScreenWidth="10000px"
+                                            width="3rem"
+                                            popinDisplay="Inline"
+                                            visible="{PropertyModel>/DeleteButton}"
+                                        >
+                                            <m:Label
+                                                text="Delete"
+                                                wrapping="true"
+                                            />
+                                        </m:Column>
+                                    </m:columns>
+                                    <m:items>
+                                        <m:ColumnListItem>
+                                            <m:cells>
+                                                <m:Label
+                                                    text="{itemsModel>MATERIAL_DESC}"
+                                                    textAlign="Begin"
+                                                />
+                                                <m:Label
+                                                    text="{itemsModel>HSN_CODE}"
+                                                />
+                                                <m:Input
+                                                    width="5rem"
+                                                    value="{path:'itemsModel>ORDER_QUANTITY',formatter:'.formatter.toInteger'}"
+                                                    textAlign="End"
+                                                    editable="{itemsModel>isEditable}"
+                                                    enabled="{PropertyModel>/OrderQtyInput}"
+                                                    change="priceChange"
+                                                    type="Number"
+                                                />
+                                                <m:Label
+                                                    text="{itemsModel>UNIT_OF_MEASURE}"
+                                                />
+                                                <m:Label
+                                                    text="{path:'itemsModel>MRP_PRICE',formatter:'.formatter.formatterAmount'}"
+                                                />
+                                                <m:Label
+                                                    text="{path:'itemsModel>NIR_PRICE',formatter:'.formatter.formatterAmount'}"
+                                                />
+                                                <!-- <m:Input value="{path: 'itemsModel>REQUEST_RATE'}" textAlign="End"   change="onChangeRequestRate"  editable="{PropertyModel>/RequestInput}" valueState="{itemsModel>REQUEST_VS}" valueStateText="{itemsModel>REQUEST_VS_Text}"   /> -->
+                                                <m:Input
+                                                    value="{= ${itemsModel>SPECIAL_ORDER} === 'X' ? ${itemsModel>REQUEST_RATE} : '0.00' }"
+                                                    textAlign="End"
+                                                    change="onChangeRequestRate"
+                                                    editable="{PropertyModel>/RequestInput}"
+                                                    valueState="{itemsModel>REQUEST_VS}"
+                                                    width="5rem"
+                                                    type="Number"
+                                                />
+                                                <m:Label
+                                                    text="{path:'itemsModel>CGST_PERCENTAGE',formatter:'.formatter.formatterAmount'}"
+                                                />
+                                                <m:Label
+                                                    text="{path:'itemsModel>SGST_PERCENTAGE',formatter:'.formatter.formatterAmount'}"
+                                                />
+                                                <m:Label
+                                                    text="{path:'itemsModel>IGST_PERCENTAGE',formatter:'.formatter.formatterAmount'}"
+                                                />
+                                                <m:Label
+                                                    text="{path:'itemsModel>TOTAL_AMOUNT',formatter:'.formatter.formatterAmount'}"
+                                                />
+                                                <m:Button
+                                                    icon="sap-icon://delete"
+                                                    type="Reject"
+                                                    press="onDelete"
+                                                    visible="{itemsModel>isEditable}"
+                                                />
+                                            </m:cells>
+                                        </m:ColumnListItem>
+                                    </m:items>
+                                </m:Table>
+                            </ObjectPageSubSection>
+                        </subSections>
+                    </ObjectPageSection>
+
+                    <ObjectPageSection
+                        titleUppercase="false"
+                        id="idNotes"
+                        title="Remark"
+                        visible="{PropertyModel>/RemarkSection}"
+                    >
+                        <subSections>
+                            <ObjectPageSubSection
+                                id="idPSSNotes"
+                                title="Remark"
+                                mode="Expanded"
+                                titleUppercase="false"
+                            >
+                                <m:TextArea
+                                    value="{com>/COMMENTS}"
+                                    valueState="{PropertyModel>/RemarkTextValueState}"
+                                      maxLength="50"
+                                    showExceededText="true"
+                                    id="idRemark"
+                                    width="100%"
+                                    editable="{PropertyModel>/RemarkTextArea}"
+                                    change="onChangeRemark"
+                                />
+                            </ObjectPageSubSection>
+                        </subSections>
+                    </ObjectPageSection>
+
+                    <ObjectPageSection
+                        titleUppercase="true"
+                        id="idStstusSection"
+                        title="Status"
+                        visible="true"
+                    >
+                        <subSections>
+                            <ObjectPageSubSection
+                                id="idStatusSection"
+                                title="Status"
+                                mode="Expanded"
+                                titleUppercase="true"
+                                visible="true"
+                            >
+                                <m:Panel>
+                                    <commons:ProcessFlow
+                                        class="processFlow"
+                                        id="processflow1"
+                                        scrollable="true"
+                                        foldedCorners="true"
+                                        nodePress="onNodePress"
+                                        wheelZoomable="true"
+                                        nodes="{comm>/}"
+                                        lanes="{comm>/}"
+                                    >
+                                        <commons:nodes>
+                                            <commons:ProcessFlowNode
+                                                laneId="{comm>LANE_ID}"
+                                                nodeId="{comm>NODE_ID}"
+                                                state="{path:'comm>state'}"
+                                                texts="{comm>StatusRemark}"
+                                                stateText="{comm>Status}"
+                                                title="{comm>Status}"
+                                                children="{comm>CHILDREN}"
+                                                highlighted="true"
+                                                focused="true"
+                                                visible="true"
+                                            >
+                                                <commons:customData>
+                                                    <core:CustomData
+                                                        key="class"
+                                                        value="customNodeWidth"
+                                                        writeToDom="true"
+                                                    />
+                                                </commons:customData>
+                                            </commons:ProcessFlowNode>
+                                        </commons:nodes>
+
+                                        <commons:lanes>
+                                            <commons:ProcessFlowLaneHeader
+                                                laneId="{comm>LANE_ID}"
+                                                iconSrc="{path:'comm>StatusCode', formatter : '.formatter.laneIconFormat'}"
+                                                text="{path:'comm>StatusCode', formatter : '.formatter.laneTextFormat'}"
+                                                position="{comm>LANE_ID}"
+                                                visible="true"
+                                            />
+                                        </commons:lanes>
+                                    </commons:ProcessFlow>
+                                </m:Panel>
+                            </ObjectPageSubSection>
+                        </subSections>
+                    </ObjectPageSection>
+                </sections>
+            </ObjectPageLayout>
+        </layout:mainContent>
+
+        <layout:sideContent>
+            <m:Toolbar id="idTb">
+                <m:Title
+                    id="idTtlEvt"
+                    text="{i18n>Event}"
+                />
+                <m:ToolbarSpacer id="idTbS" />
+                <m:Button
+                    id="idHideEvt"
+                    text="{i18n>Close}"
+                    type="Transparent"
+                    press="onViewEventHide"
+                    visible="true"
+                />
+            </m:Toolbar>
+
+            <layout:VerticalLayout
+                id="idSCVL"
+                width="100%"
+            >
+                <commons:Timeline
+                    id="idTimeline"
+                    showHeaderBar="false"
+                    showSearch="false"
+                    showSort="false"
+                    showItemFilter="false"
+                    sort="true"
+                    enableScroll="false"
+                    lazyLoading="false"
+                    growingThreshold="0"
+                    content="{eventData>/d/results}"
+                    showIcons="false"
+                    noDataText="{i18n>NoDataText}"
+                    width="100%"
+                >
+                    <commons:content>
+                        <commons:TimelineItem
+                            id="idTemplateItem"
+                            text="Event :{eventData>TO_EVENT_STATUS/DESC}"
+                            userNameClickable="true"
+                            dateTime="{ path:'eventData>CREATION_DATE',formatter:'.formatter.formatDate'}"
+                            userName="{path:'eventData>USER_NAME'}"
+                            title=": {eventData>USER_ROLE}"
+                        />
+                    </commons:content>
+                </commons:Timeline>
+            </layout:VerticalLayout>
+        </layout:sideContent>
+    </layout:DynamicSideContent>
+</mvc:View>

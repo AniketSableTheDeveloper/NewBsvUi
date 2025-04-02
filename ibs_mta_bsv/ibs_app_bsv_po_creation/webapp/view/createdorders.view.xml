@@ -1,0 +1,697 @@
+<mvc:View
+    controllerName="com.ibs.bsv.ibsappbsvpocreation.controller.createdorders"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns="sap.uxap"
+    xmlns:layout="sap.ui.layout"
+    xmlns:m="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:commons="sap.suite.ui.commons"
+    xmlns:smartList="sap.ui.comp.smartlist"
+>
+            <ObjectPageLayout
+                id="idOPLHome"
+                enableLazyLoading="true"
+                showTitleInHeaderContent="true"
+                upperCaseAnchorBar="false"
+				showFooter="true"
+            >
+                <headerTitle>
+                    <ObjectPageDynamicHeaderTitle id="idOPDHt">
+                        <expandedHeading>
+                            <m:Title
+                                id="idOPDHTitle"
+                                text="Order Reference"
+                                wrapping="true"
+                            />
+                        </expandedHeading>
+
+                        <snappedHeading>
+                            <m:FlexBox
+                                id="idFB"
+                                fitContainer="true"
+                                alignItems="Center"
+                            >
+                                <!-- <m:Avatar id="idAvatar" src="https://53.fs1.hubspotusercontent-na1.net/hub/53/hubfs/sales-order.jpg" class="sapUiTinyMarginEnd" 	displayShape="Square"/> -->
+                                <m:Title
+                                    id="idAvatarTitle"
+                                    text="Order Reference"
+                                    wrapping="true"
+                                />
+                            </m:FlexBox>
+                        </snappedHeading>
+
+                        <expandedContent>
+                            <m:Text
+                                id="idECText"
+                                text="{headerDetails>/REFERENCE_ID}"
+                            />
+                        </expandedContent>
+
+                        <snappedContent>
+                            <m:Text
+                                id="idSCText"
+                                text="{headerDetails>/REFERENCE_ID}"
+                            />
+                        </snappedContent>
+
+                        <snappedTitleOnMobile>
+                            <m:Title
+                                id="idSTOMTitle"
+                                text="{headerDetails>/REFERENCE_ID}"
+                            />
+                        </snappedTitleOnMobile>
+
+                        <actions>
+						
+					<m:Button text="Review Order"  icon="sap-icon://nav-back" type="Transparent" press="backNav"></m:Button>
+					<!-- <m:Text text="Review Order"  class="orderset" ></m:Text> -->
+				
+                        
+
+                           
+
+                        </actions>
+                    </ObjectPageDynamicHeaderTitle>
+                </headerTitle>
+
+                <headerContent>
+                    <m:FlexBox
+                        id="idFB2"
+                        wrap="Wrap"
+                        fitContainer="true"
+                    >
+                      
+                            <layout:VerticalLayout>
+
+                                  <layout:HorizontalLayout
+                                    class="sapUiTinyMarginTop"
+                                >
+                                    <m:Label
+                                        text="Order Reference"
+                                        design="Bold"
+                                        showColon="true"
+                                        id="idreferc"
+                                    />
+                                    <m:Text
+                                        text="{headerDetails>/REFERENCE_ID}"
+                                        class="sapUiTinyMarginBegin"
+                                        id="idreferenced"
+                                    />
+									  </layout:HorizontalLayout>
+
+
+									   <layout:HorizontalLayout class="sapUiTinyMarginTop">
+
+									  <m:Label
+                                        text="Payment Method"
+                                        design="Bold"
+                                        showColon="true"
+                                    />
+
+                                    <m:Label
+                                        text="{headerDetails>/PAYMENT_METHOD_DESCRIPTION}"
+                                        wrapping="true"
+										class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout>
+
+								
+									   <layout:HorizontalLayout class="sapUiTinyMarginTop">
+
+									  <m:Label
+                                        text="Order Type"
+                                        design="Bold"
+                                        showColon="true"
+                                    />
+
+                                    <m:Label
+                                        text="{path:'headerDetails>/ORDER_TYPE',formatter:'.formatter.ordertypeformat'}"
+                                        wrapping="true"
+										class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout>
+
+
+<!-- 
+                                <layout:HorizontalLayout class="sapUiTinyMarginTop">
+                                    <m:Label
+                                        text="Ship From"
+                                        design="Bold"
+                                        showColon="true"
+                                    />
+                                    <m:Text
+                                        text="{headerDetails>/SHIP_FROM_NAME}"
+                                        class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout>
+
+                                 <layout:HorizontalLayout class="sapUiTinyMarginTop">
+                                    <m:Label
+                                        text="Ship To"
+                                        design="Bold"
+                                        showColon="true"
+                                        
+                                    />
+                                    <m:Text
+                                        text="{headerDetails>/SHIP_NAME}"
+                                        class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout> -->
+                              
+									   
+                            </layout:VerticalLayout>
+
+                            <layout:VerticalLayout>
+
+							
+                                <layout:HorizontalLayout class="sapUiTinyMarginTop">
+                                    <m:Label
+                                        text="Ship From"
+                                        design="Bold"
+                                        showColon="true"
+                                    />
+                                    <m:Text
+                                        text="{headerDetails>/SHIP_FROM_NAME}"
+                                        class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout>
+
+                                 <layout:HorizontalLayout id="idShipToLayout" class="sapUiTinyMarginTop">
+                                    <m:Label
+                                        text="Ship To"
+                                        design="Bold"
+                                        showColon="true"
+										
+                                        
+                                    />
+                                    <m:Text
+                                        text="{headerDetails>/SHIP_NAME}"
+                                        class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout>
+                            
+                                 <!-- <layout:HorizontalLayout class="sapUiTinyMarginTop">
+
+									  <m:Label
+                                        text="Payment Method"
+                                        design="Bold"
+                                        showColon="true"
+                                         class="sapUiSmallMarginBegin"
+                                    />
+
+                                    <m:Label
+                                        text="{headerDetails>/PAYMENT_METHOD_DESCRIPTION}"
+                                        wrapping="true"
+                                        class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout> -->
+
+                            </layout:VerticalLayout>
+
+                            
+                  
+
+                        <layout:HorizontalLayout
+                            id="idTotAmtHLayout"
+                            class="sapUiTinyMarginTop"
+                        >
+                            <layout:VerticalLayout
+                                id="idTotAmtVLayout"
+                            
+                            >
+                                <m:Title
+                                    id="id_totalAmount"
+                                    text="Total Amount"
+                                />
+                                <m:ObjectStatus
+                                    id="idTotAmtObjStatus"
+                                    text="{path:'headerDetails>/TOTAL_AMOUNT',formatter:'.formatter.formatterAmount'} ₹"
+                               
+                                    state="Indication06"
+                                />
+                            </layout:VerticalLayout>
+
+                            <layout:VerticalLayout
+                                id="idTotTaxVLayout"
+                                class="sapUiSmallMarginBegin"
+                            >
+                                <m:Title
+                                    id="id_totalTax"
+                                    text="Total Tax"
+                                />
+                                <m:ObjectStatus
+                                    id="idTaxAmtObjStatus"
+                                    text="{path:'headerDetails>/TAXES_AMOUNT',formatter:'.formatter.formatterAmount'} ₹"
+                                    
+                                     state="Indication05"
+                                />
+                                
+                            </layout:VerticalLayout>
+
+                            <layout:VerticalLayout
+                                id="idGrdAmtVLayout"
+                                class="sapUiSmallMarginBegin"
+                            >
+                                <m:Title
+                                    id="idGrandTotal"
+                                    text="Grand Total"
+                                    level="H1"
+                                />
+                                <m:ObjectStatus
+                                     id="idGrdAmtObjStatus"
+                                    text="{path:'headerDetails>/GRAND_TOTAL',formatter:'.formatter.formatterAmount'} ₹"
+                                   
+                                     state="Indication08"
+                                />
+                            </layout:VerticalLayout>
+                        </layout:HorizontalLayout>
+                    </m:FlexBox>
+                </headerContent>
+
+                <sections>
+                    <ObjectPageSection
+                        titleUppercase="false"
+                        id="idItems"
+                        title="Items"
+                    >
+                        <subSections>
+                            <ObjectPageSubSection
+                                id="idOPSSDelTerm"
+                                title="Items"
+                                titleUppercase="false"
+                                mode="Expanded"
+                            >
+                             	<m:Table items="{path:'LineModel>/',sorter : { path : 'MaterialCode',descending : false}}" sticky="ColumnHeaders">
+			<m:columns>
+
+			<m:Column width="12rem" hAlign="Begin" demandPopin="true" minScreenWidth="Phone">
+			   <!-- <m:HBox>
+                        <m:Label  text="Product   (   "/>
+                    	<core:Icon class="sapUiTinyMarginBegin" src="sap-icon://favorite"  color="blue"/>
+                        <m:Label   text=" - Special Order)" />
+
+   </m:HBox> -->
+
+			<m:Label text="{PropertyModel>/Count}"></m:Label>
+
+
+			</m:Column>
+			<m:Column  hAlign="End" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="HSN Code"></m:Label>
+			</m:Column>
+			<m:Column hAlign="End" demandPopin="true" minScreenWidth="Phone">
+			<m:Label text="Quantity"></m:Label>
+			</m:Column>
+			<m:Column hAlign="Center" demandPopin="true" minScreenWidth="Desktop" >
+			<m:Label text="UOM"></m:Label>
+			</m:Column>
+			<m:Column hAlign="End" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="MRP(₹)"></m:Label>
+			</m:Column>
+			<m:Column hAlign="End" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="NIR(₹)"></m:Label>
+			</m:Column>
+			<m:Column hAlign="End" demandPopin="true" minScreenWidth="Desktop" visible="{PropertyModel>/RequestRateColumn}">
+			<m:Label text="REQ.Rate(₹)" wrapping="true"></m:Label>
+			</m:Column>
+			<m:Column hAlign="End" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="CGST(%)"></m:Label>
+			</m:Column>
+			<m:Column hAlign="End" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="SGST(%)"></m:Label>
+			</m:Column>
+			<m:Column hAlign="End" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="IGST(%)"></m:Label>
+			</m:Column>
+			<m:Column hAlign="End" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="Amount(₹)" wrapping="true"></m:Label>
+			</m:Column>
+			</m:columns>
+			<m:items>
+			<m:ColumnListItem >
+			<m:cells>
+			<m:Label design="Bold" text="{LineModel>MaterialDesc}"/>
+
+				<!-- <m:HBox>
+                       <m:Label text="{LineModel>MaterialDesc}  " textAlign="Begin"></m:Label>
+                       <m:Label text=" " textAlign="Begin"></m:Label>
+                    	<core:Icon class="sapUiTinyMarginBegin" id="staricon" src="sap-icon://favorite" color="blue"  visible="{= ${LineModel>Special_order} === 'X' }"/>
+		</m:HBox> -->
+		
+			<m:Text text ="{LineModel>HsnCode}"/>
+			<m:Text text ="{LineModel>OrderQuantity}"/>
+			<m:Text text ="{LineModel>UnitOfMeasure}"/>
+			<m:Text text ="{path:'LineModel>MrpPrice',formatter:'.formatter.formatterAmount'}"/>
+			<m:Text text ="{path:'LineModel>NirPrice',formatter:'.formatter.formatterAmount'}"/>
+			<!-- <m:Text text ="{path:'LineModel>RequestRate',formatter:'.formatter.formatterAmount'}" visible="{LineModel>/0/isSpecialOrder}"/> -->
+			<m:Text text ="{path:'LineModel>RequestRate',formatter:'.formatter.formatterAmount'}"/>
+			<m:Text text ="{LineModel>CgstPercentage}"/>
+			<m:Text text ="{LineModel>SgstPercentage}"/>
+			<m:Text text ="{LineModel>IgstPercentage}"/>
+			<m:Text text ="{path:'LineModel>TotalAmount',formatter:'.formatter.formatterAmount'}"/>
+			</m:cells>
+			
+			</m:ColumnListItem>
+			</m:items>
+			</m:Table>  
+                                   
+                               
+                            </ObjectPageSubSection>
+                        </subSections>
+                    </ObjectPageSection>
+
+                    <ObjectPageSection
+                        titleUppercase="false"
+                        id="idNotes"
+                        title="Remark"
+						visible="{PropertyModel>/RemarkSection}"
+                    >
+                        <subSections>
+                            <ObjectPageSubSection
+                                id="idPSSNotes"
+                                title="Remark"
+                                mode="Expanded"
+                                titleUppercase="false"
+                            >
+                            
+                        <m:TextArea value="{EventsmModel>/COMMENTS}" id="idTextEvent" width="100%" editable="false"></m:TextArea>
+
+                            </ObjectPageSubSection>
+                        </subSections>
+                    </ObjectPageSection>
+                </sections>
+						<footer>
+			<m:OverflowToolbar>
+				<m:ToolbarSpacer />
+				
+				<m:Button type="Success" text="Place order" press="ApporveOrder" />
+			</m:OverflowToolbar>
+		</footer>
+            </ObjectPageLayout>
+</mvc:View>
+
+
+
+
+
+
+
+<!-- <mvc:View controllerName="com.ibs.bsv.ibsappbsvpocreation.controller.createdorders" xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"  xmlns:table="sap.ui.table"		
+	xmlns:f="sap.f" xmlns:layout="sap.ui.layout" 	xmlns:m="sap.m" xmlns:l="sap.ui.layout"
+    xmlns="sap.m" height="100%">
+    <m:Page showHeader="false">
+	  <l:DynamicSideContent
+		id="dynamicsidecontent" class="sapUiDSCExplored sapUiContentPadding" showSideContent="false" >
+        <f:DynamicPage id="dynamicPageId" showFooter="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+				 <HBox >
+					<Button icon="sap-icon://nav-back" type="Transparent" press="backNav"></Button>
+					<Text text="Review Order"  class="orderset" ></Text>
+				 </HBox>
+			</f:heading>
+</f:DynamicPageTitle> 
+</f:title>   
+<f:header>
+    <f:DynamicPageHeader pinnable="true">
+<FlexBox visible="true" wrap="Wrap" fitContainer="true" alignItems="Stretch" class="sapUiMediumMarginBottom">
+					<VBox justifyContent="Center" class="sapUiMediumMarginEnd">
+						<Label text="Payment Method" design="Bold"/>
+					
+						<Text text="{headerDetails>/PAYMENT_METHOD_DESCRIPTION}"/>
+					</VBox>
+					<VBox justifyContent="Center" class="sapUiSmallMarginEnd">
+						<Label text="Ship From" design="Bold"/>
+						<Text text="{headerDetails>/SHIP_FROM_NAME}"/>
+					</VBox>
+					<VBox justifyContent="Center" class="sapUiMediumMarginEnd" visible="true" id="tableship">
+						<Label text="Ship To" design="Bold" id="lableship" visible="true"/>
+						<Text text="{headerDetails>/SHIP_NAME}" id="textShip" visible="true" />	
+					</VBox>
+
+					<VBox justifyContent="Center" class="sapUiMediumMarginEnd" visible="false" id="expship">
+						<Label text="Ship To" design="Bold" visible="false" id="expLship"/>
+						<Text text="Star Enterprize"  visible="false"  id="expTextship"/>
+						
+					</VBox>
+					<VBox justifyContent="Center" class="sapUiMediumMarginEnd" visible="true" id="idrefer">
+						<Label text="Order Reference" design="Bold" visible="true" id="idreferid"/>
+						<Text text="{headerDetails>/REFERENCE_ID}"  visible="true"  id="idreferids"/>
+						
+					</VBox>
+			
+				</FlexBox>
+
+
+<FlexBox alignItems="Start" justifyContent="SpaceBetween">         
+					<items>
+						<Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+							<content>
+								<layout:HorizontalLayout allowWrapping="true">
+									<layout:VerticalLayout class="sapUiMediumMarginEnd amt">
+										<ObjectStatus class="sapUiSmallMarginBegin" id="id_totalAmount" state="Indication06" title="Total Amount"  text="{path:'headerDetails>/TOTAL_AMOUNT',formatter:'.formatter.formatterAmount'} ₹" />
+									</layout:VerticalLayout>
+									<layout:VerticalLayout class="sapUiMediumMarginEnd">
+										<ObjectStatus id="id_totalTax"   state="Indication05" title="Total Tax"   text="{path:'headerDetails>/TAXES_AMOUNT',formatter:'.formatter.formatterAmount'} ₹"/>
+									</layout:VerticalLayout>
+									<layout:VerticalLayout class="sapUiMediumMarginEnd">
+										<ObjectStatus id="id_subTotal"  state="Indication08" title="Grand Total"  text="{path:'headerDetails>/GRAND_TOTAL',formatter:'.formatter.formatterAmount'} ₹"/>
+									</layout:VerticalLayout>
+								</layout:HorizontalLayout>
+							</content>
+						</Panel>
+					</items>
+				</FlexBox>
+
+    </f:DynamicPageHeader>
+</f:header>
+
+
+
+
+	<f:content>
+	<VBox>
+			<table:Table  visible="false"
+				rows="{iModel>/value}" 
+				ariaLabelledBy="title" selectionBehavior="RowOnly"  enableColumnFreeze="true" fixedColumnCount="2" id="table">
+<table:extension>
+			<OverflowToolbar>
+           
+        </OverflowToolbar>
+				</table:extension>
+
+
+				<table:columns>
+
+					
+
+					<table:Column width="12rem" hAlign="Center" >
+						<m:Text text="Material" />
+						<table:template>
+							<m:Text text="{iModel>MATERIAL_DESC}"/>
+						</table:template>
+					</table:Column>
+
+	<table:Column width="10rem" hAlign="Center">
+						<m:Label text="HSN CODE" />
+						<table:template>
+							<m:Text text="{iModel>HSN_CODE}" />
+						</table:template>
+					</table:Column>
+					
+						<table:Column width="6rem" hAlign="Right">
+						<m:Label text="Quantity" />
+						<table:template>
+							<m:Text text="{iModel>QUANTITY}" />
+						</table:template>
+					</table:Column>
+					
+
+<table:Column width="5rem" hAlign="Right">
+						<m:Label text="UOM" />
+						<table:template>
+							<m:Text text="{iModel>UNIT_OF_MEASURE}" />
+						</table:template>
+					</table:Column>
+
+					<table:Column width="9rem" hAlign="Right">
+						<m:Label text=" Price(₹)" />
+						<table:template>
+				
+							<m:Label text="{path:'iModel>NET_AMOUNT',formatter:'.formatter.tableAmountt'} "/>
+						</table:template>
+					</table:Column>
+
+					<table:Column width="6rem" hAlign="Right">
+						<m:Label text="CGST (%)" />
+						<table:template>
+							<m:Label text="{iModel>CGST_PERC}"  />
+						</table:template>
+					</table:Column>
+
+               <table:Column width="6rem" hAlign="Right">
+						<m:Label text="SGST (%)" />
+						<table:template>
+							<m:Label text="{iModel>SGST_PERC}"  />
+						</table:template>
+					</table:Column>
+
+
+              
+
+
+         
+					<table:Column width="6rem" hAlign="Right">
+						<m:Label text="TAX (%)" />
+						<table:template>
+							<m:Label text="{path:'CreatedOrders>TAXES_AMOUNT',formatter:'.formatter.formatterAmount'}"  />
+						</table:template>
+					</table:Column>
+
+
+
+				
+				
+                <table:Column width="8rem" hAlign="Right">
+						<m:Label text=" Total Amount (₹)" />
+						<table:template>
+							
+							<m:Label text="{path:'iModel>TOTAL_AMOUNT',formatter:'.formatter.tableAmountt'} "/>
+						</table:template>
+					</table:Column>
+
+
+				</table:columns>
+			</table:Table>	
+
+			<Table items="{path:'LineModel>/',sorter : { path : 'MaterialCode',descending : true}}">
+			<columns>
+			<m:Column width="12rem" hAlign="Begin" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="Material"></m:Label>
+			</m:Column>
+			<m:Column width="12rem" hAlign="Begin" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="HSN Code"></m:Label>
+			</m:Column>
+			<m:Column hAlign="End" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="Quantity"></m:Label>
+			</m:Column>
+			<m:Column hAlign="Center" demandPopin="true" minScreenWidth="Desktop" >
+			<m:Label text="UOM"></m:Label>
+			</m:Column>
+			<m:Column hAlign="Center" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="MRP(₹)"></m:Label>
+			</m:Column>
+			<m:Column hAlign="Center" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="NIR(₹)"></m:Label>
+			</m:Column>
+			<m:Column hAlign="Center" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="CGST(%)"></m:Label>
+			</m:Column>
+			<m:Column hAlign="Center" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="SGST(%)"></m:Label>
+			</m:Column>
+			<m:Column hAlign="Center" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="IGST(%)"></m:Label>
+			</m:Column>
+			<m:Column hAlign="Center" demandPopin="true" minScreenWidth="Desktop">
+			<m:Label text="Total Amount(₹)" wrapping="true"></m:Label>
+			</m:Column>
+			</columns>
+			<items>
+			<m:ColumnListItem >
+			<cells>
+			<ObjectIdentifier title="{LineModel>MaterialCode}" text="{LineModel>MaterialDesc}"/>
+		
+			<Text text ="{LineModel>HsnCode}"/>
+			<Text text ="{LineModel>OrderQuantity}"/>
+			<Text text ="{LineModel>UnitOfMeasure}"/>
+			<Text text ="{path:'LineModel>MrpPrice',formatter:'.formatter.formatterAmount'}"/>
+			<Text text ="{path:'LineModel>NirPrice',formatter:'.formatter.formatterAmount'}"/>
+			<Text text ="{LineModel>CgstPercentage}"/>
+			<Text text ="{LineModel>SgstPercentage}"/>
+			<Text text ="{LineModel>IgstPercentage}"/>
+			<Text text ="{path:'LineModel>TotalAmount',formatter:'.formatter.formatterAmount'}"/>
+			</cells>
+			
+			</m:ColumnListItem>
+			</items>
+			</Table>
+
+		<Table id="idMTable" inset="false" items="{iModel>/value}" sticky="ColumnHeaders,HeaderToolbar" class="sapUiContentPadding"
+						growing="true" growingThreshold="10" autoPopinMode="true" contextualWidth="Auto" fixedLayout="true" visible="false">
+				
+
+						<columns>
+							<Column hAlign="Left" width="9rem">
+								<Label id="MS2G2T1F1" text="Material" design="Bold"/>
+							</Column>
+							<Column hAlign="Left" width="7rem">
+								<Label id="MS2G2T1F2" text="HSN CODE" design="Bold"/>
+							</Column>
+							<Column hAlign="Center">
+								<Label id="MS2G2T1F3" text="Quantity" design="Bold"/>
+							</Column>
+							<Column hAlign="Center">
+								<Label id="MS2G2T1F4" text="UOM" design="Bold"/>
+							</Column>
+							<Column hAlign="Center">
+								<Label id="MS2G2T1F5" text="Price(₹)" design="Bold"/>
+							</Column>
+							<Column hAlign="Center">
+								<Label id="MS2G2T1F6" text="CGST (%)" design="Bold"/>
+							</Column>
+							<Column hAlign="Center">
+								<Label id="MtableIbanId" text="SGST (%)" design="Bold"/>
+							</Column>
+
+							<Column hAlign="Center">
+								<Label id="MS2G2T1F8" text="TAX (%)" design="Bold"/>
+							</Column>
+							<Column hAlign="Center">
+								<Label id="MS2G2T1F9_name" text="Total Amount(₹)" design="Bold"/>
+							</Column>
+							
+						</columns>
+						<items>
+							<ColumnListItem type="Inactive">
+								<cells>	
+									<Text text="{iModel>MATERIAL_DESC}"/>
+									<Text text="{iModel>HSN_CODE}"/>									
+									<Text text="{iModel>QUANTITY}"/>
+									<Text text="{path:'iModel>UNIT_OF_MEASURE', formatter:'.formatter.formatDate'}"/>
+									<Text text="{path:'iModel>NET_AMOUNT', formatter : '.formatter.formatterAmount' }"/>
+									<Text text="{path:'iModel>CGST_PERC'}"/>
+									<Text text="{path:'iModel>SGST_PERC'}"/>
+									<Text text="{path:'iModel>TAXES_AMOUNT', formatter : '.formatter.formatterAmount' }"/>
+									<Text text="{path:'iModel>TOTAL_AMOUNT', formatter : '.formatter.formatterAmount' }"/>
+									</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+
+
+
+</VBox>
+
+
+
+		</f:content>
+
+				<f:footer>
+
+								<OverflowToolbar id="oFootbar">
+									    <ToolbarSpacer/>
+								
+										<Button type="Success" text="Place order" press="ApporveOrder" />
+								</OverflowToolbar>
+				</f:footer> 
+</f:DynamicPage>
+</l:DynamicSideContent>
+ </m:Page>
+</mvc:View>
+ -->

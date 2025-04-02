@@ -1,0 +1,145 @@
+<mvc:View controllerName="com.ibs.bsv.ibsappbsvpocreation.controller.Scheme"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="false"
+    xmlns="sap.m"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f">
+    
+    <f:DynamicPage id="dynamicPage" fitContent="true"  headerExpanded="true" preserveHeaderStateOnScroll="false">
+    <f:header>
+    <f:DynamicPageHeader id="id">
+            <smartFilterBar:SmartFilterBar id="idSchemeHeader"
+                    entitySet="SchemeHeader" persistencyKey="SmartFilter_Explored" basicSearchFieldName="REFERENCE_ID" enableBasicSearch="false" showClearOnFB="true">
+
+                    <smartFilterBar:controlConfiguration>
+                        <smartFilterBar:ControlConfiguration id="idReferenceId" key="REFERENCE_ID" visibleInAdvancedArea="true" index="0" label="Reference Id">
+                        </smartFilterBar:ControlConfiguration>
+                    </smartFilterBar:controlConfiguration>
+
+                    <smartFilterBar:controlConfiguration>
+                    <smartFilterBar:ControlConfiguration key="CREATION_DATE" label="Creation Date" visibleInAdvancedArea="true">
+                        <smartFilterBar:customControl>
+                            <DatePicker id="creationDateId" placeholder="Select Creation Date" value="{path:'CREATION_DATE',type: 'sap.ui.model.type.Date'}"/>
+                        </smartFilterBar:customControl>
+                    </smartFilterBar:ControlConfiguration>
+                    </smartFilterBar:controlConfiguration>
+
+                    <smartFilterBar:controlConfiguration>
+                        <smartFilterBar:ControlConfiguration id="idCreationDatefltr" key="CREATION_DATE" visibleInAdvancedArea="true" label="Creation Date"	
+                        conditionType="{module: 'sap.ui.comp.config.condition.DateRangeType'}" index="3" >
+                        </smartFilterBar:ControlConfiguration>
+                    </smartFilterBar:controlConfiguration>
+            </smartFilterBar:SmartFilterBar>
+        </f:DynamicPageHeader>
+    </f:header>
+        
+    <f:content>
+
+        <smartTable:SmartTable
+        id="idSchemeTable"
+        editable="false"
+        width="100%"
+        entitySet="SchemeHeader"
+        useExportToExcel="true"
+        useVariantManagement="true"
+        useTablePersonalisation="true"
+        enableAutoBinding="true"
+        showRowCount="true"
+        header="Scheme"
+        demandPopin="true"
+        smartFilterId="idSchemeHeader" 
+        tableType="ResponsiveTable"
+        beforeRebindTable="onBeforeRebindTable"
+        enableAutoColumnWidth="true"
+        enableCopy="false"
+        showFullScreenButton="true"
+        requestAtLeastFields="REFERENCE_ID,VALID_FROM,VALID_TO,CREATION_DATE"
+    >
+    <smartTable:customToolbar>
+        <OverflowToolbar id="idOTB">
+            <ToolbarSpacer id="idTBS" />
+            <!-- <Button id="idCreateBtn"  type="Transparent" text="Create" press="OnCreate"/> -->
+        </OverflowToolbar>
+    </smartTable:customToolbar>
+
+    <Table id="idSchemeHeaderTbl" sticky="ColumnHeaders">
+        <columns>
+            <Column id="idColumnReferenceQtn" hAlign="Center">
+                <customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "REFERENCE_ID", "leadingProperty": "REFERENCE_ID", "filterProperty": "REFERENCE_ID", "columnIndex": 0 }'/>
+                </customData>
+                <Text id="idReferenceTxt" text="Reference Id"/>
+            </Column>
+
+                <Column id="idColumnValidFrom" hAlign="Center">
+                <customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "VALID_FROM", "leadingProperty": "VALID_FROM", "columnIndex": 1}'/>
+                </customData>
+                <Text id="idValidFromTxt" text="Valid From"/>
+            </Column>
+
+            <Column id="idColumnValidTo" hAlign="Center">
+                <customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "VALID_TO", "leadingProperty": "VALID_TO", "columnIndex": 2 }'/>
+                </customData>
+                <Text id="idValidToTxt" text="Valid To"/>
+            </Column>
+        
+            <Column id="idColumnCrtDtn" hAlign="Center">
+                <customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "CREATION_DATE", "leadingProperty": "CREATION_DATE", "columnIndex": 3 }'/>
+                </customData>
+                <Text id="idCreationDateTxt" text="Creation Date"/>
+            </Column>
+
+            <Column id="idColumnCrtDte" hAlign="Center">
+                <customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "CREATED_BY", "leadingProperty": "CREATED_BY", "columnIndex": 5}'/>
+                </customData>
+                <Text id="idCreatedByTxt" text="Created By"/>
+            </Column>
+            <Column id="idComment" hAlign="Center">
+                <customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "COMMENTS", "leadingProperty": "COMMENTS", "columnIndex": 6}'/>
+                </customData>
+                <Text id="idCommentTxt" text="Comments"/>
+            </Column>
+            <Column id="idFile" hAlign="Center">
+                <customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "TO_ATTACHMENT/FILE_ID", "leadingProperty": "TO_ATTACHMENT/FILE_ID", "columnIndex": 7}'/>
+                </customData>
+                <Text id="idFileTxt" text="File"/>
+            </Column>
+        </columns>
+
+        <items>
+            <ColumnListItem id="idColumnListI">
+                <cells>
+                    <Text id="idReferenceIdTxt" text="{REFERENCE_ID}"/>    
+                    <Text id="idValidFrom" text="{path: 'VALID_FROM', formatter: '.formatter.formatDate1'}" />      
+                    <Text id="idValidTo"  text="{path: 'VALID_TO', formatter: '.formatter.formatDate1'}" />
+                    <Text id="idCreationDate" text="{path: 'CREATION_DATE',formatter: '.formatter.formatDate1'}"/> 
+                    <Text id="idCreatedBy" text="{CREATED_BY}"/> 
+                    <Button icon="sap-icon://comment" press="onComment" tooltip="Chat Box" id="popOverCommentId" type="Attention"></Button>
+                    <Button icon="sap-icon://pdf-attachment" press="onDownload" type="Emphasized"></Button>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+    </smartTable:SmartTable>
+
+    </f:content>
+              
+    </f:DynamicPage>
+</mvc:View>
+
+
+
+<!-- <mvc:View controllerName="com.ibs.bsv.ibsappbsvschemecreation.controller.Master"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content />
+    </Page>
+</mvc:View> -->

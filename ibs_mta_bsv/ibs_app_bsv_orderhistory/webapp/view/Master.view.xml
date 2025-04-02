@@ -1,0 +1,244 @@
+<mvc:View
+	controllerName="com.ibs.bsv.ibsappbsvorderhistory.controller.Master"
+	xmlns="sap.ui.table"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:u="sap.ui.unified"
+	xmlns:c="sap.ui.core"
+	xmlns:m="sap.m"
+	xmlns:fb="sap.ui.comp.filterbar"
+    >
+	<m:Page
+		showHeader="false"
+		enableScrolling="false"
+		>
+		<m:content>
+		 <m:OverflowToolbar class="TopNavBar">
+                        <m:ToolbarSpacer />
+                        <m:HBox
+                            id="idHox"
+                            visible="{PropertyModel>/HBOx}"
+                        >
+                        
+                            <m:Button
+                                text="Home"
+                                press="onNavigateDashboard"
+                                type="Transparent"
+                                 class="sapUiTinyMargiEnd"
+                                 icon="sap-icon://home"
+
+                                
+                            />
+                            <m:Button
+                                text="Place Order"
+                                press="onNavigateOrderCreation"
+                                type="Transparent"
+                                 class="sapUiTinyMargiEnd"
+                            />
+                            <m:Button
+                                text="Order Status"
+                                press="onNavigateOrderStatus"
+                                type="Transparent"
+                            />
+                            <m:Button
+                                text="GRN"
+                                press="onNavigateGRN"
+                                type="Transparent"
+                            />
+                            <m:Button
+                                text="GRN Report"
+                                press="onNavigateGRNReport"
+                                type="Transparent"
+                            />
+                            <m:Button
+                                text="Ledger Report"
+                                press="onNavigateLedger"
+                                type="Transparent"
+                            />
+                            <m:Button
+                                text="Order History"
+                                press="onNavigateOrderHistory"
+                                type="Emphasized"
+                            />
+                            <m:Button
+                                text="Scheme"
+                                press="onNavigateScheme"
+                                type="Transparent"
+                            />
+                              <!-- <Button
+                                text="Circular"
+                                press="onDownload"
+                                type="Neutral"
+                                class="sapUiTinyMargiBegin"
+                                visible="{PropertyModel>/CircularButton}"
+                                icon="sap-icon://download-from-cloud"
+                            /> -->
+                        </m:HBox>
+
+                        <m:MenuButton
+                            text="Menu"
+                            visible="{PropertyModel>/Menu}"
+                        >
+                            <m:menu>
+                                <m:Menu>
+                                    <m:MenuItem
+                                        text="Home"
+                                        press="onNavigateDashboard"
+                                        icon="sap-icon://home"
+                                    />
+                                    <m:MenuItem
+                                        text="Place Order"
+                                        press="onNavigateOrderCreation"
+                                        icon="sap-icon://add-document"
+                                    />
+                                    <m:MenuItem
+                                        text="Order Status"
+                                        press="onNavigateOrderStatus"
+                                        icon="sap-icon://order-status"
+                                    />
+                                    <m:MenuItem
+                                        text="GRN"
+                                        press="onNavigateGRN"
+                                        icon="sap-icon://customer-order-entry"
+                                    />
+                                    <m:MenuItem
+                                        text="GRN Report"
+                                        press="onNavigateGRNReport"
+                                        	icon="sap-icon://sales-order-item"
+                                    />
+                                    <m:MenuItem
+                                        text="Ledger Report"
+                                        press="onNavigateLedger"
+                                        icon="sap-icon://document-text"
+                                    />
+                                    <m:MenuItem
+                                        text="Order History"
+                                        press="onNavigateOrderHistory"
+                                        icon="sap-icon://history"
+                                    />
+                                    <m:MenuItem
+                                        text="Scheme"
+                                        press="onNavigateScheme"
+                                        icon="sap-icon://notification-2"
+                                    />
+                                </m:Menu>
+                            </m:menu>
+                        </m:MenuButton>
+                        
+                    </m:OverflowToolbar>
+			<fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad" clear="onReset" showClearOnFB="true">
+							<fb:filterGroupItems>
+							
+
+								<fb:FilterGroupItem name="Date" label="Invoice Date" groupName="Group1" visibleInFilterBar="true">
+									<fb:control>
+									<m:DateRangeSelection id="idDateRangeSelection" placeholder="Select Date Range">
+                                    
+                                    </m:DateRangeSelection>
+									</fb:control>
+								</fb:FilterGroupItem>
+								
+							</fb:filterGroupItems>
+						</fb:FilterBar>
+			<Table
+				rows="{path:'InvHeader>/'}"
+             selectionMode="None"
+				paste="onPaste"
+				ariaLabelledBy="title"
+				id="idMasterTable">
+				
+				<extension>
+					<m:OverflowToolbar style="Clear">
+					<m:Title text="{PropertyModel>/Count}" ></m:Title>
+				<m:ToolbarSpacer/>
+						<m:SearchField id="idSearch" placeholder="Search by Transporter,Sales Order No,Delivery No" width="24.5rem" liveChange="onSearchLive"></m:SearchField>
+						<m:Button icon="sap-icon://excel-attachment" press="onDownloadExcel"></m:Button>
+					</m:OverflowToolbar>
+				</extension>
+				<columns>
+					<Column width="11rem" hAlign="Center">
+						<m:Label text="Sales Order No" />
+						<template>
+							<m:Text text="{InvHeader>SalesorderNo}" wrapping="false" />
+						</template>
+					</Column>
+					<Column width="11rem" hAlign="Center">
+						<m:Label text="Delivery No" />
+						<template>
+							<m:Text text="{InvHeader>DeliveryNo}" wrapping="false" />
+						</template>
+					</Column>
+						<Column width="12rem" hAlign="Center">
+						<m:Label text="Invoice No" />
+						<template>
+							<m:Text text="{InvHeader>InvoiceNo}" wrapping="false" />
+						</template>
+					</Column>
+				
+					<Column width="9rem" hAlign="Center">
+						<m:Label text="Invoice Date" />
+						<template>
+							<m:Text text="{path:'InvHeader>InvoiceDate',formatter:'.formatter.formatDate'}" wrapping="false" />
+						</template>
+					</Column>
+					<Column width="7rem" hAlign="Center">
+						<m:Label text="LR No." />
+						<template>
+									<m:Text text="{InvHeader>Lrno}" wrapping="false" />
+						</template>
+					</Column>
+				
+				<Column width="9rem" hAlign="Center">
+						<m:Label text="LR Date" />
+						<template>
+								<m:Text text="{path:'InvHeader>Lrdat',formatter:'.formatter.formatDate'}" wrapping="false" />
+						</template>
+					</Column>
+					<Column width="12rem" hAlign="Center">
+						<m:Label text="Transporter" />
+						<template>
+									<m:Text text="{InvHeader>Trans}" wrapping="false" />
+						</template>
+					</Column>
+					<Column width="8rem" hAlign="End">
+						<m:Label text="Invoice Amount" />
+						<template>
+							<m:Text text="{path:'InvHeader>InvoiceAmount',formatter:'formatter.formatterAmount'}" wrapping="false" />
+						</template>
+					</Column>
+					<Column width="9rem" hAlign="End">
+						<m:Label text="Invoice Amount Tax" />
+						<template>
+							<m:Text text="{path:'InvHeader>InvoiceAmountTax',formatter:'formatter.formatINR'}"/>
+						</template>
+					</Column>
+					<Column width="12rem" hAlign="Center">
+						<m:Label text="IRN" />
+						<template>
+							<m:Text text="{InvHeader>Irn}" wrapping="false" />
+						</template>
+					</Column>
+					
+					<Column width="12rem" hAlign="Center">
+						<m:Label text="Ack No" />
+						<template>
+						<m:Text text="{InvHeader>Ackno}" wrapping="false" />
+						</template>
+					</Column>
+					<Column width="11rem" hAlign="Center">
+						<m:Label text="Ack Date" />
+						<template>
+								<m:Text text="{path:'InvHeader>Ackdate'}" wrapping="false" />
+						</template>
+					</Column>
+					<Column width="12rem" hAlign="Center">
+						<m:Label text="Eway Bill No" />
+						<template>
+							<m:Text text="{InvHeader>EwayBillNo}" wrapping="false" />
+						</template>
+					</Column>
+				</columns>
+			</Table>
+		</m:content>
+	</m:Page>
+</mvc:View>

@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <Dialog title="Select Material Group" contentHeight="80%"
+        class="sapUiSizeCompact">
+         <subHeader>
+            <Toolbar>
+                <SearchField id="contctCountry_Id" liveChange="handleOTHContactCountrySearch" />
+            </Toolbar>
+        </subHeader>
+ 
+        <List id="contactcntry_listId" items="{path:'MaterialGrp>/results'}"
+            mode="SingleSelectMaster" selectionChange="contactOTHCountrySelection">
+            <StandardListItem title="{MaterialGrp>MatgroupCode}" description="{MaterialGrp>MatgroupDesc}"/>
+        </List>
+       
+            <buttons>
+            <Button text="Cancel" press="closeContactCountryDialog" type="Emphasized" />
+        </buttons>
+
+    </Dialog>
+</core:FragmentDefinition>

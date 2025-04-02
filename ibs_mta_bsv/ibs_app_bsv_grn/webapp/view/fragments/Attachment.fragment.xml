@@ -1,0 +1,11 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified">
+        <Dialog title="Please upload file" titleAlignment="Center">
+        
+        <VBox alignContent="Center" alignItems="Center" justifyContent="Center">
+        <Text width="100%" />
+        <!-- <Title text="Upload File"></Title> -->
+        <u:FileUploader name="myFileUpload" uploadUrl="upload/" buttonOnly="true" buttonText="Choose File" sameFilenameAllowed="true"
+           change="onConfirm" enabled="true" fileType="txt,jpg,docx,docm,pdf,xlsx" icon="sap-icon://upload" id="idFileUploader"/>
+        </VBox>
+        </Dialog>
+</core:FragmentDefinition>

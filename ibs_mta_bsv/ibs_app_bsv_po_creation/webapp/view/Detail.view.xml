@@ -1,0 +1,604 @@
+<mvc:View
+    controllerName="com.ibs.bsv.ibsappbsvpocreation.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns="sap.uxap"
+    xmlns:layout="sap.ui.layout"
+    xmlns:m="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:commons="sap.suite.ui.commons"
+    xmlns:smartList="sap.ui.comp.smartlist"
+>
+    <layout:DynamicSideContent
+        id="DynamicSideContent"
+        class="sapUiDSCExplored"
+        sideContentFallDown="BelowM"
+        sideContentPosition="End"
+        containerQuery="true"
+        showSideContent="false"
+        breakpointChanged="updateToggleButtonState"
+    >
+        <layout:mainContent>
+            <ObjectPageLayout
+                id="idOPLHome"
+                enableLazyLoading="true"
+                showTitleInHeaderContent="true"
+                upperCaseAnchorBar="false"
+            >
+                <headerTitle>
+                    <ObjectPageDynamicHeaderTitle id="idOPDHt">
+                        <expandedHeading>
+                            <m:Title
+                                id="idOPDHTitle"
+                                text="Purchase Request Number"
+                                wrapping="true"
+                            />
+                        </expandedHeading>
+
+                        <snappedHeading>
+                            <m:FlexBox
+                                id="idFB"
+                                fitContainer="true"
+                                alignItems="Center"
+                            >
+                                <!-- <m:Avatar id="idAvatar" src="https://53.fs1.hubspotusercontent-na1.net/hub/53/hubfs/sales-order.jpg" class="sapUiTinyMarginEnd" 	displayShape="Square"/> -->
+                                <m:Title
+                                    id="idAvatarTitle"
+                                    text="Purchase Request Number"
+                                    wrapping="true"
+                                />
+                            </m:FlexBox>
+                        </snappedHeading>
+
+                        <expandedContent>
+                            <m:Text
+                                id="idECText"
+                                text="{stockistDetails>/d/results/0/PURCHASE_REQUEST_NO}"
+                            />
+                        </expandedContent>
+
+                        <snappedContent>
+                            <m:Text
+                                id="idSCText"
+                                text="{stockistDetails>/d/results/0/PURCHASE_REQUEST_NO}"
+                            />
+                        </snappedContent>
+
+                        <snappedTitleOnMobile>
+                            <m:Title
+                                id="idSTOMTitle"
+                                text="{stockistDetails>/d/results/0/PURCHASE_REQUEST_NO}"
+                            />
+                        </snappedTitleOnMobile>
+
+                        <actions>
+                        <m:Button type="Transparent" press="printReq" icon="sap-icon://print"/>
+                            <m:Button
+                                id="idViewEvent"
+                                type="Transparent"
+                                text="View Events"
+                                press="onViewEventOpen"
+                            />
+                            <m:Button
+                                id="idFullSc"
+                                press="onFullScreen"
+                                icon=""
+                                type="Transparent"
+                                visible="{FullScreenButton}"
+                            />
+
+                            <m:Button
+                                id="idexit"
+                                icon="sap-icon://decline"
+                                type="Transparent"
+                                press="onExit"
+                            />
+                            <!-- <m:OverflowToolbarButton id="idOTActionBtn" icon="sap-icon://action" type="Transparent" text="{i18n>share}" tooltip="action"/> -->
+                        </actions>
+                    </ObjectPageDynamicHeaderTitle>
+                </headerTitle>
+
+                <headerContent>
+                    <m:FlexBox
+                        id="idFB2"
+                        wrap="Wrap"
+                        fitContainer="true"
+                    >
+                        <!-- <layout:HorizontalLayout
+                            id="idDetailsLayout"
+                            class="sapUiLargeMarginBegin"
+                        > -->
+                            <layout:VerticalLayout>
+
+                                  <layout:HorizontalLayout
+                                    class="sapUiTinyMarginTop"
+                                >
+                                    <m:Label
+                                        text="Reference ID"
+                                        design="Bold"
+                                        showColon="true"
+                                        id="idrefer"
+                                    />
+                                    <m:Text
+                                        text="{stockistDetails>/d/results/0/REFERENCE_ID}"
+                                        class="sapUiTinyMarginBegin"
+                                        id="idreference"
+                                    />
+									  </layout:HorizontalLayout>
+
+                                <layout:HorizontalLayout class="sapUiTinyMarginTop">
+                                    <m:Label
+                                        text="Ship From"
+                                        design="Bold"
+                                        showColon="true"
+                                    />
+                                    <m:Text
+                                        text="{stockistDetails>/d/results/0/SHIP_FROM_NAME}"
+                                        class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout>
+
+                                 <layout:HorizontalLayout class="sapUiTinyMarginTop">
+                                    <m:Label
+                                        text="Ship To"
+                                        design="Bold"
+                                        showColon="true"
+                                        
+                                    />
+                                    <m:Text
+                                        text="{stockistDetails>/d/results/0/SHIP_NAME}"
+                                        class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout>
+                              
+									   
+                            </layout:VerticalLayout>
+
+                            <layout:VerticalLayout>
+                               
+
+                                <layout:HorizontalLayout
+                                    class="sapUiTinyMarginTop"
+                                    id="idsapdoc"
+                                >
+                                    <m:Label
+                                        text="SAP Document No"
+                                        design="Bold"
+                                        showColon="true"
+                                        
+                                        class="sapUiSmallMarginBegin"
+                                    />
+                                    <m:Text
+                                        text="{stockistDetails>/d/results/0/SAP_SALES_ORDER_NO}"
+                                        class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout>
+
+                                 <layout:HorizontalLayout class="sapUiTinyMarginTop">
+
+									  <m:Label
+                                        text="Payment Method"
+                                        design="Bold"
+                                        showColon="true"
+                                         class="sapUiSmallMarginBegin"
+                                    />
+
+                                    <m:Label
+                                        text="{path:'stockistDetails>/d/results/0/PAYMENT_METHOD_DESCRIPTION'}"
+                                        wrapping="true"
+                                        class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout>
+                            </layout:VerticalLayout>
+
+                            
+                        <!-- </layout:HorizontalLayout> -->
+
+                        <layout:HorizontalLayout
+                            id="id1sthl"
+                            class="sapUiTinyMarginTop"
+                        >
+                            <layout:VerticalLayout
+                                id="idTotalAmount"
+                                class="sapUiTinyMarginTop"
+                            >
+                                <m:Title
+                                    id="id_totalAmount"
+                                    text="Total Amount"
+                                />
+                                <m:ObjectStatus
+                                    id="idHTxtStatus"
+                                    text="{path:'stockistDetails>/d/results/0/TOTAL_AMOUNT',formatter:'.formatter.formatterAmount'} ₹"
+                                    class="sapMObjectStatusLarge"
+                                    state="Indication06"
+                                />
+                            </layout:VerticalLayout>
+
+                            <layout:VerticalLayout
+                                id="idHVL3"
+                                class="sapUiTinyMarginTop sapUiLargeMarginBegin"
+                            >
+                                <m:Title
+                                    id="id_totalTax"
+                                    text="Total Tax"
+                                />
+                                <m:ObjectStatus
+                                    id="idHTxtNetValue"
+                                    text="{path:'stockistDetails>/d/results/0/TAXES_AMOUNT',formatter:'.formatter.formatterAmount'} ₹"
+                                    class="sapMObjectStatusLarge"
+                                     state="Indication05"
+                                />
+                                
+                            </layout:VerticalLayout>
+
+                            <layout:VerticalLayout
+                                id="idHVL4"
+                                class="sapUiTinyMarginTop  sapUiLargeMarginBegin"
+                            >
+                                <m:Title
+                                    id="idGrandTotal"
+                                    text="Grand Total"
+                                    level="H1"
+                                />
+                                <m:ObjectStatus
+                                    id="idHTxtGrandTotal"
+                                    text="{path:'stockistDetails>/d/results/0/GRAND_TOTAL',formatter:'.formatter.formatterAmount'} ₹"
+                                    class="sapMObjectStatusLarge"
+                                     state="Indication08"
+                                />
+                            </layout:VerticalLayout>
+                        </layout:HorizontalLayout>
+                    </m:FlexBox>
+                </headerContent>
+
+                <sections>
+                    <ObjectPageSection
+                        titleUppercase="false"
+                        id="idItems"
+                        title="Items"
+                    >
+                        <subSections>
+                            <ObjectPageSubSection
+                                id="idOPSSDelTerm"
+                                title="Items"
+                                titleUppercase="false"
+                                mode="Expanded"
+                            >
+                                <smartTable:SmartTable
+                                    id="idOrderList"
+                                    editable="false"
+                                    width="100%"
+                                    entitySet="PrItems"
+                                    useExportToExcel="true"
+                                    useVariantManagement="true"
+                                    useTablePersonalisation="true"
+                                    enableAutoBinding="true"
+                                    showRowCount="false"
+                                    demandPopin="true"
+                                    tableType="ResponsiveTable"
+                                    beforeRebindTable="onBeforeRebindTable"
+                                    enableAutoColumnWidth="true"
+                                    enableCopy="false"
+                                    showFullScreenButton="true"
+                                >
+                                    <m:Table id="idSuppQuoTable">
+                                        <m:columns>
+                                            <m:Column
+                                                id="idColumnSuppQtnItem"
+                                                hAlign="Begin"
+                                                width="12rem"
+                                            >
+                                                <m:customData>
+                                                    <core:CustomData
+                                                        key="p13nData"
+                                                        value='\{"columnKey": "MATERIAL_DESC,MATERIAL_CODE", "leadingProperty": "MATERIAL_DESC,MATERIAL_CODE", "sortProperty": "MATERIAL_DESC,MATERIAL_CODE", "filterProperty": "MATERIAL_DESC,MATERIAL_CODE", "columnIndex": 0 }'
+                                                    />
+                                                </m:customData>
+                                                <m:Text
+                                                    id="idTxtSuppQtnItem"
+                                                    text="Material"
+                                                />
+                                            </m:Column>
+
+                                            <m:Column
+                                                id="idColumnMat"
+                                                hAlign="Center"
+                                            >
+                                                <m:customData>
+                                                    <core:CustomData
+                                                        key="p13nData"
+                                                        value='\{"columnKey": "HSN_CODE", "leadingProperty": "HSN_CODE", "columnIndex": 1 }'
+                                                    />
+                                                </m:customData>
+                                                <m:Text
+                                                    id="idTxtHsnCode"
+                                                    text="HSN Code"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                id="idColumnMaterial"
+                                                hAlign="End"
+                                            >
+                                                <m:customData>
+                                                    <core:CustomData
+                                                        key="p13nData"
+                                                        value='\{"columnKey": "ORDER_QUANTITY", "leadingProperty": "ORDER_QUANTITY", "columnIndex": 3}'
+                                                    />
+                                                </m:customData>
+                                                <m:Text
+                                                    id="idTxtMaterial"
+                                                    text="Quantity"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                id="idUOM"
+                                                hAlign="Center"
+                                            >
+                                                <m:customData>
+                                                    <core:CustomData
+                                                        key="p13nData"
+                                                        value='\{"columnKey": "UNIT_OF_MEASURE", "leadingProperty": "UNIT_OF_MEASURE", "columnIndex": 4}'
+                                                    />
+                                                </m:customData>
+                                                <m:Text
+                                                    id="IDUOM"
+                                                    text="UOM"
+                                                />
+                                            </m:Column>
+
+                                              <m:Column
+                                                id="idColumnPrice"
+                                                hAlign="End"
+                                            >
+                                                <m:customData>
+                                                    <core:CustomData
+                                                        key="p13nData"
+                                                        value='\{"columnKey": "MRP_PRICE", "leadingProperty": "MRP_PRICE", "columnIndex": 5}'
+                                                    />
+                                                </m:customData>
+                                                <m:Text
+                                                    id="idTxtRfqPrice"
+                                                    text="MRP(₹)"
+                                                />
+                                            </m:Column>
+
+                                             <m:Column
+                                                id="idNIRColumn"
+                                                hAlign="End"
+                                            >
+                                                <m:customData>
+                                                    <core:CustomData
+                                                        key="p13nData"
+                                                        value='\{"columnKey": "NIR_PRICE", "leadingProperty": "NIR_PRICE", "columnIndex": 6}'
+                                                    />
+                                                </m:customData>
+                                                <m:Text
+                                                    id="idNIR"
+                                                    text="NIR(₹)"
+                                                />
+                                            </m:Column>
+
+                                            <m:Column
+                                                id="idColumnRequestQty"
+                                                hAlign="End"
+                                            >
+                                                <m:customData>
+                                                    <core:CustomData
+                                                        key="p13nData"
+                                                        value='\{"columnKey": "CGST_PERCENTAGE", "leadingProperty": "CGST_PERCENTAGE", "columnIndex": 7}'
+                                                    />
+                                                </m:customData>
+                                                <m:Text
+                                                    id="idTxtRequestQty"
+                                                    text="CGST(%)"
+                                                />
+                                            </m:Column>
+
+                                            <m:Column
+                                                id="idColumnScheuleOrdQty"
+                                                hAlign="End"
+                                            >
+                                                <m:customData>
+                                                    <core:CustomData
+                                                        key="p13nData"
+                                                        value='\{"columnKey": "SGST_PERCENTAGE", "leadingProperty": "SGST_PERCENTAGE", "columnIndex": 8}'
+                                                    />
+                                                </m:customData>
+                                                <m:Text
+                                                    id="idTxtScheuleOrdQty"
+                                                    text="SGST(%)"
+                                                />
+                                            </m:Column>
+
+                                            <m:Column
+                                                id="idColumnAwardQty"
+                                                hAlign="End"
+                                            >
+                                                <m:customData>
+                                                    <core:CustomData
+                                                        key="p13nData"
+                                                        value='\{"columnKey": "IGST_PERCENTAGE", "leadingProperty": "IGST_PERCENTAGE", "columnIndex": 9}'
+                                                    />
+                                                </m:customData>
+                                                <m:Text
+                                                    id="idTxtAwardQty"
+                                                    text="IGST(%)"
+                                                />
+                                            </m:Column>
+
+                                            <m:Column
+                                                id="idColumnOrdPrice"
+                                                hAlign="End"
+                                                width="11rem"
+                                            >
+                                                <m:customData>
+                                                    <core:CustomData
+                                                        key="p13nData"
+                                                        value='\{"columnKey": "TOTAL_AMOUNT", "leadingProperty": "TOTAL_AMOUNT", "columnIndex": 10}'
+                                                    />
+                                                </m:customData>
+                                                <m:Text
+                                                    id="idTxtOrdPrice"
+                                                    text="Total Amount(₹)"
+                                                    wrapping="true"
+                                                />
+                                            </m:Column>
+                                        </m:columns>
+
+                                        <m:items>
+                                            <m:ColumnListItem
+                                                id="idColumnListI"
+                                            >
+                                                <m:cells>
+                                                    <m:Label
+                                                        id="idTxtMat"
+                                                       design="Bold"
+                                                        text="{MATERIAL_DESC}"
+                                                    />
+                                                    <m:Text
+                                                        id="idTxtHsnCod"
+                                                        text="{HSN_CODE}"
+                                                    />
+                                                      <m:Text
+                                                        id="idTxtQty"
+                                                        text="{ORDER_QUANTITY}"
+                                                        textAlign="End"
+                                                    />
+                                                     <m:Text
+                                                        id="idTxtUom"
+                                                        text="{UNIT_OF_MEASURE}"
+                                                    />
+                                                      <m:Text
+                                                        id="idTxtPrc"
+                                                        text="{path:'MRP_PRICE',formatter:'.formatter.formatterAmount'}"
+                                                    />
+                                                   
+                                                  
+                                                  
+                                                    <m:Text
+                                                        id="idnirprice"
+                                                        text="{path:'NIR_PRICE',formatter:'.formatter.formatterAmount'}"
+                                                    />
+                                                    <m:Text
+                                                        id="idTxtCGST"
+                                                        text="{CGST_PERCENTAGE}"
+                                                    />
+                                                    <m:Text
+                                                        id="idSGST"
+                                                        text="{SGST_PERCENTAGE}"
+                                                    />
+                                                    <m:Text
+                                                        id="idNetPrice"
+                                                        text="{IGST_PERCENTAGE}"
+                                                    />
+                                                    <m:Text
+                                                        id="idQtnNetAmt"
+                                                        text="{path:'TOTAL_AMOUNT',formatter:'.formatter.formatterAmount'}"
+                                                        textAlign="End"
+                                                    />
+                                                </m:cells>
+                                            </m:ColumnListItem>
+                                        </m:items>
+                                    </m:Table>
+                                </smartTable:SmartTable>
+                            </ObjectPageSubSection>
+                        </subSections>
+                    </ObjectPageSection>
+
+                    <ObjectPageSection
+                        titleUppercase="false"
+                        id="idNotes"
+                        title="Remark"
+                    >
+                        <subSections>
+                            <ObjectPageSubSection
+                                id="idPSSNotes"
+                                title="Remark"
+                                mode="Expanded"
+                                titleUppercase="false"
+                            >
+                                <!-- <m:List id="idList"
+								headerText="Note"
+								headerLevel="H2"
+		 				>
+						<m:StandardListItem id="idSLI"
+							title="Create order request for 2 product of product group fruits." />
+						</m:List> -->
+
+                        <m:TextArea value="{eventData>/d/results/0/COMMENTS}" id="idTextEvent" width="100%" editable="false"></m:TextArea>
+
+                                <!-- <smartList:SmartList
+                                    id="ItemsST"
+                                    listBindingPath="eventData>/d/results"
+                                    enableAutoBinding="true"
+                                    showFullScreenButton="true"
+                                    showRowCount="false"
+                                    header="Request Remark"
+                                    selectFields="ID,Title"
+                                >
+                                    <smartList:listItemTemplate>
+                                        <m:StandardListItem
+                                            id="idSLI"
+                                            title="{eventData>COMMENTS}"
+                                        />
+                                    </smartList:listItemTemplate>
+                                </smartList:SmartList> -->
+                            </ObjectPageSubSection>
+                        </subSections>
+                    </ObjectPageSection>
+                </sections>
+            </ObjectPageLayout>
+        </layout:mainContent>
+
+        <layout:sideContent>
+            <m:Toolbar id="idTb">
+                <m:Title
+                    id="idTtlEvt"
+                    text="{i18n>Event}"
+                />
+                <m:ToolbarSpacer id="idTbS" />
+                <m:Button
+                    id="idHideEvt"
+                    text="{i18n>Close}"
+                    type="Transparent"
+                    press="onViewEventHide"
+                    visible="true"
+                />
+            </m:Toolbar>
+
+            <layout:VerticalLayout
+                id="idSCVL"
+                width="100%"
+            >
+                <commons:Timeline
+                    id="idTimeline"
+                    showHeaderBar="false"
+                    showSearch="false"
+                    showSort="false"
+                    showItemFilter="false"
+                    sort="true"
+                    enableScroll="false"
+                    lazyLoading="false"
+                    growingThreshold="0"
+                    content="{eventData>/d/results}"
+                    showIcons="false"
+                    noDataText="{i18n>NoDataText}"
+                    width="100%"
+                >
+                    <commons:content>
+                        <commons:TimelineItem
+                            id="idTemplateItem"
+                            text="Event :{eventData>TO_EVENT_STATUS/DESC}"
+                            userNameClickable="true"
+                            dateTime="{ path:'eventData>CREATION_DATE',formatter:'.formatter.formatDate'}"
+                            userName="{path:'eventData>USER_NAME'}"
+                            title=": {eventData>USER_ROLE}"
+                        />
+                    </commons:content>
+                </commons:Timeline>
+            </layout:VerticalLayout>
+        </layout:sideContent>
+    </layout:DynamicSideContent>
+</mvc:View>

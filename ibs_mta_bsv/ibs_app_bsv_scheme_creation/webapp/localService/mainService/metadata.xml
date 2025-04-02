@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+<edmx:Reference xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+</edmx:Reference>
+<edmx:Reference xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+<edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+</edmx:Reference>
+<edmx:DataServices m:DataServiceVersion="2.0">
+<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="ideal_bsv_scheme_srv">
+<Annotation Term="Core.Links">
+<Collection>
+<Record>
+<PropertyValue Property="rel" String="author"/>
+<PropertyValue Property="href" String="https://cap.cloud.sap"/>
+</Record>
+</Collection>
+</Annotation>
+<EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
+<EntitySet Name="SchemeHeader" EntityType="ideal_bsv_scheme_srv.SchemeHeader"/>
+<EntitySet Name="SchemeAttachment" EntityType="ideal_bsv_scheme_srv.SchemeAttachment"/>
+<EntitySet Name="StockistData" EntityType="ideal_bsv_scheme_srv.StockistData"/>
+<FunctionImport Name="schemeCreation" ReturnType="Edm.String" m:HttpMethod="POST">
+<Parameter Name="sAction" Type="Edm.String" Mode="In" Nullable="true"/>
+<Parameter Name="aSchemeHeader" Type="Collection(ideal_bsv_scheme_srv.SchemeHeader)" Nullable="true" Mode="In"/>
+<Parameter Name="aSchemeAttachment" Type="Collection(ideal_bsv_scheme_srv.SchemeAttachment)" Nullable="true" Mode="In"/>
+</FunctionImport>
+<FunctionImport Name="getStockistData" ReturnType="Edm.Int64" m:HttpMethod="GET">
+<Parameter Name="sAction" Type="Edm.String" Mode="In" Nullable="true"/>
+<Parameter Name="sStockistId" Type="Edm.Int64" Mode="In" Nullable="true"/>
+</FunctionImport>
+<AssociationSet Name="SchemeHeader_TO_ATTACHMENT" Association="ideal_bsv_scheme_srv.SchemeHeader_TO_ATTACHMENT">
+<End Role="SchemeHeader" EntitySet="SchemeHeader"/>
+<End Role="SchemeAttachment" EntitySet="SchemeAttachment"/>
+</AssociationSet>
+</EntityContainer>
+<EntityType Name="SchemeHeader">
+<Key>
+<PropertyRef Name="REFERENCE_ID"/>
+</Key>
+<Property Name="REFERENCE_ID" Type="Edm.Int64" Nullable="false"/>
+<Property Name="VALID_FROM" Type="Edm.DateTime" sap:display-format="Date"/>
+<Property Name="VALID_TO" Type="Edm.DateTime" sap:display-format="Date"/>
+<Property Name="COMMENTS" Type="Edm.String" MaxLength="1000"/>
+<Property Name="CREATION_DATE" Type="Edm.DateTimeOffset" Precision="7"/>
+<Property Name="CREATED_BY" Type="Edm.String" MaxLength="100"/>
+<NavigationProperty Name="TO_ATTACHMENT" Relationship="ideal_bsv_scheme_srv.SchemeHeader_TO_ATTACHMENT" FromRole="SchemeHeader" ToRole="SchemeAttachment"/>
+</EntityType>
+<EntityType Name="SchemeAttachment" m:HasStream="true">
+<Key>
+<PropertyRef Name="REFERENCE_ID"/>
+<PropertyRef Name="FILE_ID"/>
+</Key>
+<Property Name="REFERENCE_ID" Type="Edm.Int64" Nullable="false"/>
+<Property Name="FILE_ID" Type="Edm.Int32" Nullable="false"/>
+<Property Name="FILE_NAME" Type="Edm.String" MaxLength="100"/>
+<Property Name="FILE_MIMETYPE" Type="Edm.String" MaxLength="100"/>
+<Property Name="FILE_TYPE" Type="Edm.String" MaxLength="100"/>
+</EntityType>
+<EntityType Name="StockistData">
+<Key>
+<PropertyRef Name="STOCKIST_ID"/>
+</Key>
+<Property Name="STOCKIST_ID" Type="Edm.Int64" Nullable="false"/>
+<Property Name="DATE" Type="Edm.DateTimeOffset" Precision="7"/>
+</EntityType>
+<ComplexType Name="User_Details">
+<Property Name="USER_ROLE" Type="Edm.String" MaxLength="50"/>
+<Property Name="USER_ID" Type="Edm.String" MaxLength="50"/>
+</ComplexType>
+<Association Name="SchemeHeader_TO_ATTACHMENT">
+<End Role="SchemeHeader" Type="ideal_bsv_scheme_srv.SchemeHeader" Multiplicity="*"/>
+<End Role="SchemeAttachment" Type="ideal_bsv_scheme_srv.SchemeAttachment" Multiplicity="0..1"/>
+</Association>
+<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="ideal_bsv_scheme_srv.SchemeHeader/REFERENCE_ID">
+<Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+<Annotation Term="Common.ValueList">
+<Record Type="Common.ValueListType">
+<PropertyValue Property="Label" String="Reference Id"/>
+<PropertyValue Property="CollectionPath" String="SchemeHeader"/>
+<PropertyValue Property="Parameters">
+<Collection>
+<Record Type="Common.ValueListParameterInOut">
+<PropertyValue Property="LocalDataProperty" PropertyPath="REFERENCE_ID"/>
+<PropertyValue Property="ValueListProperty" String="REFERENCE_ID"/>
+</Record>
+<Record Type="Common.ValueListParameterDisplayOnly">
+<PropertyValue Property="ValueListProperty" String="REFERENCE_ID"/>
+</Record>
+</Collection>
+</PropertyValue>
+</Record>
+</Annotation>
+<Annotation Term="Core.Description" String="Reference Id"/>
+</Annotations>
+<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="ideal_bsv_scheme_srv.SchemeHeader/CREATION_DATE">
+<Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+<Annotation Term="Common.ValueList">
+<Record Type="Common.ValueListType">
+<PropertyValue Property="Label" String="Creation Date"/>
+<PropertyValue Property="CollectionPath" String="SchemeHeader"/>
+<PropertyValue Property="Parameters">
+<Collection>
+<Record Type="Common.ValueListParameterInOut">
+<PropertyValue Property="LocalDataProperty" PropertyPath="CREATION_DATE"/>
+<PropertyValue Property="ValueListProperty" String="CREATION_DATE"/>
+</Record>
+<Record Type="Common.ValueListParameterDisplayOnly">
+<PropertyValue Property="ValueListProperty" String="CREATION_DATE"/>
+</Record>
+</Collection>
+</PropertyValue>
+</Record>
+</Annotation>
+<Annotation Term="Core.Description" String="Creation Date"/>
+</Annotations>
+<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="ideal_bsv_scheme_srv.SchemeAttachment">
+<Annotation Term="Core.MediaType" Path="FILE_MIMETYPE"/>
+</Annotations>
+<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="ideal_bsv_scheme_srv.SchemeAttachment/FILE_MIMETYPE">
+<Annotation Term="Core.IsMediaType" Bool="true"/>
+</Annotations>
+</Schema>
+</edmx:DataServices>
+</edmx:Edmx>

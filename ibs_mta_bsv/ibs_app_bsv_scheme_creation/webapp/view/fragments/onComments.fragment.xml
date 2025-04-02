@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <ResponsivePopover id="myPopover" title="Comment" class="sapUiContentPadding" placement="Left" contentHeight="9em"
+        contentWidth="12em">
+        <endButton>
+            <Button text="Close" press="CommentCloseButton" type="Emphasized"/>
+        </endButton>
+        <content>
+            <!-- <VBox fitContainer="true" justifyContent="Center" alignContent="Center" alignItems="Center"> -->
+               <Text text="{sCommentJson>/value/0/COMMENTS}"/>
+            <!-- </VBox> -->
+        </content>
+    </ResponsivePopover>
+</core:FragmentDefinition>

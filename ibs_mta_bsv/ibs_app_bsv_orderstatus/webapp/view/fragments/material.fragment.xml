@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <Dialog title="Select Product" contentHeight="80%"
+        class="sapUiSizeCompact">
+         <subHeader>
+            <Toolbar>
+                <SearchField id="contctCountry_Id" liveChange="ProductOnserch" />
+            </Toolbar>
+        </subHeader>
+ 
+        <List id="contactcntry_listId" items="{path:'Materials>/results'}"
+            mode="SingleSelectMaster" selectionChange="MaterialSelection1">
+            <StandardListItem title="{Materials>MaterialCode}" description="{Materials>MaterialDesc}"/>
+        </List>
+       
+            <buttons>
+            <Button text="Cancel" press="closeContactCountryDialog1" type="Emphasized" />
+        </buttons>
+
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,384 @@
+<mvc:View
+    xmlns:core="sap.ui.core"
+    controllerName="com.ibs.bsv.ibsappbsvdashboard.controller.Master"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:l="sap.ui.layout"
+    xmlns:viz-feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz-data="sap.viz.ui5.data"
+    xmlns:card="sap.f.cards"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    
+>
+    <App id="Idapp">
+        <pages>
+            <Page
+                id="page"
+                title="DASHBOARD"
+                class="sapUiSizeCompact"
+                showHeader="false"
+            >
+                <content>
+                    <OverflowToolbar class="TopNavBar">
+                        <ToolbarSpacer />
+                        <HBox
+                            id="idHox"
+                            visible="{PropertyModel>/HBOx}"
+                        >
+                            <Button
+                                text="Home"
+                                press=""
+                                type="Emphasized"
+                                class="sapUiTinyMargiEnd"
+                                icon="sap-icon://home"
+                            />
+                            <Button
+                                text="Place Order"
+                                press="onNavigateOrderCreation"
+                                type="Transparent"
+                                class="sapUiTinyMargiEnd"
+                            />
+                            <Button
+                                text="Order Status"
+                                press="onNavigateOrderStatus"
+                                type="Transparent"
+                            />
+                            <Button
+                                text="GRN"
+                                press="onNavigateGRN"
+                                type="Transparent"
+                            />
+                            <Button
+                                text="GRN Report"
+                                press="onNavigateGRNReport"
+                                type="Transparent"
+                            />
+                            <Button
+                                text="Ledger Report"
+                                press="onNavigateLedger"
+                                type="Transparent"
+                            />
+                            <Button
+                                text="Order History"
+                                press="onNavigateOrderHistory"
+                                type="Transparent"
+                            />
+                            <Button
+                                text="Scheme"
+                                press="onNavigateScheme"
+                                type="Transparent"
+                            />
+                            <!-- <Button
+                                text="Circular"
+                                press="onDownload"
+                                type="Neutral"
+                                class="sapUiTinyMargiBegin"
+                                visible="{PropertyModel>/CircularButton}"
+                                icon="sap-icon://download-from-cloud"
+                            /> -->
+                        </HBox>
+
+                        <MenuButton
+                            text="Menu"
+                            visible="{PropertyModel>/Menu}"
+                        >
+                            <menu>
+                                <Menu>
+                                    <MenuItem
+                                        text="Place Order"
+                                        press="onNavigateOrderCreation"
+                                        icon="sap-icon://add-document"
+                                    />
+                                    <MenuItem
+                                        text="Order Status"
+                                        press="onNavigateOrderStatus"
+                                        icon="sap-icon://order-status"
+                                    />
+                                    <MenuItem
+                                        text="GRN"
+                                        press="onNavigateGRN"
+                                        icon="sap-icon://customer-order-entry"
+                                    />
+                                    <MenuItem
+                                        text="GRN Report"
+                                        press="onNavigateGRNReport"
+                                        icon="sap-icon://sales-order-item"
+                                    />
+                                    <MenuItem
+                                        text="Ledger Report"
+                                        press="onNavigateLedger"
+                                        icon="sap-icon://document-text"
+                                    />
+                                    <MenuItem
+                                        text="Order History"
+                                        press="onNavigateOrderHistory"
+                                        icon="sap-icon://history"
+                                    />
+                                    <MenuItem
+                                        text="Scheme"
+                                        press="onNavigateScheme"
+                                        icon="sap-icon://notification-2"
+                                    />
+                                </Menu>
+                            </menu>
+                        </MenuButton>
+                    </OverflowToolbar>
+                </content>
+                <customHeader>
+                    <Bar id="bar">
+                        <contentMiddle>
+                            <ToolbarSpacer id="spacer" />
+                            <ObjectStatus
+                                class="title"
+                                text="DASHBOARD"
+                                state="Information"
+                                icon="sap-icon://bbyd-dashboard"
+                            />
+                            <ToolbarSpacer />
+                        </contentMiddle>
+                    </Bar>
+                </customHeader>
+
+                <l:VerticalLayout
+                    id="containerLayout"
+                    width="100%"
+                    class="gridWrapper sapUiTinyMarginTop"
+                >
+                    <HBox
+                        justifyContent="End"
+                        alignContent="End"
+                        alignItems="Center"
+                        class="sapUiTinyMarginEnd"
+                    >
+                        <HBox
+                            id="marqueeContainer"
+                            class="marquee-container sapUiTinyMarginEnd"
+                        >
+                            <ObjectStatus
+                               
+                                text="{PropertyModel>/comment}"
+                                state="Information"
+                                class="marquee"
+                                inverted="true"
+                            />
+                        </HBox>
+                        <Button
+                            text="Circular"
+                            press="onDownload"
+                            type="Neutral"
+                            class=""
+                            visible="{PropertyModel>/CircularButton}"
+                            icon="sap-icon://download-from-cloud"
+                        />
+                    </HBox>
+
+                    <l:Grid
+                        width="100%"
+                        containerQuery="true"
+                        class="sapUiSmallMarginTop"
+                    >
+                        <f:Card>
+                            <f:header>
+                                <card:Header
+                                    id="idheade"
+                                    title="Latest orders"
+                                    iconSrc="sap-icon://sales-order-item"
+                                />
+                            </f:header>
+                            <f:content>
+                                <Table
+                                    id="idPrheaderTbl"
+                                    sticky="ColumnHeaders"
+                                    items="{path:'prlastest>/'}"
+                                >
+                                    <columns>
+                                        <Column
+                                            id="idColumnSuppQtn"
+                                            hAlign="Begin"
+                                            demandPopin="true"
+                                            minScreenWidth="Phone"
+                                        >
+                                            <Label
+                                                id="idPrNoTxt"
+                                                text="Sales Order Number"
+                                                design="Bold"
+                                                wrapping="true"
+                                            />
+                                        </Column>
+
+                                        <Column
+                                            id="idColumnRfq"
+                                            hAlign="End"
+                                            demandPopin="true"
+                                            minScreenWidth="Phone"
+                                        >
+                                            <Label
+                                                id="CreationDateTxt"
+                                                text="Order Date"
+                                                design="Bold"
+                                            />
+                                        </Column>
+
+                                        <Column
+                                            id="idColumnSupp"
+                                            hAlign="End"
+                                            demandPopin="true"
+                                            minScreenWidth="Desktop"
+                                        >
+                                            <Label
+                                                id="idStatusTxt"
+                                                text="Order Status"
+                                                design="Bold"
+                                            />
+                                        </Column>
+                                    </columns>
+
+                                    <items>
+                                        <ColumnListItem id="idColumnList">
+                                            <cells>
+                                                <Label
+                                                    id="idPrHNo"
+                                                    text="{prlastest>PURCHASE_REQUEST_NO}"
+                                                    design="Bold"
+                                                />
+
+                                                <Text
+                                                    id="idCreationDte"
+                                                    text="{path:'prlastest>CREATION_DATE', formatter: '.formatter.formatDateNew'}"
+                                                />
+
+                                                <ObjectStatus
+                                                    id="idPrStatus"
+                                                    text="{path:'prlastest>TO_STATUS/DESC'}"
+                                                    state="{path: 'prlastest>TO_STATUS/CODE',formatter: '.formatter.formatStatusColor'}"
+                                                />
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </f:content>
+                        </f:Card>
+                        <f:Card>
+                            <f:header>
+                                <card:Header
+                                    id="idTitle2"
+                                    title="Credit Limit Details"
+                                    iconSrc="sap-icon://credit-card"
+                                />
+                            </f:header>
+                            <f:content>
+                                <List
+                                    class="sapUiSmallMarginBottom"
+                                    showSeparators="None"
+                                    items="{
+					path: 'creditdetails>/results'
+				}"
+                                >
+                                    <CustomListItem>
+                                        <HBox justifyContent="SpaceBetween">
+                                            <Label
+                                                design="Bold"
+                                                text="Credit Limit"
+                                                class="sapUiSmallMarginBegin"
+                                            />
+                                            <ObjectStatus
+                                                text="{path:'creditdetails>CreditLimit',formatter:'.formatter.formatterAmount'} ₹"
+                                                state="Indication05"
+                                                class="sapUiSmallMarginEnd"
+                                            />
+                                        </HBox>
+
+                                        <HBox justifyContent="SpaceBetween">
+                                            <Label
+                                                design="Bold"
+                                                text="Exposure"
+                                                class="sapUiSmallMarginBegin sapUiSmallMarginTop"
+                                            />
+
+                                            <ObjectStatus
+                                                text="{path:'creditdetails>ExposureAmount',formatter:'.formatter.formatterAmount'} ₹"
+                                                state="Indication05"
+                                                class="sapUiSmallMarginEnd sapUiSmallMarginTop"
+                                            />
+                                        </HBox>
+
+                                        <HBox justifyContent="SpaceBetween">
+                                            <Label
+                                                design="Bold"
+                                                text="Utilization"
+                                                class="sapUiSmallMarginBegin sapUiSmallMarginTop"
+                                            />
+                                            <ObjectStatus
+                                                text="{path:'creditdetails>Utilization',formatter:'.formatter.formatterAmount'}%"
+                                                state="Indication05"
+                                                class="sapUiSmallMarginEnd sapUiSmallMarginTop"
+                                            />
+                                        </HBox>
+
+                                        <HBox justifyContent="SpaceBetween">
+                                            <Label
+                                                design="Bold"
+                                                text="Credit Exposure"
+                                                class="sapUiSmallMarginBegin sapUiSmallMarginTop"
+                                            />
+                                            <ObjectStatus
+                                                text="{path:'creditdetails>CreditExposure',formatter:'.formatter.formatterAmount'} ₹"
+                                                state="Indication05"
+                                                class="sapUiSmallMarginEnd sapUiSmallMarginTop"
+                                            />
+                                        </HBox>
+                                    </CustomListItem>
+                                </List>
+                            </f:content>
+                        </f:Card>
+                        <f:Card>
+                            <f:header>
+                                <card:Header
+                                    id="idTest"
+                                    title="Stockist Outstanding Details"
+                                    iconSrc="sap-icon://currency"
+                                />
+                            </f:header>
+                            <f:content>
+                                <List
+                                    class="sapUiSmallMarginBottom"
+                                    showSeparators="None"
+                                    items="{path: 'outStdning>/results'}"
+                                
+                                >
+                                    <!-- footerText="Update Under Process" -->
+                                <!-- items="{
+					path: 'outStdning>/results'
+				}" -->
+                                    <CustomListItem>
+                                        <HBox justifyContent="SpaceBetween">
+                                            <Label
+                                                design="Bold"
+                                                text="Oustanding Amount"
+                                                class="sapUiSmallMarginBegin"
+                                            />
+                                            <ObjectStatus
+                                                text="{path:'outStdning>Atot',formatter:'.formatter.formatterAmount'} ₹"
+                                                state="Indication05"
+                                                class="sapUiSmallMarginEnd"
+                                            />
+                                        </HBox>
+                                    </CustomListItem>
+                                </List>
+                            </f:content>
+                        </f:Card>
+
+                        <Image
+                            src="{imageModel>/path}/Images/LogBSV.png"
+                            class="dashboardImg"
+                            press="NavtoBSV"
+                        />
+                    </l:Grid>
+                </l:VerticalLayout>
+            </Page>
+        </pages>
+    </App>
+</mvc:View>

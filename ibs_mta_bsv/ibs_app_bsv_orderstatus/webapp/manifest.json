@@ -1,0 +1,181 @@
+{
+    "_version": "1.65.0",
+    "sap.app": {
+        "id": "com.ibs.bsv.ibsappbsvorderstatus",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:basic",
+            "version": "1.14.5",
+            "toolsId": "0ed708de-9a66-4d6f-9725-1a340eee7814"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "/odata/v2/ideal-bsv-purchase-order-srv/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/mainService/metadata.xml",
+                    "odataVersion": "2.0"
+                }
+            },
+            "ZIDEAL_ODATA_SALESORDER_SRV": {
+                "uri": "/sap/opu/odata/sap/ZIDEAL_ODATA_SALESORDER_SRV",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/ZIDEAL_ODATA_SALESORDER_SRV/metadata.xml",
+                    "odataVersion": "2.0"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "orderstatustracking-display": {
+                    "semanticObject": "orderstatustracking",
+                    "action": "display",
+                    "title": "{{flpTitle}}",
+                    "icon": "sap-icon://shipping-status",
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    }
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": false,
+        "dependencies": {
+            "minUI5Version": "1.128.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.f": {},
+                "sap.suite.ui.generic.template": {},
+                "sap.ui.comp": {},
+                "sap.ui.generic.app": {},
+                "sap.ui.table": {},
+                "sap.ushell": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "com.ibs.bsv.ibsappbsvorderstatus.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true,
+                    "groupId": "$auto"  
+                }
+            },
+            "ZIDEAL_ODATA_SALESORDER_SRV": {
+                "dataSource": "ZIDEAL_ODATA_SALESORDER_SRV",
+                "preload": true,
+                "settings": {
+                    "defaultBindingMode": "TwoWay",
+                    "defaultCountMode": "Inline",
+                    "refreshAfterChange": false,
+                    "metadataUrlParams": {
+                        "sap-value-list": "none"
+                    }
+                }
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "async": true,
+                "viewPath": "com.ibs.bsv.ibsappbsvorderstatus.view",
+                "controlAggregation": "beginColumnPages",
+                "controlId": "layout",
+                "clearControlAggregation": false
+            },
+            "routes": [
+                {
+                    "name": "RouteMaster",
+                    "pattern": ":OrderStatus:",
+                    "target": [
+                        "TargetMaster"
+                    ]
+                },
+                {
+                    "name": "Detail",
+                    "pattern": "Detail/{PURCHASE_REQUEST_NO}",
+                    "target": [
+                        "TargetMaster",
+                        "TargetDetail"
+                    ]
+                }
+            ],
+            "targets": {
+                "TargetMaster": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Master",
+                    "viewName": "Master",
+                    "controlAggregation": "beginColumnPages"
+                },
+                "TargetDetail": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "Detail",
+                    "viewName": "Detail",
+                    "controlAggregation": "midColumnPages"
+                }
+            }
+        },
+        "rootView": {
+            "viewName": "com.ibs.bsv.ibsappbsvorderstatus.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "App"
+        }
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "ibs_bs_bsv"
+    }
+}

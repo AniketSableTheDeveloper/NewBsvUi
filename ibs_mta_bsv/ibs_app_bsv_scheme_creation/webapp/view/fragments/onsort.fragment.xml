@@ -1,0 +1,16 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <ViewSettingsDialog
+        id="idSort"
+        title="Sorting"
+        sortDescending="true"
+        groupDescending="true"
+        confirm="handleSort"
+        selectedSortItem="sortItem">
+        <sortItems>
+            <ViewSettingsItem text="Reference Id" key="REFERENCE_ID" selected="true" />
+        </sortItems>
+    </ViewSettingsDialog>
+</core:FragmentDefinition>
+

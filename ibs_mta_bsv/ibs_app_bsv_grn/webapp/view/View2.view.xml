@@ -1,0 +1,142 @@
+<mvc:View controllerName="com.ibs.bsv.ibsappbsvgrn.controller.View2"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:layout="sap.ui.layout"
+    xmlns="sap.uxap" xmlns:m="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified">
+    <m:Page id="page2">
+    <m:content>
+    <layout:DynamicSideContent id="DynamicSideContent" class="sapUiSizeCompact" sideContentFallDown="BelowM" showSideContent="false">
+
+    <ObjectPageLayout id="ObjectPageLayout" selectedSection="headerSection" enableLazyLoading="false" showEditHeaderButton="false">
+    <headerTitle>
+        <ObjectPageDynamicHeaderTitle>
+        	<breadcrumbs>
+				<m:Breadcrumbs id="idBredCrumbs" currentLocation="GRN" >
+				    <m:Link id="idLink" press="onNavBar" text="GRN"/>
+				</m:Breadcrumbs>
+			</breadcrumbs>
+        	<expandedHeading>
+					<m:HBox id="idHb">
+						<m:Title id="idTxtOrdCre" text="ACCEPTANCE" wrapping="true"/>
+					</m:HBox>
+			</expandedHeading>
+        </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+    <!-- Section 1 -->
+    <sections>
+    <ObjectPageSection title="Info" id="headerSection">
+        <subSections>
+            <ObjectPageSubSection >
+                <m:VBox>
+                <f:SimpleForm id="simpleForm1" editable="true" layout="ResponsiveGridLayout" class="formHiddenTitle sapUiFormContainerTitle">
+                   <core:Title text=""/>
+                    <m:Label text="Sales Order No" design="Bold"/>
+                    <m:Text text="{customerHeaderModel>/SalesorderNo}"></m:Text>
+
+                    <m:Label text="Invoice Number" design="Bold"/>
+                    <m:Text text="{customerHeaderModel>/InvoiceNo}"></m:Text>
+
+                    <m:Label text="Invoice Date" design="Bold"/>
+                    <m:Text text="{path:'customerHeaderModel>/InvoiceDate' , formatter:'.formatter.getDataNullValue',type: 'sap.ui.model.type.DateTime', formatOptions: {pattern: 'dd.MM.yyyy' , UTC: false }}"></m:Text>
+
+                    <m:Label text="Delivery Tax(₹)" design="Bold"/>
+                    <m:Text text="{path:'customerHeaderModel>/DeliveryAmountTax', formatter:'.formatter.formatterAmount'}"></m:Text>
+
+                    <core:Title text=""/>
+                    <m:Label text="Delivery Number" design="Bold"/>
+                    <m:Text text="{path:'customerHeaderModel>/DeliveryNo'}"></m:Text>
+
+                    <m:Label text="Delivery Date" design="Bold"/>
+                    <m:Text text="{path:'customerHeaderModel>/DeliveryDate', formatter:'.formatter.getDataNullValue',type: 'sap.ui.model.type.DateTime', formatOptions: {pattern: 'dd.MM.yyyy' , UTC: false }}"></m:Text>
+
+                    <m:Label text="Delivery Amount(₹)" design="Bold"/>
+                    <m:Text text="{path:'customerHeaderModel>/DeliveryAmount', formatter:'.formatter.formatterAmount'}"></m:Text>
+
+                    <!-- <core:Title text=""/> -->
+                    <m:Label text="Total Amount(₹)" design="Bold"/>
+                    <m:Text text="{path:'customerHeaderModel>/TotalAmount', formatter:'.formatter.formatterAmount'}"></m:Text>
+                    </f:SimpleForm>
+                </m:VBox>
+            </ObjectPageSubSection>
+            </subSections>
+            </ObjectPageSection>
+    </sections>
+    <!-- Section 2 -->
+    <sections>
+     <ObjectPageSection title="Items" id="ItemsSection">
+        <subSections>
+      <ObjectPageSubSection title="Items">
+            <m:VBox>
+            <m:Table id="ItemsTable" items="{customerHeaderModel>/GRNHEADTOITEM/results}" class="sapUiSmallMarginBottom" autoPopinMode="true" contextualWidth="auto">
+                    <m:columns>
+                        <m:Column hAlign="Center">
+                            <m:Label text="Material" design="Bold"/>
+                        </m:Column>
+                        <m:Column hAlign="End">
+                            <m:Label text="Quantity"/>
+                        </m:Column>
+                         <m:Column hAlign="End" width="12%">
+                            <m:Label text="Accepted Quantity"/>
+                        </m:Column>
+                         <m:Column hAlign="Center">
+                            <m:Label text="UOM"/>
+                        </m:Column>
+                         <m:Column hAlign="End">
+                            <m:Label text="MRP Price(₹)" />
+                        </m:Column>
+                        <m:Column hAlign="End">
+                            <m:Label text="PTR Price(₹)"/>
+                        </m:Column>
+                         <m:Column hAlign="End">
+                            <m:Label text="PTS Price(₹)"/>
+                        </m:Column>
+                         <m:Column hAlign="End">
+                            <m:Label text="CGST Amount"/>
+                        </m:Column>
+                        <m:Column hAlign="End">
+                            <m:Label text="SGST Amount"/>
+                        </m:Column>
+                        <m:Column hAlign="End">
+                            <m:Label text="IGST Amount"/>
+                        </m:Column>
+                        
+                        <!-- <m:Column hAlign="End">
+                            <m:Label text="Total Amount(₹)"/>
+                        </m:Column> -->
+                    </m:columns>
+                    <m:items>
+                        <m:ColumnListItem visible="true">
+                            <m:cells>
+                            <m:Text text="{customerHeaderModel>MaterialDesc}"/>
+                            <m:Text text="{path:'customerHeaderModel>Quantity', formatter:'.formatter.formatterAmount'}"/>
+                            <m:Input editable="false" value="{path:'customerHeaderModel>Quantity', formatter:'.formatter.formatterAmount'}" id="idAcceptedQty" textAlign="End" width="60%"></m:Input>
+                            <m:Text text="{customerHeaderModel>Uom}"/>
+                            <m:Text text="{path:'customerHeaderModel>MrpPrice', formatter:'.formatter.formatterAmount'}"/>
+                            <m:Text text="{path:'customerHeaderModel>PtrPrice', formatter:'.formatter.formatterAmount'}"/>
+                            <m:Text text="{path:'customerHeaderModel>PtsPrice', formatter:'.formatter.formatterAmount'}"/>
+                            <m:Text text="{path:'customerHeaderModel>CgstPercentage', formatter:'.formatter.formatterAmount'}"/>
+                            <m:Text text="{path:'customerHeaderModel>SgstPercentage', formatter:'.formatter.formatterAmount'}"/>
+                            <m:Text text="{path:'customerHeaderModel>IgstPercentage', formatter:'.formatter.formatterAmount'}"/>
+                            <!-- <m:Text text="0.00"/> -->
+                            <!-- <m:Text text="0.00"/> -->
+                            </m:cells>
+                        </m:ColumnListItem>
+                    </m:items>
+                </m:Table>
+                </m:VBox>
+            </ObjectPageSubSection>
+             </subSections>
+             </ObjectPageSection>
+     </sections>
+      
+    </ObjectPageLayout>
+    </layout:DynamicSideContent>
+    </m:content>
+    <!-- <m:footer>
+	<m:Bar>
+	<m:contentRight>
+		<m:Button id="acceptId" text="Accept" press="onConfirm" type="Success" enabled="true"/>
+	</m:contentRight>
+	</m:Bar>
+    </m:footer> -->
+    </m:Page>
+</mvc:View>

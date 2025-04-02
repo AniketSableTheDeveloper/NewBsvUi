@@ -1,0 +1,218 @@
+_schema-version: "3.2"
+ID: ibs_mta_bsv
+version: 0.0.1
+modules:
+- name: ibs_mta_bsv-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: ibs_mta_bsv-destination-service
+    parameters:
+      content-target: true
+  - name: ibs_mta_bsv_html_repo_host
+    parameters:
+      service-key:
+        name: ibs_mta_bsv_html_repo_host-key
+  - name: uaa_ibs_mta_bsv
+    parameters:
+      service-key:
+        name: uaa_ibs_mta_bsv-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: ibs_bs_bsv_ibs_mta_bsv_html_repo_host
+          ServiceInstanceName: ibs_mta_bsv-html5-app-host-service
+          ServiceKeyName: ibs_mta_bsv_html_repo_host-key
+          sap.cloud.service: ibs_bs_bsv
+        - Authentication: OAuth2UserTokenExchange
+          Name: ibs_bs_bsv_uaa_ibs_mta_bsv
+          ServiceInstanceName: ibs_mta_bsv-xsuaa-service
+          ServiceKeyName: uaa_ibs_mta_bsv-key
+          sap.cloud.service: ibs_bs_bsv
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: ibs_mta_bsv-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: ibs_mta_bsv_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - comibsbsvibsappbsvschemecreation.zip
+      name: comibsbsvibsappbsvschemecreation
+      target-path: resources/
+    - artifacts:
+      - comibsbsvibsappbsvcustomerledgerreport.zip
+      name: comibsbsvibsappbsvcustomerledgerreport
+      target-path: resources/
+    - artifacts:
+      - comibsbsvibsappbsvpocreation.zip
+      name: comibsbsvibsappbsvpocreation
+      target-path: resources/
+    - artifacts:
+      - comibsbsvibsappbsvpoapproval.zip
+      name: comibsbsvibsappbsvpoapproval
+      target-path: resources/
+    - artifacts:
+      - comibsbsvibsappbsvorderstatus.zip
+      name: comibsbsvibsappbsvorderstatus
+      target-path: resources/
+    - artifacts:
+      - comibsbsvibsappbsvgrn.zip
+      name: comibsbsvibsappbsvgrn
+      target-path: resources/
+    - artifacts:
+      - comibsbsvibsappbsvdashboard.zip
+      name: comibsbsvibsappbsvdashboard
+      target-path: resources/
+    - artifacts:
+      - comibsbsvibsappbsvstockdetails.zip
+      name: comibsbsvibsappbsvstockdetails
+      target-path: resources/
+    - artifacts:
+      - comibsbsvibsappbsvgrnreport.zip
+      name: comibsbsvibsappbsvgrnreport
+      target-path: resources/
+    - artifacts:
+      - comibsbsvibsappbsvorderhistory.zip
+      name: comibsbsvibsappbsvorderhistory
+      target-path: resources/
+- name: comibsbsvibsappbsvschemecreation
+  type: html5
+  path: ibs_app_bsv_scheme_creation
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comibsbsvibsappbsvcustomerledgerreport
+  type: html5
+  path: ibs_app_bsv_customer_ledger_report
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comibsbsvibsappbsvpocreation
+  type: html5
+  path: ibs_app_bsv_po_creation
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comibsbsvibsappbsvpoapproval
+  type: html5
+  path: ibs_app_bsv_po_approval
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comibsbsvibsappbsvorderstatus
+  type: html5
+  path: ibs_app_bsv_orderstatus
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comibsbsvibsappbsvgrn
+  type: html5
+  path: ibs_app_bsv_grn
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comibsbsvibsappbsvdashboard
+  type: html5
+  path: ibs_app_bsv_dashboard
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comibsbsvibsappbsvstockdetails
+  type: html5
+  path: ibs_app_bsv_stock_details
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comibsbsvibsappbsvgrnreport
+  type: html5
+  path: ibs_app_bsv_grn_report
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comibsbsvibsappbsvorderhistory
+  type: html5
+  path: ibs_app_bsv_orderhistory
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: ibs_mta_bsv-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: ibs_mta_bsv-destination-service
+    service-plan: lite
+- name: ibs_mta_bsv_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: ibs_mta_bsv-html5-app-host-service
+    service-plan: app-host
+- name: uaa_ibs_mta_bsv
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: ibs_mta_bsv-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo

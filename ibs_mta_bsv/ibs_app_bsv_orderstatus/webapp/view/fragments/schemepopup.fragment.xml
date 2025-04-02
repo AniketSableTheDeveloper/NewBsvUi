@@ -1,0 +1,27 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+<Dialog title="Product Scheme" titleAlignment="Center">
+<customHeader>
+<OverflowToolbar >
+<Label text="Product Scheme" design="Bold"></Label>
+<!-- <ToolbarSpacer/>
+  <Button ></Button> -->
+</OverflowToolbar>
+</customHeader>
+   
+            <List
+		headerLevel="H2"
+		items="{
+			path: 'MaterialSchemeModel>/results'
+		}" 
+        selectionChange="onSelectScheme"
+        mode="SingleSelectMaster">
+		<StandardListItem
+			title="{MaterialSchemeModel>DisplayText}"
+            />
+	</List>
+    <buttons>
+    <Button text="Close" press="closeScheme"></Button>
+    </buttons>
+     
+    </Dialog>
+</core:FragmentDefinition>

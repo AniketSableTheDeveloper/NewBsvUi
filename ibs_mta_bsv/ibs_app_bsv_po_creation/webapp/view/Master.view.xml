@@ -1,0 +1,168 @@
+<mvc:View controllerName="com.ibs.bsv.ibsappbsvpocreation.controller.Master"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="false"
+    xmlns="sap.m"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" >
+  
+    <f:DynamicPage id="dynamicPage" fitContent="true"  headerExpanded="true" preserveHeaderStateOnScroll="false">
+		<f:header>
+			<f:DynamicPageHeader id="id">
+                <smartFilterBar:SmartFilterBar useToolbar="true" enableBasicSearch="true" entitySet="PrHeader" id="idPrHeaderSmart" persistencyKey="SmartFilter_Explored" clear="true" showClearOnFB="true" showAllFilters="true">
+
+                        <!-- <smartFilterBar:controlConfiguration>
+                            <smartFilterBar:ControlConfiguration id="idPrNo" key="PURCHASE_REQUEST_NO" visibleInAdvancedArea="true" index="0" label="Purchase Request Number">
+                            </smartFilterBar:ControlConfiguration>
+                        </smartFilterBar:controlConfiguration> -->
+                        
+                      
+
+                        <smartFilterBar:controlConfiguration>
+                            <smartFilterBar:ControlConfiguration id="idStatus" key="STATUS" visibleInAdvancedArea="true" index="1" label="Status">
+                            </smartFilterBar:ControlConfiguration>
+                        </smartFilterBar:controlConfiguration>
+
+                        <smartFilterBar:controlConfiguration>
+                            <smartFilterBar:ControlConfiguration id="idCreationDate" key="CREATION_DATE" visibleInAdvancedArea="true" label="Request Date" 	
+                            conditionType="{module: 'sap.ui.comp.config.condition.DateRangeType'}" index="2"  >
+                            </smartFilterBar:ControlConfiguration>
+                        </smartFilterBar:controlConfiguration>
+                </smartFilterBar:SmartFilterBar>
+            </f:DynamicPageHeader>
+		</f:header>
+
+        <f:content>
+       
+        
+
+
+            <smartTable:SmartTable
+                id="idPurchTable"
+                editable="false"
+                width="100%"
+                entitySet="PrHeader"
+                smartFilterId="idPrHeaderSmart" 
+                useExportToExcel="true"
+                useVariantManagement="true"
+                useTablePersonalisation="true"
+                enableAutoBinding="true"
+                showRowCount="true"
+        	    header="Total Requests"
+                demandPopin="true"
+                tableType="ResponsiveTable"
+                beforeRebindTable="onBeforeRebindTable"
+                enableAutoColumnWidth="true"
+                enableCopy="false"
+                showFullScreenButton="true"
+                 beforeExport="onBeforeExport"
+                requestAtLeastFields="PURCHASE_REQUEST_NO,REFERENCE_ID"
+            >
+            <smartTable:customToolbar>
+                <OverflowToolbar id="idOTB">
+                
+		<ObjectStatus class="sapUiSmallMarginBegin" title="Credit Limit" text="{path:'creditdetails>/CreditLimit',formatter:'.formatter.formatterAmount'} ₹" state="Indication05"></ObjectStatus>
+		
+		
+		<ObjectStatus class="sapUiSmallMarginBegin" title="Exposure" text="{path:'creditdetails>/ExposureAmount',formatter:'.formatter.formatterAmount'} ₹" state="Indication06"></ObjectStatus>
+		
+
+		<ObjectStatus class="sapUiSmallMarginBegin" title="Utilization" text="{path:'creditdetails>/Utilization',formatter:'.formatter.formatterAmount'}%" state="Indication07"></ObjectStatus>
+		
+
+		
+		<ObjectStatus class="sapUiSmallMarginBegin" title="Credit Exposure" text="{path:'creditdetails>/CreditExposure',formatter:'.formatter.formatterAmount'} ₹" state="Indication08"></ObjectStatus>
+		
+                    <ToolbarSpacer id="idTBS" />
+                    <Button id="idCreateBtn"  type="Emphasized" text="Place Order" press="orderCreate"/>
+
+                      <Button text="Scheme" press="onClickScheme" type="Emphasized">
+														<customData>
+															<BadgeCustomData id="idcount" value=""/>
+														</customData>
+														</Button>
+                    <!-- <Button id="idSchemeButton"  type="Emphasized" text="Scheme" press="onClickScheme"/> -->
+                </OverflowToolbar>
+            </smartTable:customToolbar>
+
+            <Table id="idPrheaderTbl" sticky="ColumnHeaders">
+                <columns>
+                    <Column id="idColumnSuppQtn" hAlign="Center">
+                        <customData>
+                            <core:CustomData key="p13nData" value='\{"columnKey": "PURCHASE_REQUEST_NO", "leadingProperty": "PURCHASE_REQUEST_NO", "filterProperty": "PURCHASE_REQUEST_NO", "columnIndex": 0 }'/>
+                        </customData>
+                        <Label id="idPrNoTxt" text="Purchase Request Number" design="Bold"/>
+                    </Column>
+
+                     <Column id="idColumnDistName" hAlign="Center">
+                        <customData>
+                            <core:CustomData key="p13nData" value='\{"columnKey": "REFERENCE_ID", "leadingProperty": "REFERENCE_ID", "columnIndex": 1}'/>
+                        </customData>
+                        <Label id="idDistNameTxt" text="Reference Id" design="Bold"/>
+                    </Column>
+
+                    <Column id="idColumnRfq" hAlign="Center">
+                        <customData>
+                            <core:CustomData key="p13nData" value='\{"columnKey": "CREATION_DATE", "leadingProperty": "CREATION_DATE", "columnIndex": 2 }'/>
+                        </customData>
+                        <Label id="idCreationDateTxt" text="Request Date" design="Bold"/>
+                    </Column>
+             
+                   
+
+                    <Column id="idColumnStatus" hAlign="End">
+                        <customData>
+                            <core:CustomData key="p13nData" value='\{"columnKey": "GRAND_TOTAL", "leadingProperty": "GRAND_TOTAL", "columnIndex": 4}'/>
+                        </customData>
+                        <Label id="idTotAmtTxt" text="Amount(₹)" design="Bold"/>
+                    </Column>
+
+                    <Column id="idColumnSupp" hAlign="Center">
+                        <customData>
+                            <core:CustomData key="p13nData" value='\{"columnKey": "TO_STATUS/DESC", "leadingProperty": "TO_STATUS/DESC", "columnIndex": 5}'/>
+                        </customData>
+                        <Label id="idStatusTxt" text="Status" design="Bold"/>
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem id="idColumnListI" type="Navigation" press="onNavigateToDetails">
+                        <cells>
+                            <Label id="idPrHNo" text="{PURCHASE_REQUEST_NO}" design="Bold"/>    
+                            <Text id="idDistName" text="{REFERENCE_ID}"/>       
+                            <Text id="idCreationDte"  text="{path:'CREATION_DATE', type: 'sap.ui.model.type.DateTime', formatOptions:{ pattern: 'dd/MM/yyyy'}}" />
+                            <!-- <Text id="idLastDte" text="{path:'LAST_UPDATED_DATE',type: 'sap.ui.model.type.DateTime', formatOptions:{ pattern: 'dd.MM.yyyy'}}"/>  -->
+                            <Text id="idTotAmt" text="{path:'GRAND_TOTAL',formatter:'.formatter.formatterAmount'}"/> 
+                            <ObjectStatus id="idPrStatus" text="{path:'TO_STATUS/DESC'}" state="{path: 'TO_STATUS/CODE',formatter: '.formatter.formatStatusColor'}"></ObjectStatus>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+
+            </smartTable:SmartTable>
+            
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>
+
+
+
+<!-- <mvc:View controllerName="com.ibs.bsv.ibsappbsvprcreation.controller.Master"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content />
+    </Page>
+</mvc:View> -->
+
+
+
+
+<!-- <mvc:View controllerName="com.ibs.bsv.ibsappbsvpocreation.controller.Master"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content />
+    </Page>
+</mvc:View> -->

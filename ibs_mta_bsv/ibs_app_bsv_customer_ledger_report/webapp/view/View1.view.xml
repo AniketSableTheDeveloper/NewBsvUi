@@ -1,0 +1,371 @@
+<mvc:View controllerName="com.ibs.bsv.ibsappbsvcustomerledgerreport.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="false"
+    xmlns:m="sap.m"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:core="sap.ui.core"
+    xmlns:t="sap.ui.table"
+    xmlns:f="sap.f">
+    
+    <f:DynamicPage id="dynamicPage" fitContent="true"  headerExpanded="true" preserveHeaderStateOnScroll="false" showFooter="true">
+    <f:header>
+    <f:DynamicPageHeader id="id">
+
+    <m:OverflowToolbar class="TopNavBar">
+    <m:ToolbarSpacer />
+    <m:HBox
+        id="idHox"
+        visible="{PropertyModel>/HBOx}"
+    >
+        <m:Button id="idLinka" press="onNavigateDashboard" text="Home" type="Default" icon="sap-icon://home"/>
+
+            <m:Button
+            text="Place Order"
+            press="onNavigateOrderCreation"
+            type="Transparent"
+                class="sapUiTinyMargiEnd"
+        />
+        <m:Button
+            text="Order Status"
+            press="onNavigateOrderStatus"
+            type="Transparent"
+        />
+        <m:Button
+            text="GRN"
+            press="onNavigateGRN"
+            type="Transparent"
+        />
+        <m:Button
+            text="GRN Report"
+            press="onNavigateGRNReport"
+            type="Transparent"
+        />
+        <m:Button
+            text="Ledger Report"
+            press=""
+            type="Emphasized"
+        />
+            <m:Button
+            text="Order History"
+            press="onNavigateOrderHistory"
+            type="Transparent"
+        />
+            <m:Button
+            text="Scheme"
+            press="onNavigateScheme"
+            type="Transparent"
+        />
+    
+    </m:HBox>
+    <m:MenuButton
+        text="Menu"
+        visible="{PropertyModel>/Menu}">
+        <m:menu>
+            <m:Menu>
+                <m:MenuItem
+                    text="Home"
+                    press="onNavigateDashboard"
+                    icon="sap-icon://home"
+                />
+                <m:MenuItem
+                    text="Place Order"
+                    press="onNavigateOrderCreation"
+                        icon="sap-icon://add-document"
+                />
+                <m:MenuItem
+                    text="Order Status"
+                    press="onNavigateOrderStatus"
+                        icon="sap-icon://order-status"
+                />
+                <m:MenuItem
+                    text="GRN"
+                    press="onNavigateGRN"
+                        icon="sap-icon://customer-order-entry"
+                />
+                <m:MenuItem
+                    text="GRN Report"
+                    press="onNavigateGRNReport"
+                        icon="sap-icon://sales-order-item"
+                />
+                    <m:MenuItem
+                    text="Order History"
+                    press="onNavigateOrderHistory"
+                    icon="sap-icon://history"
+                />
+                <m:MenuItem
+                    text="Scheme"
+                    press="onNavigateScheme"
+                        icon="sap-icon://notification-2"
+                />
+            </m:Menu>
+        </m:menu>
+    </m:MenuButton>
+    </m:OverflowToolbar>
+
+        <smartFilterBar:SmartFilterBar id="idCustomerLedgerData" clear="onClear" showClearOnFB="true" search="OnSearch"
+        entitySet="CUSTOMER_LEDGERSet" persistencyKey="SmartFilter_Explored" basicSearchFieldName="Reference" enableBasicSearch="false">
+
+            <!-- <smartFilterBar:controlConfiguration>
+                <smartFilterBar:ControlConfiguration id="idReferenceId" key="Status" visibleInAdvancedArea="true" label="Status">
+                </smartFilterBar:ControlConfiguration>
+            </smartFilterBar:controlConfiguration> -->
+            <smartFilterBar:controlConfiguration> 
+            <smartFilterBar:ControlConfiguration key="Status" label="Status" visibleInAdvancedArea="true">
+                <smartFilterBar:customControl>
+                    <m:ComboBox id="status" placeholder="Select Status" change="onStatus">          
+                    <core:Item key="1" text="Open Items"/>  
+                    <core:Item key="2" text="Cleared Items"/> 
+                    <core:Item key="3" text="All Items"/>
+                    </m:ComboBox>
+                </smartFilterBar:customControl>
+            </smartFilterBar:ControlConfiguration>
+            </smartFilterBar:controlConfiguration>
+
+            <smartFilterBar:controlConfiguration>
+            <smartFilterBar:ControlConfiguration key="FromDate" label="From Date" visibleInAdvancedArea="true">
+                <smartFilterBar:customControl>
+                    <m:DatePicker id="FromDateId" placeholder="Select From Date" change="onFromDate" value="{path:'FromDate',type: 'sap.ui.model.type.Date'}" editable="true" maxDate="{ToModel>/maxDate}"/>
+                </smartFilterBar:customControl>
+            </smartFilterBar:ControlConfiguration>
+            </smartFilterBar:controlConfiguration>
+
+            <smartFilterBar:controlConfiguration>
+            <smartFilterBar:ControlConfiguration key="ToDate" label="To Date" visibleInAdvancedArea="true">
+                <smartFilterBar:customControl>
+                    <m:DatePicker id="ToDateId" placeholder="Select To Date" minDate="{FromModel>/minDate}" maxDate="{ToModel>/maxDate}" value="{path:'ToDate',type: 'sap.ui.model.type.Date'}" editable="true"/>
+                </smartFilterBar:customControl>
+            </smartFilterBar:ControlConfiguration>
+            </smartFilterBar:controlConfiguration>
+
+        <!-- <smartFilterBar:layoutData>
+        <m:FlexItemData shrinkFactor="0"/>
+        </smartFilterBar:layoutData> -->
+
+        </smartFilterBar:SmartFilterBar>
+        </f:DynamicPageHeader>
+    </f:header>
+        
+    <f:content>
+        <smartTable:SmartTable
+        id="idCustomerLedgerTable"
+        editable="false"
+        width="100%"
+        entitySet="CUSTOMER_LEDGERSet"
+        tableBindingPath="StockistDataS4>/results"
+        tableType="ResponsiveTable"
+        useExportToExcel="true"
+        useVariantManagement="true"
+        useTablePersonalisation="true"
+        enableAutoBinding="true"
+        showRowCount="true"
+        header="Stockist Ledger"
+        demandPopin="true"
+        showVariantManagement="false"
+        beforeRebindTable="onBeforeRebindTable"
+        smartFilterId="idCustomerLedgerData"
+        enableAutoColumnWidth="true"
+        enableCopy="false"
+        showFullScreenButton="true"
+        beforeExport="onBeforeExport"
+        showTablePersonalisation="true"
+        ignoredFields="Status,ToDate,CreditDebit,StockistId,DocumentsNo,DocumentsDate"
+
+    >
+    <smartTable:customToolbar>
+        <m:OverflowToolbar design="Transparent">
+            <m:ToolbarSpacer/>
+            <!-- <m:Button id="idLinka" press="onNavigateDashboard" text="Home" type="Transparent"/> -->
+        </m:OverflowToolbar>
+    </smartTable:customToolbar>
+
+
+   <m:Table id="idCustomerLedgerTbl" sticky="ColumnHeaders">
+        <m:columns>
+            <m:Column id="idFromDate" hAlign="Center">
+                <m:customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "FromDate", "leadingProperty": "FromDate", "columnIndex": 1}'/>
+                </m:customData>
+                <m:Text id="idFromDateTxt" text="Posting Date"/>
+            </m:Column>
+
+            <m:Column id="idDocuType" hAlign="Center">
+                <m:customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "DocumentType", "leadingProperty": "DocumentType", "columnIndex": 3}'/>
+                </m:customData>
+                <m:Text id="idDocuTypeTxt" text="Document Type"/>
+            </m:Column>
+
+            <m:Column id="idReference" hAlign="Center">
+                <m:customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "Reference", "leadingProperty": "Reference", "columnIndex": 4}'/>
+                </m:customData>
+                <m:Text id="idReferenceTxt" text="Reference Id"/>
+            </m:Column>
+
+             <m:Column id="idBill" hAlign="Center" visible="false">
+                <m:customData>
+                    <core:CustomData key="p13nData" value='\{"type":"string","columnKey": "BillDocument", "leadingProperty": "BillDocument", "columnIndex": 2 }'/>
+                </m:customData>          
+		        <m:Text text="Invoice No"/>
+            </m:Column>
+
+
+            <m:Column id="idBankDetails" hAlign="Center">
+                <m:customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "BankDetails", "leadingProperty": "BankDetails", "columnIndex": 6}'/>
+                </m:customData>
+                <m:Text id="idBankDetailsTxt" text="Bank"/>
+            </m:Column>
+
+            <m:Column id="idNetDate" hAlign="Center">
+                <m:customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "NetdueDate", "leadingProperty": "NetdueDate", "columnIndex": 7}'/>
+                </m:customData>
+                <m:Text id="idNetDateTxt" text="Net Due Date"/>
+            </m:Column>
+
+            <m:Column id="idCr" hAlign="Center">
+                <m:customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "LocalCurrencyAmount", "leadingProperty": "LocalCurrencyAmount", "columnIndex": 8}'/>
+                </m:customData>
+                <m:Text id="idCrTxt" text="Debit Amount(₹)"/>
+            </m:Column>
+
+            <m:Column id="idDrDate" hAlign="Center">
+                <m:customData>
+                    <core:CustomData key="p13nData" value='\{"columnKey": "LocalCurrencyAmountcr", "leadingProperty": "LocalCurrencyAmountcr", "columnIndex": 9}'/>
+                </m:customData>
+                <m:Text id="idDrTxt" text="Credit Amount(₹)"/>
+            </m:Column>
+        </m:columns>
+
+        <m:items>
+            <m:ColumnListItem id="idColumnListI">
+                <m:cells>
+               
+                    <m:Text id="FromDate" text="{path: 'StockistDataS4>FromDate', formatter: '.formatter.formatDate'}" />      
+                    
+                    <m:Text id="DocuTypeTxt" text="{StockistDataS4>DocumentType}"/>  
+                    <m:Text id="ReferenceIdTxt" text="{StockistDataS4>Reference}"/>    
+                    <m:Text text="{StockistDataS4>BillDocument}"/>
+                    <m:Text id="BankTxt" text="{StockistDataS4>BankDetails}" /> 
+                    <m:Text id="NetDueTxt" text="{path: 'StockistDataS4>NetdueDate', formatter: '.formatter.formatDate'}" /> 
+                    <m:Text id="DrTxt" text="{path: 'StockistDataS4>LocalCurrencyAmount',formatter:'.formatter.formatterAmount'}"/>   
+                    <m:Text id="CrTxt" text="{path: 'StockistDataS4>LocalCurrencyAmountcr',formatter:'.formatter.formatterAmount'}"/>   
+                </m:cells>
+            </m:ColumnListItem>
+        </m:items>
+    </m:Table>
+ 
+    <!-- <t:Table id="idCustomerLedgerTbl" showNoData="true" busyStateChanged="onContextChange" customFilter="onTableFilter" enableCellFilter="false" selectionMode="Single">
+   
+        <t:columns> -->
+
+            <!-- <t:Column id="idCDocuNo" hAlign="Center" autoResizable="true" visible="false">
+                <t:customData>
+                    <core:CustomData key="p13nData" value='\{"type":"string","columnKey": "DocumentsNo", "leadingProperty": "DocumentsNo", "columnIndex": 0 }'/>
+                </t:customData>
+                <m:Label id="idDocuNoTxt" text="Document No"/>
+               <t:template>
+		        <m:Text text="{path:'StockistDataS4>DocumentsNo'}"/>
+				</t:template>
+            </t:Column> -->
+    
+            <!-- <t:Column id="idBookingDate" hAlign="Center" width="100px">
+                <t:customData>
+                    <core:CustomData key="p13nData" value='\{"type":"string","columnKey": "FromDate", "leadingProperty": "FromDate", "columnIndex": 2 }'/>
+                </t:customData>
+                <m:Label id="idBookingDateTxt" text="Posting Date"/>
+               <t:template>
+		        <m:Text text="{path:'StockistDataS4>FromDate',formatter: '.formatter.formatDate'}"/>
+				</t:template>
+            </t:Column>    -->
+            <!-- <t:Column id="idCDocuDate" hAlign="Center" autoResizable="true" visible="false">
+                <t:customData>
+                    <core:CustomData key="p13nData" value='\{"type":"string","columnKey": "DocumentsDate", "leadingProperty": "DocumentsDate", "columnIndex": 1 }'/>
+                </t:customData>
+                <m:Label id="idDocuDateTxt" text="Document Date"/>
+               <t:template>
+		        <m:Text text="{path:'StockistDataS4>DocumentsDate',formatter: '.formatter.formatDate'}"/>
+				</t:template>
+            </t:Column>    -->
+            <!-- <t:Column id="idCDocuType" hAlign="Center" width="150px">
+                <t:customData>
+                    <core:CustomData key="p13nData" value='\{"type":"string","columnKey": "DocumentType", "leadingProperty": "DocumentType", "columnIndex": 3 }'/>
+                </t:customData>
+                <m:Label id="idDocuTypeTxt" text="Document Type"/>
+               <t:template>
+		        <m:Text text="{path:'StockistDataS4>DocumentType'}"/>
+				</t:template>
+            </t:Column>        
+            <t:Column id="idColumnReference" hAlign="Center" width="100px">
+                <t:customData>
+                    <core:CustomData key="p13nData" value='\{"type":"string","columnKey": "Reference", "leadingProperty": "Reference", "filterProperty": "Reference", "columnIndex": 4 }'/>
+                </t:customData>
+                <m:Label id="idReferenceTxt" text="Reference Id"/>
+                <t:template>
+		        <m:Text text="{StockistDataS4>Reference}"/>
+				</t:template>
+            </t:Column>
+
+            <t:Column id="idBill" hAlign="Center" visible="false" width="100px">
+                <t:customData>
+                    <core:CustomData key="p13nData" value='\{"type":"string","columnKey": "BillDocument", "leadingProperty": "BillDocument", "columnIndex": 5 }'/>
+                </t:customData>
+                <m:Label id="idBillTxt" text="Invoice No"/>
+                <t:template>
+		        <m:Text text="{StockistDataS4>BillDocument}"/>
+				</t:template>
+            </t:Column>
+              <t:Column id="idBank" hAlign="Center" width="100px">
+                <t:customData>
+                    <core:CustomData key="p13nData" value='\{"type":"string","columnKey": "BankDetails", "leadingProperty": "BankDetails", "columnIndex": 6}'/>
+                </t:customData>
+                <m:Label id="idBankTxt" text="Bank"/>
+                <t:template>
+		        <m:Text text="{StockistDataS4>BankDetails}"/>
+				</t:template>
+            </t:Column>
+            <t:Column id="idNetDue" hAlign="Center" width="120px">
+                <t:customData>
+                    <core:CustomData key="p13nData" value='\{"type":"string","columnKey": "NetdueDate", "leadingProperty": "NetdueDate", "columnIndex": 7}'/>
+                </t:customData>
+                <m:Label id="idNetDueTxt" text="Net Due Date"/>
+                <t:template>
+		        <m:Text text="{path:'StockistDataS4>NetdueDate', formatter: '.formatter.formatDate'}"/>
+				</t:template>
+            </t:Column>
+            <t:Column id="idAmountDr" hAlign="Right" width="130px">
+                <t:customData>
+                    <core:CustomData key="p13nData" value='\{"type":"string","columnKey": "LocalCurrencyAmount", "leadingProperty": "LocalCurrencyAmount", "columnIndex": 8}'/>
+                </t:customData>
+                <m:Label id="idAmountDrTxt" text="Debit Amount(₹)"/>
+                <t:template>
+		        <m:Text text="{path: 'StockistDataS4>LocalCurrencyAmount',formatter:'.formatter.formatterAmount'}"/>
+				</t:template>
+            </t:Column>
+            <t:Column id="idAmountCr" hAlign="Right" width="130px">
+                <t:customData>
+                    <core:CustomData key="p13nData" value='\{"type":"string","columnKey": "LocalCurrencyAmountcr", "leadingProperty": "LocalCurrencyAmountcr", "columnIndex": 9}'/>
+                </t:customData>
+                <m:Label id="idAmountCrTxt" text="Credit Amount(₹)"/>
+                <t:template>
+		        <m:Text text="{path: 'StockistDataS4>LocalCurrencyAmountcr',formatter:'.formatter.formatterAmount'}"/>
+				</t:template>
+            </t:Column>
+        </t:columns>
+    </t:Table> -->
+    </smartTable:SmartTable>
+     </f:content>
+     <f:footer>
+        <m:Toolbar>
+		<m:ToolbarSpacer/>
+        <m:Label text="Total Debit(₹) :" design="Bold"/>
+		<m:Text text="{path: 'StockistDataCrDr>/vDr',formatter:'.formatter.formatterAmount'}"  textAlign="End"></m:Text>
+        <m:Label text="Total Credit(₹) :" design="Bold"/>
+		<m:Text text="{path: 'StockistDataCrDr>/vCr',formatter:'.formatter.formatterAmount'}"  textAlign="End"></m:Text>
+		</m:Toolbar>
+    </f:footer>
+    </f:DynamicPage>
+    
+</mvc:View>

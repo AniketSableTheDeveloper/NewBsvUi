@@ -1,0 +1,53 @@
+specVersion: "3.1"
+metadata:
+  name: com.ibs.bsv.ibsappbsvdashboard
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: false
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+        backend:
+          - path: /odata/v2/ideal-bsv-purchase-order-srv/
+            url: https://bsv-ideal-test-test-ideal-bsv-srv.cfapps.in30.hana.ondemand.com/
+            destination: IDEAL_CAPM
+            authenticationType: OAuth2JWTBearer
+          - path: /sap/opu/odata/sap/ZIDEAL_ODATA_SALESORDER_SRV
+            url: http://hanasnd:44300
+            client: "900"
+            destination: IDEAL_S4
+            authenticationType: BasicAuthentication
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: sap-fe-mockserver
+      beforeMiddleware: csp
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /odata/v4/ideal-bsv-purchase-order-srv
+            generateMockData: true
+            metadataXmlPath: ./webapp/localService/mainService/metadata.xml
+            mockdataRootPath: ./webapp/localService/data
+          - urlPath: /sap/opu/odata/sap/ZIDEAL_ODATA_SALESORDER_SRV
+            generateMockData: true
+            metadataXmlPath: ./webapp/localService/ZIDEAL_ODATA_SALESORDER_SRV/metadata.xml
+            mockdataRootPath: ./webapp/localService/ZIDEAL_ODATA_SALESORDER_SRV/mockdata
+          - urlPath: /odata/v2/ideal-bsv-purchase-order-srv/
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            mockdataPath: ./webapp/localService/mainService/mockdata
+            generateMockData: true
+          - urlPath: /odata/v4/ideal-bsv-purchase-order-srv/
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            generateMockData: true
+            mockdataRootPath: ./webapp/localService/mainService/mockdata
+        annotations: []

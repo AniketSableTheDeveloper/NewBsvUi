@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="ideal_bsv_grn_srv" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotation Term="Core.Links">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="GrnHeader" EntityType="ideal_bsv_grn_srv.GrnHeader">
+                    <NavigationPropertyBinding Path="TO_ITEMS_REF" Target="GrnItems"/>
+                </EntitySet>
+                <EntitySet Name="GrnItems" EntityType="ideal_bsv_grn_srv.GrnItems"/>
+                <EntitySet Name="StockData" EntityType="ideal_bsv_grn_srv.StockData"/>
+                <ActionImport Name="AcceptGrn" Action="ideal_bsv_grn_srv.AcceptGrn"/>
+            </EntityContainer>
+            <EntityType Name="GrnHeader">
+                <Key>
+                    <PropertyRef Name="STOCKIST_ID"/>
+                    <PropertyRef Name="INVOICE_NO"/>
+                </Key>
+                <Property Name="STOCKIST_ID" Type="Edm.String" MaxLength="100" Nullable="false"/>
+                <Property Name="STOCKIST_NAME" Type="Edm.String" MaxLength="100"/>
+                <Property Name="DELIVERY_NO" Type="Edm.String" MaxLength="15"/>
+                <Property Name="INVOICE_NO" Type="Edm.String" MaxLength="15" Nullable="false"/>
+                <Property Name="INVOICE_DATE" Type="Edm.Date"/>
+                <Property Name="DELIVERY_DATE" Type="Edm.Date"/>
+                <Property Name="ACCEPTED_DATE" Type="Edm.Date"/>
+                <Property Name="INVOICE_AMOUNT" Type="Edm.Double"/>
+                <Property Name="STATUS" Type="Edm.Int32"/>
+                <Property Name="SAP_ORDER_NO" Type="Edm.String" MaxLength="10"/>
+                <NavigationProperty Name="TO_ITEMS_REF" Type="ideal_bsv_grn_srv.GrnItems">
+                    <ReferentialConstraint Property="INVOICE_NO" ReferencedProperty="INVOICE_NO"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="GrnItems">
+                <Key>
+                    <PropertyRef Name="INVOICE_NO"/>
+                    <PropertyRef Name="ITEM_NO"/>
+                </Key>
+                <Property Name="INVOICE_NO" Type="Edm.String" MaxLength="15" Nullable="false"/>
+                <Property Name="ITEM_NO" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="MATERIAL_GROUP" Type="Edm.String" MaxLength="50"/>
+                <Property Name="MATERIAL_GROUP_DESC" Type="Edm.String" MaxLength="100"/>
+                <Property Name="MATERIAL_CODE" Type="Edm.String" MaxLength="50"/>
+                <Property Name="MATERIAL_DESC" Type="Edm.String" MaxLength="100"/>
+                <Property Name="BATCH" Type="Edm.String" MaxLength="10"/>
+                <Property Name="EXPIRY_DATE" Type="Edm.Date"/>
+                <Property Name="HSN_CODE" Type="Edm.String" MaxLength="10"/>
+                <Property Name="UNIT_OF_MEASURE" Type="Edm.String" MaxLength="3"/>
+                <Property Name="UNIT_PRICE" Type="Edm.String" MaxLength="17"/>
+                <Property Name="OPENING_STOCK" Type="Edm.String" MaxLength="10"/>
+                <Property Name="QUANTITY" Type="Edm.Double"/>
+                <Property Name="ACCEPTED_QUANTITY" Type="Edm.Double"/>
+                <Property Name="CGST_PERC" Type="Edm.String" MaxLength="10"/>
+                <Property Name="CGST_AMOUNT" Type="Edm.String" MaxLength="10"/>
+                <Property Name="SGST_PERC" Type="Edm.String" MaxLength="10"/>
+                <Property Name="SGST_AMOUNT" Type="Edm.String" MaxLength="10"/>
+                <Property Name="IGST_PERC" Type="Edm.String" MaxLength="10"/>
+                <Property Name="IGST_AMOUNT" Type="Edm.String" MaxLength="10"/>
+                <Property Name="TAX_AMOUNT" Type="Edm.String" MaxLength="17"/>
+                <Property Name="TOTAL_AMOUNT" Type="Edm.String" MaxLength="17"/>
+            </EntityType>
+            <EntityType Name="StockData">
+                <Key>
+                    <PropertyRef Name="STOCKIST_ID"/>
+                    <PropertyRef Name="STOCKIST_NAME"/>
+                    <PropertyRef Name="MATERIAL_CODE"/>
+                    <PropertyRef Name="MATERIAL_DESC"/>
+                    <PropertyRef Name="UNIT_OF_MEASURE"/>
+                    <PropertyRef Name="UNIT_PRICE"/>
+                </Key>
+                <Property Name="STOCKIST_ID" Type="Edm.String" MaxLength="100" Nullable="false"/>
+                <Property Name="STOCKIST_NAME" Type="Edm.String" MaxLength="100" Nullable="false"/>
+                <Property Name="MATERIAL_CODE" Type="Edm.String" MaxLength="50" Nullable="false"/>
+                <Property Name="MATERIAL_DESC" Type="Edm.String" MaxLength="100" Nullable="false"/>
+                <Property Name="UNIT_OF_MEASURE" Type="Edm.String" MaxLength="3" Nullable="false"/>
+                <Property Name="ACCEPTED_QUANTITY" Type="Edm.Double"/>
+                <Property Name="UNIT_PRICE" Type="Edm.String" MaxLength="17" Nullable="false"/>
+            </EntityType>
+            <ComplexType Name="User_Details">
+                <Property Name="USER_ROLE" Type="Edm.String" MaxLength="50"/>
+                <Property Name="USER_ID" Type="Edm.String" MaxLength="50"/>
+            </ComplexType>
+            <Action Name="AcceptGrn" IsBound="false">
+                <Parameter Name="sAction" Type="Edm.String"/>
+                <Parameter Name="aGrnHeader" Type="Collection(ideal_bsv_grn_srv.GrnHeader)" Nullable="true"/>
+                <Parameter Name="aGrnItems" Type="Collection(ideal_bsv_grn_srv.GrnItems)" Nullable="true"/>
+                <Parameter Name="oUserDetails" Type="ideal_bsv_grn_srv.User_Details"/>
+                <ReturnType Type="Edm.String"/>
+            </Action>
+            <Annotations Target="ideal_bsv_grn_srv.StockData/STOCKIST_ID">
+                <Annotation Term="Common.Label" String="STOCKIST_ID: STOCKIST_ID"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_grn_srv.StockData/STOCKIST_NAME">
+                <Annotation Term="Common.Label" String="STOCKIST_NAME: STOCKIST_NAME"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_grn_srv.StockData/MATERIAL_CODE">
+                <Annotation Term="Common.Label" String="MATERIAL_CODE: MATERIAL_CODE"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_grn_srv.StockData/MATERIAL_DESC">
+                <Annotation Term="Common.Label" String="MATERIAL_DESC: MATERIAL_DESC"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_grn_srv.StockData/UNIT_OF_MEASURE">
+                <Annotation Term="Common.Label" String="UNIT_OF_MEASURE: UNIT_OF_MEASURE"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_grn_srv.StockData/ACCEPTED_QUANTITY">
+                <Annotation Term="Common.Label" String="ACCEPTED_QUANTITY: ACCEPTED_QUANTITY"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_grn_srv.StockData/UNIT_PRICE">
+                <Annotation Term="Common.Label" String="UNIT_PRICE: UNIT_PRICE"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

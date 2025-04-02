@@ -1,0 +1,76 @@
+<mvc:View controllerName="com.ibs.bsv.ibsappbsvstockdetails.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m">
+	<App id="idApp">
+	<pages>
+    <Page id="page" showHeader="false">
+    
+        <content>
+		<Table id="idStockTable" inset="false" items="{path:'StockSet>/', sorter : { path : '',descending : true}}" sticky="ColumnHeaders,HeaderToolbar" class="sapUiContentPadding"
+		growing="true" growingThreshold="20" autoPopinMode="true" contextualWidth="Auto" fixedLayout="true">
+		<dependents>
+	    </dependents>
+            <headerToolbar>
+            <OverflowToolbar visible="true">
+            <content>
+            <Text text="STOCK DETAILS" id="idStock"/>
+            <ToolbarSpacer/>
+            <SearchField id="oSearchData" visible="true" width="30%" placeholder="Search by Material Description"
+            showRefreshButton="false" liveChange="onSearch">
+            <layoutData>
+            <OverflowToolbarLayoutData priority="NeverOverflow" />
+            </layoutData>
+            </SearchField>
+            <Button icon="sap-icon://refresh" press="onRefresh" type="Transparent">
+            
+                <layoutData>
+                <OverflowToolbarLayoutData priority="NeverOverflow" />
+            </layoutData>
+            </Button>
+              <Button id="idLink" press="onNavigateDashboard" text="Home" type="Emphasized"/>
+            </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>            
+            <!-- <Column hAlign="Center">
+                <Label text="Material Code" design="Bold" wrapping="true"/>
+            </Column> -->
+            <Column hAlign="Center">
+                <Label text="Material Description" design="Bold" wrapping="true"/>
+            </Column>
+            <Column hAlign="End">
+                <Label text="MRP Price" design="Bold" wrapping="true"/>
+            </Column>
+            <Column hAlign="End">
+                <Label text="PTR Price" design="Bold" wrapping="true"/>
+            </Column>
+            <Column hAlign="End">
+                <Label text="PTS Price" design="Bold" wrapping="true"/>
+            </Column>
+            <Column hAlign="End">
+                <Label text="Quantity" design="Bold" wrapping="true"/>
+            </Column>
+            <Column hAlign="Center" >
+                <Label text="Unit Of Measure" design="Bold" wrapping="true"/>
+            </Column>
+        </columns>
+        <items>
+        <ColumnListItem>
+            <cells>
+                <!-- <Text text= "{path:'StockSet>MATERIAL_CODE', formatter:'.formatter.getDataNullValue'}"/> -->
+                <Text text= "{path:'StockSet>MATERIAL_DESC'}"/>
+                <Text text= "{path:'StockSet>UNIT_PRICE', formatter:'.formatter.formatterAmount'}"/>
+                <Text text= "{path:'StockSet>PTR_PRICE', formatter:'.formatter.formatterAmount'}"/>
+                <Text text= "{path:'StockSet>PTS_PRICE', formatter:'.formatter.formatterAmount'}"/>
+                <Text text= "{path:'StockSet>ACCEPTED_QUANTITY', formatter:'.formatter.formatterAmount'}"/>
+                <Text text = "{path:'StockSet>UNIT_OF_MEASURE'}" />
+            </cells>
+        </ColumnListItem>
+	    </items>
+		</Table>
+	</content>
+    </Page>
+	</pages>
+	</App>
+</mvc:View>
+

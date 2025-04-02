@@ -1,0 +1,192 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "com.ibs.bsv.ibsappbsvgrn",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.14.5",
+      "toolsId": "1a7d6060-af58-4e35-bcac-f6ba4bfd9b73"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/ideal-bsv-grn-srv/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      },
+      "S4Service": {
+        "uri": "/sap/opu/odata/sap/ZIDEAL_ODATA_SALESORDER_SRV/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "grn-display": {
+          "semanticObject": "grn",
+          "action": "display",
+          "title": "{{flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.128.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.suite.ui.generic.template": {},
+        "sap.ui.comp": {},
+        "sap.ui.generic.app": {},
+        "sap.ui.table": {},
+        "sap.ushell": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.ibs.bsv.ibsappbsvgrn.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "S4Service": {
+        "dataSource": "S4Service",
+        "preload": true,
+        "settings": {}
+    }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "com.ibs.bsv.ibsappbsvgrn.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "clearControlAggregation": false
+      },
+      "routes": [
+        {
+          "name": "RouteApp",
+          "pattern": "",
+          "target": ["TargetApp"]
+        },
+        {
+          "name": "RouteView1",
+          "pattern": "RouteView1",
+          "target": [
+            "TargetView1"
+          ]
+        },
+        {
+          "name": "ServicePage",
+          "pattern": "ServicePage",
+          "target": [
+              "TargetServicePage"
+          ]
+        },
+        {
+          "name": "View2",
+          "pattern": "View2/{InvoiceNo}",
+          "target": [
+              "TargetView2"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetApp": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewName": "App"
+      },
+        "TargetView1": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "View1",
+          "viewName": "View1"
+        },
+        "TargetServicePage": {
+          "viewType": "XML",
+          "viewName": "ServicePage"
+      },
+      "TargetView2": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "View2",
+          "viewName": "View2"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "com.ibs.bsv.ibsappbsvgrn.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "App"
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "ibs_bs_bsv"
+  }
+}

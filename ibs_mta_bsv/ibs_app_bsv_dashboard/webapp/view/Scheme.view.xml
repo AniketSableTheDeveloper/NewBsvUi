@@ -1,0 +1,441 @@
+<mvc:View
+    controllerName="com.ibs.bsv.ibsappbsvdashboard.controller.Scheme"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="false"
+    xmlns="sap.m"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+>
+    <!-- <OverflowToolbar class="TopNavBar">
+        <ToolbarSpacer />
+        <HBox
+            id="idHB"
+            visible="{PropertyModel>/HBOx}"
+        >
+            <Button
+                id="idLinka"
+                press="onNavigateDashboard"
+                text="Home"
+                type="Transparent"
+                icon="sap-icon://home"
+            />
+
+            <Button
+                text="Place Order"
+                press="onNavigateOrderCreation"
+                type="Transparent"
+                class="sapUiTinyMargiEnd"
+            />
+
+            <Button
+                text="Order Status"
+                press="onNavigateOrderStatus"
+                type="Transparent"
+            />
+            <Button
+                text="GRN"
+                press="onNavigateGRN"
+                type="Transparent"
+            />
+            <Button
+                text="GRN Report"
+                press="onNavigateGRNReport"
+                type="Transparent"
+            />
+            <Button
+                text="Ledger Report"
+                press="onNavigateLedger"
+                type="Transparent"
+            />
+            <Button
+                text="Order History"
+                press="onNavigateOrderHistory"
+                type="Transparent"
+            />
+            <Button
+                text="Scheme"
+                press=""
+                type="Emphasized"
+            />
+        </HBox>
+
+        <MenuButton
+            text="Menu"
+            visible="{PropertyModel>/Menu}"
+        >
+            <menu>
+                <Menu>
+                    <MenuItem
+                        text="Home"
+                        press="onNavigateDashboard"
+                        icon="sap-icon://home"
+                    />
+                    <MenuItem
+                        text="Place Order"
+                        press="onNavigateOrderCreation"
+                        icon="sap-icon://order-status"
+                    />
+                    <MenuItem
+                        text="Order Status"
+                        press="onNavigateOrderStatus"
+                        icon="sap-icon://order-status"
+                    />
+                    <MenuItem
+                        text="GRN"
+                        press="onNavigateGRN"
+                        icon="sap-icon://customer-order-entry"
+                    />
+                    <MenuItem
+                        text="GRN Report"
+                        press="onNavigateGRNReport"
+                        icon="sap-icon://sales-order-item"
+                    />
+                    <MenuItem
+                        text="Ledger Report"
+                        press="onNavigateLedger"
+                        icon="sap-icon://document-text"
+                    />
+                    <MenuItem
+                        text="Order History"
+                        press="onNavigateOrderHistory"
+                        icon="sap-icon://history"
+                    />
+                </Menu>
+            </menu>
+        </MenuButton>
+    </OverflowToolbar> -->
+
+    <f:DynamicPage
+        id="dynamicPage"
+        fitContent="true"
+        headerExpanded="true"
+        preserveHeaderStateOnScroll="false"
+    >
+      <f:title>
+        <f:DynamicPageTitle >
+        <f:actions>
+       <OverflowToolbar class="TopNavBar">
+        <ToolbarSpacer />
+        <HBox
+            id="idHB"
+            visible="{PropertyModel>/HBOx}"
+        >
+            <Button
+                id="idLinka"
+                press="onNavigateDashboard"
+                text="Home"
+                type="Transparent"
+                icon="sap-icon://home"
+            />
+
+            <Button
+                text="Place Order"
+                press="onNavigateOrderCreation"
+                type="Transparent"
+                class="sapUiTinyMargiEnd"
+            />
+
+            <Button
+                text="Order Status"
+                press="onNavigateOrderStatus"
+                type="Transparent"
+            />
+            <Button
+                text="GRN"
+                press="onNavigateGRN"
+                type="Transparent"
+            />
+            <Button
+                text="GRN Report"
+                press="onNavigateGRNReport"
+                type="Transparent"
+            />
+            <Button
+                text="Ledger Report"
+                press="onNavigateLedger"
+                type="Transparent"
+            />
+            <Button
+                text="Order History"
+                press="onNavigateOrderHistory"
+                type="Transparent"
+            />
+            <Button
+                text="Scheme"
+                press=""
+                type="Emphasized"
+            />
+        </HBox>
+
+        <MenuButton
+            text="Menu"
+            visible="{PropertyModel>/Menu}"
+        >
+            <menu>
+                <Menu>
+                    <MenuItem
+                        text="Home"
+                        press="onNavigateDashboard"
+                        icon="sap-icon://home"
+                    />
+                    <MenuItem
+                        text="Place Order"
+                        press="onNavigateOrderCreation"
+                        icon="sap-icon://order-status"
+                    />
+                    <MenuItem
+                        text="Order Status"
+                        press="onNavigateOrderStatus"
+                        icon="sap-icon://order-status"
+                    />
+                    <MenuItem
+                        text="GRN"
+                        press="onNavigateGRN"
+                        icon="sap-icon://customer-order-entry"
+                    />
+                    <MenuItem
+                        text="GRN Report"
+                        press="onNavigateGRNReport"
+                        icon="sap-icon://sales-order-item"
+                    />
+                    <MenuItem
+                        text="Ledger Report"
+                        press="onNavigateLedger"
+                        icon="sap-icon://document-text"
+                    />
+                    <MenuItem
+                        text="Order History"
+                        press="onNavigateOrderHistory"
+                        icon="sap-icon://history"
+                    />
+                </Menu>
+            </menu>
+        </MenuButton>
+    </OverflowToolbar>
+              </f:actions>
+               </f:DynamicPageTitle >
+          </f:title>
+       
+      
+        <f:header>
+            <f:DynamicPageHeader id="id">
+                <smartFilterBar:SmartFilterBar
+                    id="idSchemeHeader"
+                    entitySet="SchemeHeader"
+                    persistencyKey="SmartFilter_Explored"
+                    basicSearchFieldName="REFERENCE_ID"
+                    enableBasicSearch="false"
+                    showClearOnFB="true"
+                >
+                    <smartFilterBar:controlConfiguration>
+                        <smartFilterBar:ControlConfiguration
+                            id="idReferenceId"
+                            key="REFERENCE_ID"
+                            visibleInAdvancedArea="true"
+                            index="0"
+                            label="Reference Id"
+                        />
+                    </smartFilterBar:controlConfiguration>
+
+                    <smartFilterBar:controlConfiguration>
+                        <smartFilterBar:ControlConfiguration
+                            id="idCreationDatefltr"
+                            key="CREATION_DATE"
+                            visibleInAdvancedArea="true"
+                            label="Creation Date"
+                            conditionType="{ 
+           module: 'sap.ui.comp.config.condition.DateRangeType', 
+           operations: {filter: [{path: 'key', contains: 'THISMONTH', exclude:false},{path: 'key', equals: 'SPECIFICMONTH', exclude:false}]}}"
+                            index="3"
+                        />
+                    </smartFilterBar:controlConfiguration>
+                </smartFilterBar:SmartFilterBar>
+             
+            </f:DynamicPageHeader>
+           
+        </f:header>
+       
+
+        <f:content>
+            <smartTable:SmartTable
+                id="idSchemeTable"
+                editable="false"
+                width="100%"
+                entitySet="SchemeHeader"
+                useExportToExcel="false"
+                useVariantManagement="true"
+                useTablePersonalisation="true"
+                enableAutoBinding="true"
+                showRowCount="true"
+                header="Scheme"
+                demandPopin="true"
+                smartFilterId="idSchemeHeader"
+                tableType="ResponsiveTable"
+                beforeRebindTable="onBeforeRebindTable"
+                enableAutoColumnWidth="true"
+                enableCopy="false"
+                showFullScreenButton="true"
+                requestAtLeastFields="REFERENCE_ID,VALID_FROM,VALID_TO,CREATION_DATE"
+            >
+                <Table
+                    id="idSchemeHeaderTbl"
+                    sticky="ColumnHeaders"
+                >
+                    <columns>
+                        <Column
+                            id="idColumnReferenceQtn"
+                            hAlign="Center"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "REFERENCE_ID", "leadingProperty": "REFERENCE_ID", "filterProperty": "REFERENCE_ID", "columnIndex": 0 }'
+                                />
+                            </customData>
+                            <Text
+                                id="idReferenceTxt"
+                                text="Reference Id"
+                            />
+                        </Column>
+
+                        <Column
+                            id="idColumnValidFrom"
+                            hAlign="Center"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "VALID_FROM", "leadingProperty": "VALID_FROM", "columnIndex": 1}'
+                                />
+                            </customData>
+                            <Text
+                                id="idValidFromTxt"
+                                text="Valid From"
+                            />
+                        </Column>
+
+                        <Column
+                            id="idColumnValidTo"
+                            hAlign="Center"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "VALID_TO", "leadingProperty": "VALID_TO", "columnIndex": 2 }'
+                                />
+                            </customData>
+                            <Text
+                                id="idValidToTxt"
+                                text="Valid To"
+                            />
+                        </Column>
+
+                        <Column
+                            id="idColumnCrtDtn"
+                            hAlign="Center"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "CREATION_DATE", "leadingProperty": "CREATION_DATE", "columnIndex": 3 }'
+                                />
+                            </customData>
+                            <Text
+                                id="idCreationDateTxt"
+                                text="Creation Date"
+                            />
+                        </Column>
+
+                        <Column
+                            id="idColumnCrtDte"
+                            hAlign="Center"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "CREATED_BY", "leadingProperty": "CREATED_BY", "columnIndex": 5}'
+                                />
+                            </customData>
+                            <Text
+                                id="idCreatedByTxt"
+                                text="Created By"
+                            />
+                        </Column>
+                        <Column
+                            id="idComment"
+                            hAlign="Center"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "COMMENTS", "leadingProperty": "COMMENTS", "columnIndex": 6}'
+                                />
+                            </customData>
+                            <Text
+                                id="idCommentTxt"
+                                text="Comments"
+                            />
+                        </Column>
+                        <Column
+                            id="idFile"
+                            hAlign="Center"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "TO_ATTACHMENT/FILE_ID", "leadingProperty": "TO_ATTACHMENT/FILE_ID", "columnIndex": 7}'
+                                />
+                            </customData>
+                            <Text
+                                id="idFileTxt"
+                                text="File"
+                            />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem id="idColumnListI">
+                            <cells>
+                                <Text
+                                    id="idReferenceIdTxt"
+                                    text="{REFERENCE_ID}"
+                                />
+                                <Text
+                                    id="idValidFrom"
+                                    text="{path: 'VALID_FROM', formatter: '.formatter.formatDate1'}"
+                                />
+                                <Text
+                                    id="idValidTo"
+                                    text="{path: 'VALID_TO', formatter: '.formatter.formatDate1'}"
+                                />
+                                <Text
+                                    id="idCreationDate"
+                                    text="{path: 'CREATION_DATE',formatter: '.formatter.formatDate1'}"
+                                />
+                                <Text
+                                    id="idCreatedBy"
+                                    text="{CREATED_BY}"
+                                />
+                                <Button
+                                    icon="sap-icon://comment"
+                                    press="onComment"
+                                    tooltip="Chat Box"
+                                    id="popOverCommentId"
+                                    type="Attention"
+                                />
+                                <Button
+                                    icon="sap-icon://pdf-attachment"
+                                    press="onDownload"
+                                    type="Emphasized"
+                                />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </smartTable:SmartTable>
+        </f:content>
+      
+    </f:DynamicPage>
+</mvc:View>

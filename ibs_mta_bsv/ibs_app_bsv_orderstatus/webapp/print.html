@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Performa Order Invoice</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="resources/sap-ui-core.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .container {
+            border: 2px solid;
+            padding-right: 0px;
+            padding-left: 0px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        address {
+            margin-top: 1rem;
+            margin-left: -2rem;
+        }
+        .col-xs-3 {
+            width: 25%;
+            margin-top: 3rem;
+        }
+        .print {
+            display: none;
+        }
+        @media print {
+            div.div1 {
+                text-align: center;
+                color: black;
+                white-space: pre-line;
+                width: 30rem;
+                height: 15rem;
+                border: 1px solid black;
+                margin-left: 48rem;
+                bottom: 1rem;
+                margin-top: 2em;
+                padding: 0;
+                left: 0;
+            }
+            .print {
+                display: block
+            }
+            .btn-print {
+    margin-top: 20px; /* Adjust the margin as needed */
+    font-size: 15px;
+    margin-left: 1200px;
+    margin-bottom: 3px;
+}
+        }
+        img.header {
+            width: 75%;
+        }
+        .row {
+            margin-right: 0px;
+            margin-left: 0px;
+        }
+        table,
+        th,
+        td {
+            font-weight: 600;
+            border: 2px solid black;
+            border-collapse: collapse;
+            margin-top: 4rem;
+        }
+        strong#to {
+            font-size: large;
+        }
+        .h1,
+        .h2,
+        .h3,
+        h1,
+        h2,
+        h3 {
+            margin-top: -16px;
+            margin-bottom: -12px;
+        }
+        hr {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 0;
+            border-top: 2px solid #080808;
+        }
+        /* Add this to your existing CSS */
+.table-summary {
+    float: right; /* Aligns the table to the right */
+    margin-right: 0; /* Ensures there's no margin on the right side */
+    margin-top: 1rem; /* Adds some spacing on top */
+}
+
+.table-summary td, .table-summary th {
+    text-align: right; /* Ensures text in the table cells aligns to the right */
+}
+
+        .col-xs-6.secondRow {
+            margin-left: -0.5rem;
+            width: 50%;
+            margin-top: -3rem;
+        }
+        .address {
+            margin-left: 3rem;
+            margin-top: -4rem;
+        }
+        h5 {
+            float: none;
+            font-weight: 700;
+        }
+        .panel-body {
+            padding: 5px;
+        }
+        th.text-center {
+    width: 3rem;
+}
+#table {
+    table-layout: fixed;
+    width: 100%; /* Optional, to stretch the table to full width */
+}
+
+.cgst-col, .sgst-col, .igst-col {
+    width: 50px; /* Set the width you want */
+    text-align: center;
+    word-wrap: break-word; /* Optional, to handle long text */
+}
+
+        .panel {
+            margin: -1rem;
+            background-color: #fff;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            -webkit-box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+            box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+        }
+        address#secRow {
+            margin-top: 0rem;
+            margin-left: -1rem;
+        }
+    </style>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger
+        // Fetching data from session storage
+        var tabeldata = JSON.parse(sessionStorage.getItem("itemsModel"));
+        var headerData = JSON.parse(sessionStorage.getItem("stockistDetails"));
+        var Address = JSON.parse(sessionStorage.getItem("address"));
+        var OrderType = headerData.d.results[0].ORDER_TYPE
+
+
+
+    // Show or hide the "REQ.Rate" column based on OrderType
+    if (OrderType != 3) {
+        // Hide the "REQ.Rate" column header
+        $('th:contains("REQ.Rate")').hide();
+    }
+      
+        
+        // Formatting amounts to INR format
+        var totlamt = Number(headerData.d.results[0].TOTAL_AMOUNT).toLocaleString('en-US', { minimumFractionDigits: 2 }) + " ₹</td>";
+var totaltax = Number(headerData.d.results[0].TAXES_AMOUNT).toLocaleString('en-US', { minimumFractionDigits: 2 }) + " ₹</td>";
+var grntotal = Number(headerData.d.results[0].GRAND_TOTAL).toLocaleString('en-US', { minimumFractionDigits: 2 }) + " ₹</td>";
+
+        // var totlamt = Number(headerData.d.results[0].TOTAL_AMOUNT).toLocaleString('en-US', { minimumFractionDigits: 2 }) + "</td>";
+        // var totaltax = Number(headerData.d.results[0].TAXES_AMOUNT).toLocaleString('en-US', { minimumFractionDigits: 2 }) + "</td>"
+        // var grntotal = Number(headerData.d.results[0].GRAND_TOTAL).toLocaleString('en-US', { minimumFractionDigits: 2 }) +"</n>"+ "₹" + "</td>"
+
+
+    //   var grntotal =  headerData.d.results[0].GRAND_TOTAL
+    //   var totlamt  =  headerData.d.results[0].TOTAL_AMOUNT
+    //   var totaltax  = headerData.d.results[0].TAXES_AMOUNT
+
+
+
+        if (!tabeldata || !headerData) {
+            console.error("No table data or header data found.");
+            return;
+        }
+
+        // Format and display header data (date, prno, etc.)
+        var rawDate = headerData.d.results[0].CREATION_DATE;
+        var timestamp = parseInt(rawDate.replace('/Date(', '').replace(')/', ''), 10);
+        var date = new Date(timestamp);
+        var formattedDate = ("0" + date.getDate()).slice(-2) + "/" + ("0" + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
+
+        $("#prno").append(headerData.d.results[0].PURCHASE_REQUEST_NO);
+        $('#prdate').append(formattedDate);
+        $('#payterm').append(headerData.d.results[0].PAYMENT_METHOD_DESCRIPTION);
+        $('#shipto').append(headerData.d.results[0].SHIP_FROM_NAME);
+        $('#soldto').append(headerData.d.results[0].SHIP_NAME);
+        $('#totalAmount').append(totlamt);
+        $('#totalTax').append(totaltax);
+        $('#grandTotal').append(grntotal);
+
+        var qty = 0, amt = 0, subtotCgst = 0, subtotSgst = 0, subtotIgst = 0;
+
+        // Loop through table data and append rows dynamically
+        tabeldata.forEach(function(item) {
+            qty += item.ORDER_QUANTITY;
+            amt += Number(item.TOTAL_AMOUNT);
+
+            var cgstAmt = (item.TOTAL_AMOUNT * item.CGST_PERC / 100);
+            var sgstAmt = (item.TOTAL_AMOUNT * item.SGST_PERC / 100);
+            var igstAmt = (item.TOTAL_AMOUNT * item.IGST_PERC / 100);
+
+            subtotCgst += cgstAmt;
+            subtotSgst += sgstAmt;
+            subtotIgst += igstAmt;
+
+            // Create a new row and append the respective data
+            var tr = $('<tr/>');
+            tr.append("<td style='text-align:right'>" + item.MATERIAL_DESC + "</td>");
+            tr.append("<td style='text-align:right'>" + item.ORDER_QUANTITY + " (" + item.UNIT_OF_MEASURE + ")</td>");
+            tr.append("<td style='text-align:right'>" + Number(item.MRP_PRICE).toLocaleString('en-US', { minimumFractionDigits: 2 }) + " ₹</td>");
+            tr.append("<td style='text-align:right'>" + Number(item.NIR_PRICE).toLocaleString('en-US', { minimumFractionDigits: 2 }) + " ₹</td>");
+
+                    // Conditionally add the RQE.Rate column if OrderType is "3"
+        if (OrderType === 3) {
+            tr.append("<td class='request-rate' style='text-align:right'>" + Number(item.REQUEST_RATE).toLocaleString('en-US', { minimumFractionDigits: 2 }) + " ₹</td>");
+        }
+
+
+            
+            // tr.append("<td style='text-align:right'>" + Number(item.REQUEST_RATE).toLocaleString('en-US', { minimumFractionDigits: 2 }) + " ₹</td>");
+
+
+           // Bind address data to the corresponding elements
+        $('#companyName').text(Address.CompanyName);                     // Bharat Serums and Vaccines Limited
+        $('#street').text(Address.CompanyStreet);   
+        $('#StreetDetail').text(Address.CompanyStr3 + " " + Address.CompanyLocation);                      // 3rd Floor, Liberty Tower, Plot No. K-10
+        // $('#str3').text(Address.CompanyStr3);                            // 65 Behind Reliable Plaza, Kalwa Industrial State
+        // $('#location').text(Address.CompanyLocation);                    // Thane
+        $('#cityPostal').text(Address.CompanyCity + ", " + Address.CompanyPostalcode);  // Maharashtra, 400708
+
+
+
+
+            // tr.append("<td class='cgst-col'>" + item.CGST_PERCENTAGE + "</td>");
+            // tr.append("<td class='sgst-col'>" + item.SGST_PERCENTAGE + "</td>");
+            // tr.append("<td class='igst-col'>" + item.IGST_PERCENTAGE + "</td>");
+
+            tr.append("<td style='text-align:right; width:8%'>" + item.CGST_PERCENTAGE + "</td>");
+            tr.append("<td style='text-align:right; width:8%'>" + item.SGST_PERCENTAGE + "</td>" + "</td>");
+            tr.append("<td style='text-align:right; width:8%'>" + item.IGST_PERCENTAGE + "</td>");
+
+            tr.append("<td style='text-align:right'>" + Number(item.TOTAL_AMOUNT).toLocaleString('en-US', { minimumFractionDigits: 2 }) + " ₹</td>");
+            // tr.append("<td style='text-align:right'>" + sgstAmt.toLocaleString('en-US', { minimumFractionDigits: 2 }) + "</td>");
+            $('#table').append(tr);
+        });
+
+    });
+
+</script>
+</head>
+<body class="sapUiBody1">
+    <button onclick="javascript:window.print()" style="font-size:15px ; margin-left: 1200px; margin-bottom: 5px;">Print</button>
+    <!-- <button class="btn btn-info btn-lg abc" onclick="javascript:window.print()" style="font-size:24px"><i
+            class="fa fa-print"></i></button> -->
+    <div data-sap-ui-component data-name="com.terumodrms.tmbookorderapprovalnew" data-id="container"
+        data-settings='{"id" : "tmbookorderapprovalnew"}'>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-xs-5">
+                        <address>
+                            <!-- <img src="Images/bsvlogo.jpg" width="140rem"/> -->
+                            <img src="Images/bsvlogo.jpg" width="140rem" style="display: block; margin-left: 100%; margin-right: auto;" />
+
+                            <!-- <p style="font-weight: bolder;">TO</p>
+                            <strong id="to">ABC Private Limited</strong><br>
+                            <Label id="add1">6th Floor, Technocity, X-5/3, Mahape,</Label>
+                            <Label id="add2"> Navi Mumbai, Maharashtra 400710</Label> -->
+                            
+                           
+                            <!-- <strong id="companyName"></strong><br>
+                            <label id="street"></label><br>
+                            <label id="city"></label><br>
+                            <label id="postalCode"></label> -->
+
+                            <strong id="companyName"></strong><br>
+                            <label id="street"></label><br>
+                            <label id="StreetDetail"></label><br>
+                            <!-- <label id="location"></label><br> -->
+                            <label id="cityPostal"></label> <!-- Combined city and postal code -->
+
+                        </address>
+                    </div>
+                    <div class="col-xs-3">
+                    </div>
+                    <div class="col-xs-4">
+                        <table id="newTab" style="width:100%">
+                            <tr>
+                                <th class="text-center" style="width: 20%;">Order No.</th>
+                                <th class="text-center" id="prno"></th>
+                            </tr>
+                            <tr>
+                                <th class="text-center" style="width: 22%;">Order Date</th>
+                                <th class="text-center" id="prdate"></th>
+                            </tr>
+                            <tr>
+                                <th class="text-center" style="width: 32%;">Payment Term</th>
+                                <th class="text-center" id="payterm"></th>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+                <h3 style="text-align:center;color: black;font-family: system-ui"><U>Performa Order Invoice</U></h3>
+                <hr>
+
+                <!-- <div  style="width: 80%; float: initial;">
+                    <table class="table table-condensed" style="width:100%; table-layout: fixed; text-align: right;">
+                        <tbody>
+                            <tr>
+                                <th class="text-left" style="width: 10%;">Ship From</th>
+                                <td class="text-left" style="width: 10%;" id="shipto"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="width: 10%;">Ship From</th>
+                                <td class="text-left" style="width: 10%;" id="soldto"></td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div> -->
+
+                
+                
+                <div class="row" style="display: flex;">
+                    <div class="col-sm-6" style="margin-top: -2rem;border-right: 1px solid black;margin-bottom: -2rem;  flex: 1;
+                    padding: 10px; margin-left: 2rem; border-right: 1px solid black;">
+                        <address id="secRow">
+                            <strong>Ship From:</strong>
+                        <strong><p id="shipto"></p></strong>
+                        </address>
+                    </div>
+                    <div class="col-sm-6" style="margin-top: -2rem;border-right: 1px solid black;margin-bottom: -2rem;  flex: 1;
+                    padding: 10px; margin-left: 2rem; border-right: 1px solid black;">
+                        <address id="secRow">
+                            <strong>Ship To:</strong>
+                        <strong><p id="soldto"></p></strong>
+                        </address>
+                    </div>
+                </div>
+
+
+                <hr>
+                <!-- <hr> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <div>
+                                <h3 class="panel-title"><strong>Product Details</strong></h3>
+                            </div>
+                            <div>
+                                <div>
+                                    <table class="table table-condensed" id="table1">
+                                        <thead>
+                                            <tr >
+                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">Product</th>
+                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">Qty (Uom)</th>
+                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">MRP</th>
+                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">NIR</th>
+                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">REQ.Rate</th>
+                                                <th class="text-right" style="width: 3rem; border-bottom: 2px solid #080808;"">CGST(%)</th>
+                                                <th class="text-right" style="width: 3rem; border-bottom: 2px solid #080808;"" >SGST(%)</th>
+                                                <th class="text-right" style="width: 3rem; border-bottom: 2px solid #080808;">IGST(%)</th>
+                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table">
+                                        </tbody>
+                                        <tr>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row">
+            <!-- <div class="col-xs-6">
+                <address class="address" style="white-space: pre-line">
+                </address>
+            </div> -->
+
+
+            <div class="col-xs-6" style="width: 30%; float: inline-end;">
+                <table class="table table-condensed" style="width:100%; table-layout: fixed; text-align: right;">
+                    <tbody>
+                        <tr>
+                            <th class="text-right" style="width: 10%;">Total Amount</th>
+                            <td class="text-right" style="width: 10%;" id="totalAmount"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right" style="width: 10%;">Total Tax</th>
+                            <td class="text-right" style="width: 10%;" id="totalTax"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-right" style="width: 10%;">Grand Total</th>
+                            <td class="text-right" style="width: 10%;" id="grandTotal"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+                
+
+            
+<!-- <div class="row">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-6">
+                <address class="address" style="white-space: pre-line">
+                </address>
+            </div>
+            <div class="col-xs-6">
+                <div style="display: inline-block; width: auto;">
+                    <span>Total Amount: </span>
+                    <span id="totalAmount"></span>
+                </div>
+                <div style="display: inline-block; margin-left: 40px; width: auto;">
+                    <span>Total Tax: </span>
+                    <span id="totalTax"></span>
+                </div>
+                <div style="display: inline-block; margin-left: 40px; width: auto;">
+                    <span>Grand Total: </span>
+                    <span id="grandTotal"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+            <div>
+
+            </div> -->
+                 
+            </div>
+</body>
+</html>

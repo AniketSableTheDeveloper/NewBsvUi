@@ -1,0 +1,319 @@
+<mvc:View
+    controllerName="com.ibs.bsv.ibsappbsvorderstatus.controller.Master"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="false"
+    xmlns="sap.m"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    class="sapUiSizeCompact"
+>
+    <f:DynamicPage
+        id="dynamicPage"
+        fitContent="true"
+        headerExpanded="true"
+        preserveHeaderStateOnScroll="false"
+    >
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:actions>
+                    <OverflowToolbar class="TopNavBar NavOrderStatus">
+                        <ToolbarSpacer />
+                        <HBox
+                            id="idHox"
+                            visible="{PropertyModel>/HBOx}"
+                        >
+                            <Button
+                                id="idLinka"
+                                press="onNavigateDashboard"
+                                text="Home"
+                                type="Transparent"
+                                icon="sap-icon://home"
+                            />
+                            <Button
+                                id="idPlaceOrderButton"
+                                text="Place Order"
+                                press="onNavigateOrderCreation"
+                                type="Transparent"
+                                visible="false"
+                            />
+                            <Button
+                                text="Order Status"
+                                press=""
+                                type="Emphasized"
+                            />
+                            <Button
+                                text="GRN"
+                                press="onNavigateGRN"
+                                type="Transparent"
+                            />
+                            <Button
+                                text="GRN Report"
+                                press="onNavigateGRNReport"
+                                type="Transparent"
+                            />
+                            <Button
+                                text="Ledger Report"
+                                press="onNavigateLedger"
+                                type="Transparent"
+                            />
+                            <Button
+                                text="Order History"
+                                press="onNavigateOrderHistory"
+                                type="Transparent"
+                            />
+                            <Button
+                                text="Scheme"
+                                press="onNavigateScheme"
+                                type="Transparent"
+                            />
+                        </HBox>
+
+                        <MenuButton
+                            text="Menu"
+                            visible="{PropertyModel>/Menu}"
+                        >
+                            <menu>
+                                <Menu>
+                                    <MenuItem
+                                        text="Home"
+                                        press="onNavigateDashboard"
+                                        icon="sap-icon://home"
+                                    />
+                                    <MenuItem
+                                        text="Place Order"
+                                        press="onNavigateOrderCreation"
+                                        icon="sap-icon://add-document"
+                                    />
+
+                                    <MenuItem
+                                        text="GRN"
+                                        press="onNavigateGRN"
+                                        icon="sap-icon://customer-order-entry"
+                                    />
+                                    <MenuItem
+                                        text="GRN Report"
+                                        press="onNavigateGRNReport"
+                                        icon="sap-icon://sales-order-item"
+                                    />
+                                    <MenuItem
+                                        text="Ledger Report"
+                                        press="onNavigateLedger"
+                                        icon="sap-icon://document-text"
+                                    />
+                                    <MenuItem
+                                        text="Order History"
+                                        press="onNavigateOrderHistory"
+                                        icon="sap-icon://history"
+                                    />
+                                    <MenuItem
+                                        text="Scheme"
+                                        press="onNavigateScheme"
+                                        icon="sap-icon://notification-2"
+                                    />
+                                </Menu>
+                            </menu>
+                        </MenuButton>
+                    </OverflowToolbar>
+                </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader
+                id="id"
+                pinnable="true"
+            >
+                <smartFilterBar:SmartFilterBar
+                    useToolbar="true"
+                    enableBasicSearch="true"
+                    entitySet="PrHeader"
+                    id="idPrHeaderSmart"
+                    persistencyKey="SmartFilter_Explored"
+                    clear="true"
+                    showClearOnFB="true"
+                    showAllFilters="false"
+                >
+                    <smartFilterBar:controlConfiguration>
+                        <smartFilterBar:ControlConfiguration
+                            id="idStatus"
+                            key="STATUS"
+                            visibleInAdvancedArea="true"
+                            index="1"
+                            label="Status"
+                        />
+                    </smartFilterBar:controlConfiguration>
+
+                    <smartFilterBar:controlConfiguration>
+                        <smartFilterBar:ControlConfiguration
+                            id="idCreationDate"
+                            key="CREATION_DATE"
+                            visibleInAdvancedArea="true"
+                            label="Sales Order Date"
+                            conditionType="{module: 'sap.ui.comp.config.condition.DateRangeType'}"
+                            index="2"
+                        />
+                    </smartFilterBar:controlConfiguration>
+                </smartFilterBar:SmartFilterBar>
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <f:content>
+            <smartTable:SmartTable
+                id="idPurchTable"
+                editable="false"
+                width="100%"
+                entitySet="PrHeader"
+                useExportToExcel="true"
+                useVariantManagement="true"
+                useTablePersonalisation="true"
+                enableAutoBinding="true"
+                showRowCount="true"
+                header="Total Sales Order"
+                demandPopin="true"
+                smartFilterId="idPrHeaderSmart"
+                tableType="ResponsiveTable"
+                beforeRebindTable="onBeforeRebindTable"
+                enableAutoColumnWidth="true"
+                enableCopy="false"
+                showFullScreenButton="false"
+                beforeExport="onBeforeExport"
+                customData:p13nDialogSettings='{ filter: { visible: false }, 
+                    group: { visible: false },
+                    sort: { visible: false },
+                    columns: { visible: false }}'
+            >
+                <Table
+                    id="idPrheaderTbl"
+                    sticky="ColumnHeaders"
+                    autoPopinMode="true"
+                >
+                    <columns>
+                        <Column
+                            id="idColumnSuppQtn"
+                            hAlign="Center"
+                            width="14rem"
+                            minScreenWidth="Phone"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "PURCHASE_REQUEST_NO", "leadingProperty": "PURCHASE_REQUEST_NO", "filterProperty": "PURCHASE_REQUEST_NO", "columnIndex": 0 }'
+                                />
+                            </customData>
+                            <Label
+                                id="idPrNoTxt"
+                                text="Sales Order Number"
+                                design="Bold"
+                            />
+                        </Column>
+
+                        <Column
+                            id="idColumnDistName"
+                            hAlign="Center"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "REFERENCE_ID", "leadingProperty": "REFERENCE_ID", "columnIndex": 1}'
+                                />
+                            </customData>
+                            <Label
+                                id="idDistNameTxt"
+                                text="Reference Number"
+                                design="Bold"
+                            />
+                        </Column>
+
+                        <Column
+                            id="idColumnRfq"
+                            hAlign="Center"
+                            minScreenWidth="Desktop"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "CREATION_DATE", "leadingProperty": "CREATION_DATE", "columnIndex": 2 }'
+                                />
+                            </customData>
+                            <Label
+                                id="idCreationDateTxt"
+                                text="Sales Order Date"
+                                design="Bold"
+                            />
+                        </Column>
+
+                        <Column
+                            id="idColumnStatus"
+                            hAlign="End"
+                            minScreenWidth="Phone"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "GRAND_TOTAL", "leadingProperty": "GRAND_TOTAL", "columnIndex": 4}'
+                                />
+                            </customData>
+                            <Label
+                                id="idTotAmtTxt"
+                                text="Amount(₹)"
+                                design="Bold"
+                            />
+                        </Column>
+
+                        <Column
+                            id="idColumnSupp"
+                            hAlign="Center"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="p13nData"
+                                    value='\{"columnKey": "TO_STATUS/DESC", "leadingProperty": "TO_STATUS/DESC", "columnIndex": 5}'
+                                />
+                            </customData>
+                            <Label
+                                id="idStatusTxt"
+                                text="Sales Order Status"
+                                design="Bold"
+                            />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem
+                            id="idColumnListI"
+                            type="Navigation"
+                            press="onNavigateToDetails"
+                        >
+                            <cells>
+                                <Label
+                                    id="idPrHNo"
+                                    text="{PURCHASE_REQUEST_NO}"
+                                    design="Bold"
+                                />
+                                <Text
+                                    id="idDistName"
+                                    text="{REFERENCE_ID}"
+                                />
+                                <Text
+                                    id="idCreationDte"
+                                    text="{path:'CREATION_DATE', type: 'sap.ui.model.type.DateTime', formatOptions:{ pattern: 'dd/MM/yyyy'}}"
+                                />
+                                <Text
+                                    id="idTotAmt"
+                                    text="{path:'GRAND_TOTAL',formatter:'.formatter.formatterAmount'}"
+                                />
+                                <ObjectStatus
+                                    id="idPrStatus"
+                                    text="{path:'TO_STATUS/DESC'}"
+                                    state="{path: 'TO_STATUS/CODE',formatter: '.formatter.formatStatusColor'}"
+                                />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </smartTable:SmartTable>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="ideal_bsv_purchase_order_srv" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <Annotation Term="Core.Links">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="PrHeader" EntityType="ideal_bsv_purchase_order_srv.PrHeader"/>
+                <EntitySet Name="PrItems" EntityType="ideal_bsv_purchase_order_srv.PrItems"/>
+                <EntitySet Name="PrTemplate" EntityType="ideal_bsv_purchase_order_srv.PrTemplate"/>
+                <EntitySet Name="PrEventLog" EntityType="ideal_bsv_purchase_order_srv.PrEventLog"/>
+                <EntitySet Name="MasterPrEvent" EntityType="ideal_bsv_purchase_order_srv.MasterPrEvent"/>
+                <EntitySet Name="MasterPrStatus" EntityType="ideal_bsv_purchase_order_srv.MasterPrStatus"/>
+                <EntitySet Name="StockistOrderCount" EntityType="ideal_bsv_purchase_order_srv.StockistOrderCount"/>
+                <EntitySet Name="StockistStatusCount" EntityType="ideal_bsv_purchase_order_srv.StockistStatusCount"/>
+                <EntitySet Name="SchemeHeader" EntityType="ideal_bsv_purchase_order_srv.SchemeHeader"/>
+                <EntitySet Name="SchemeAttachment" EntityType="ideal_bsv_purchase_order_srv.SchemeAttachment"/>
+                <EntitySet Name="stockistNames" EntityType="ideal_bsv_purchase_order_srv.stockistNames"/>
+                <FunctionImport Name="CreatePurchase" ReturnType="Edm.String" m:HttpMethod="POST">
+                    <Parameter Name="sAction" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="aPrHeader" Type="Collection(ideal_bsv_purchase_order_srv.PrHeader)" Nullable="true" Mode="In"/>
+                    <Parameter Name="aPrItems" Type="Collection(ideal_bsv_purchase_order_srv.PrItems)" Nullable="true" Mode="In"/>
+                    <Parameter Name="aPrEvent" Type="Collection(ideal_bsv_purchase_order_srv.PrEventLog)" Nullable="true" Mode="In"/>
+                    <Parameter Name="oUserDetails" Type="ideal_bsv_purchase_order_srv.User_Details" Mode="In" Nullable="true"/>
+                </FunctionImport>
+                <FunctionImport Name="UpdateSpecialNo" ReturnType="Edm.String" m:HttpMethod="POST">
+                    <Parameter Name="sAction" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="sSalesOrderNo" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="sSAPNo" Type="Edm.String" Mode="In" Nullable="true"/>
+                </FunctionImport>
+                <AssociationSet Name="PrHeader_TO_STATUS" Association="ideal_bsv_purchase_order_srv.PrHeader_TO_STATUS">
+                    <End Role="PrHeader" EntitySet="PrHeader"/>
+                    <End Role="MasterPrStatus" EntitySet="MasterPrStatus"/>
+                </AssociationSet>
+                <AssociationSet Name="PrHeader_TO_ITEMS" Association="ideal_bsv_purchase_order_srv.PrHeader_TO_ITEMS">
+                    <End Role="PrHeader" EntitySet="PrHeader"/>
+                    <End Role="PrItems" EntitySet="PrItems"/>
+                </AssociationSet>
+                <AssociationSet Name="PrHeader_TO_EVENT" Association="ideal_bsv_purchase_order_srv.PrHeader_TO_EVENT">
+                    <End Role="PrHeader" EntitySet="PrHeader"/>
+                    <End Role="PrEventLog" EntitySet="PrEventLog"/>
+                </AssociationSet>
+                <AssociationSet Name="PrEventLog_TO_EVENT_STATUS" Association="ideal_bsv_purchase_order_srv.PrEventLog_TO_EVENT_STATUS">
+                    <End Role="PrEventLog" EntitySet="PrEventLog"/>
+                    <End Role="MasterPrEvent" EntitySet="MasterPrEvent"/>
+                </AssociationSet>
+                <AssociationSet Name="SchemeHeader_TO_ATTACHMENT" Association="ideal_bsv_purchase_order_srv.SchemeHeader_TO_ATTACHMENT">
+                    <End Role="SchemeHeader" EntitySet="SchemeHeader"/>
+                    <End Role="SchemeAttachment" EntitySet="SchemeAttachment"/>
+                </AssociationSet>
+            </EntityContainer>
+            <EntityType Name="PrHeader">
+                <Key>
+                    <PropertyRef Name="PURCHASE_REQUEST_NO"/>
+                </Key>
+                <Property Name="PURCHASE_REQUEST_NO" Type="Edm.Int64" Nullable="false"/>
+                <Property Name="SAP_SALES_ORDER_NO" Type="Edm.String" MaxLength="10"/>
+                <Property Name="CREATION_DATE" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="STOCKIST_ID" Type="Edm.String" MaxLength="10"/>
+                <Property Name="STOCKIST_NAME" Type="Edm.String" MaxLength="100"/>
+                <Property Name="REFERENCE_ID" Type="Edm.String" MaxLength="100"/>
+                <Property Name="SHIP_TO" Type="Edm.String" MaxLength="30"/>
+                <Property Name="SHIP_NAME" Type="Edm.String" MaxLength="100"/>
+                <Property Name="SHIP_FROM" Type="Edm.String" MaxLength="100"/>
+                <Property Name="SHIP_FROM_NAME" Type="Edm.String" MaxLength="100"/>
+                <Property Name="PAYMENT_METHOD_CODE" Type="Edm.String" MaxLength="10"/>
+                <Property Name="PAYMENT_METHOD_DESCRIPTION" Type="Edm.String" MaxLength="50"/>
+                <Property Name="STATUS" Type="Edm.Int32"/>
+                <Property Name="ORDER_TYPE" Type="Edm.Int32"/>
+                <Property Name="LAST_UPDATED_DATE" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="NOTIFICATION_IDS" Type="Edm.String" MaxLength="100"/>
+                <Property Name="TOTAL_AMOUNT" Type="Edm.String" MaxLength="10"/>
+                <Property Name="TAXES_AMOUNT" Type="Edm.String" MaxLength="10"/>
+                <Property Name="TCS_AMOUNT" Type="Edm.String" MaxLength="10"/>
+                <Property Name="GRAND_TOTAL" Type="Edm.String" MaxLength="20"/>
+                <NavigationProperty Name="TO_STATUS" Relationship="ideal_bsv_purchase_order_srv.PrHeader_TO_STATUS" FromRole="PrHeader" ToRole="MasterPrStatus"/>
+                <NavigationProperty Name="TO_ITEMS" Relationship="ideal_bsv_purchase_order_srv.PrHeader_TO_ITEMS" FromRole="PrHeader" ToRole="PrItems"/>
+                <NavigationProperty Name="TO_EVENT" Relationship="ideal_bsv_purchase_order_srv.PrHeader_TO_EVENT" FromRole="PrHeader" ToRole="PrEventLog"/>
+            </EntityType>
+            <EntityType Name="PrItems">
+                <Key>
+                    <PropertyRef Name="PURCHASE_REQUEST_NO"/>
+                    <PropertyRef Name="ITEM_NO"/>
+                </Key>
+                <Property Name="PURCHASE_REQUEST_NO" Type="Edm.Int64" Nullable="false"/>
+                <Property Name="ITEM_NO" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="MATERIAL_CODE" Type="Edm.String" MaxLength="40"/>
+                <Property Name="MATERIAL_DESC" Type="Edm.String" MaxLength="50"/>
+                <Property Name="HSN_CODE" Type="Edm.String" MaxLength="10"/>
+                <Property Name="UNIT_OF_MEASURE" Type="Edm.String" MaxLength="3"/>
+                <Property Name="ORDER_QUANTITY" Type="Edm.Int32"/>
+                <Property Name="SCHEME_APPLIED" Type="Edm.String" MaxLength="1"/>
+                <Property Name="MRP_PRICE" Type="Edm.String" MaxLength="10"/>
+                <Property Name="NIR_PRICE" Type="Edm.String" MaxLength="10"/>
+                <Property Name="TOTAL_AMOUNT" Type="Edm.String" MaxLength="10"/>
+                <Property Name="CGST_PERCENTAGE" Type="Edm.String" MaxLength="10"/>
+                <Property Name="CGST_AMOUNT" Type="Edm.String" MaxLength="10"/>
+                <Property Name="SGST_PERCENTAGE" Type="Edm.String" MaxLength="10"/>
+                <Property Name="SGST_AMOUNT" Type="Edm.String" MaxLength="10"/>
+                <Property Name="IGST_PERCENTAGE" Type="Edm.String" MaxLength="10"/>
+                <Property Name="IGST_AMOUNT" Type="Edm.String" MaxLength="10"/>
+                <Property Name="TAXES_AMOUNT" Type="Edm.String" MaxLength="10"/>
+                <Property Name="FREEGOODS" Type="Edm.String" MaxLength="1"/>
+                <Property Name="SPECIAL_ORDER" Type="Edm.String" MaxLength="1"/>
+                <Property Name="REQUEST_RATE" Type="Edm.String" MaxLength="10"/>
+                <Property Name="FROM_DATE" Type="Edm.DateTime" sap:display-format="Date"/>
+                <Property Name="TO_DATE" Type="Edm.DateTime" sap:display-format="Date"/>
+                <Property Name="SCHEMECODE" Type="Edm.String" MaxLength="10"/>
+            </EntityType>
+            <EntityType Name="PrTemplate" m:HasStream="true">
+                <Key>
+                    <PropertyRef Name="TEMPLATE_ID"/>
+                </Key>
+                <Property Name="TEMPLATE_ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="TEMPLATE_NAME" Type="Edm.String" MaxLength="100"/>
+                <Property Name="TEMPLATE_MIMETYPE" Type="Edm.String" MaxLength="100"/>
+                <Property Name="TEMPLATE_TYPE" Type="Edm.String" MaxLength="100"/>
+            </EntityType>
+            <EntityType Name="PrEventLog">
+                <Key>
+                    <PropertyRef Name="PURCHASE_REQUEST_NO"/>
+                    <PropertyRef Name="EVENT_NO"/>
+                </Key>
+                <Property Name="PURCHASE_REQUEST_NO" Type="Edm.Int64" Nullable="false"/>
+                <Property Name="EVENT_NO" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="EVENT_CODE" Type="Edm.String" MaxLength="10"/>
+                <Property Name="USER_ID" Type="Edm.String" MaxLength="100"/>
+                <Property Name="USER_ROLE" Type="Edm.String" MaxLength="10"/>
+                <Property Name="USER_NAME" Type="Edm.String" MaxLength="100"/>
+                <Property Name="COMMENTS" Type="Edm.String" MaxLength="100"/>
+                <Property Name="CREATION_DATE" Type="Edm.DateTimeOffset" Precision="7"/>
+                <NavigationProperty Name="TO_EVENT_STATUS" Relationship="ideal_bsv_purchase_order_srv.PrEventLog_TO_EVENT_STATUS" FromRole="PrEventLog" ToRole="MasterPrEvent"/>
+            </EntityType>
+            <EntityType Name="MasterPrEvent">
+                <Key>
+                    <PropertyRef Name="CODE"/>
+                </Key>
+                <Property Name="CODE" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="DESC" Type="Edm.String" MaxLength="100"/>
+            </EntityType>
+            <EntityType Name="MasterPrStatus">
+                <Key>
+                    <PropertyRef Name="CODE"/>
+                </Key>
+                <Property Name="CODE" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="DESC" Type="Edm.String" MaxLength="100"/>
+            </EntityType>
+            <EntityType Name="StockistOrderCount">
+                <Key>
+                    <PropertyRef Name="STOCKIST_ID"/>
+                    <PropertyRef Name="STOCKIST_NAME"/>
+                    <PropertyRef Name="DESC"/>
+                </Key>
+                <Property Name="STOCKIST_ID" Type="Edm.String" MaxLength="10" Nullable="false"/>
+                <Property Name="STOCKIST_NAME" Type="Edm.String" MaxLength="100" Nullable="false"/>
+                <Property Name="ORDER_TYPE_COUNT" Type="Edm.Int64"/>
+                <Property Name="DESC" Type="Edm.String" MaxLength="100" Nullable="false"/>
+            </EntityType>
+            <EntityType Name="StockistStatusCount">
+                <Key>
+                    <PropertyRef Name="STOCKIST_ID"/>
+                    <PropertyRef Name="STOCKIST_NAME"/>
+                    <PropertyRef Name="DESC"/>
+                </Key>
+                <Property Name="STOCKIST_ID" Type="Edm.String" MaxLength="10" Nullable="false"/>
+                <Property Name="STOCKIST_NAME" Type="Edm.String" MaxLength="100" Nullable="false"/>
+                <Property Name="STATUS_COUNT" Type="Edm.Int64"/>
+                <Property Name="DESC" Type="Edm.String" MaxLength="100" Nullable="false"/>
+            </EntityType>
+            <EntityType Name="SchemeHeader">
+                <Key>
+                    <PropertyRef Name="REFERENCE_ID"/>
+                </Key>
+                <Property Name="REFERENCE_ID" Type="Edm.Int64" Nullable="false"/>
+                <Property Name="VALID_FROM" Type="Edm.DateTime" sap:display-format="Date"/>
+                <Property Name="VALID_TO" Type="Edm.DateTime" sap:display-format="Date"/>
+                <Property Name="COMMENTS" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="CREATION_DATE" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CREATED_BY" Type="Edm.String" MaxLength="100"/>
+                <Property Name="TYPE" Type="Edm.String" MaxLength="20"/>
+                <NavigationProperty Name="TO_ATTACHMENT" Relationship="ideal_bsv_purchase_order_srv.SchemeHeader_TO_ATTACHMENT" FromRole="SchemeHeader" ToRole="SchemeAttachment"/>
+            </EntityType>
+            <EntityType Name="SchemeAttachment" m:HasStream="true">
+                <Key>
+                    <PropertyRef Name="REFERENCE_ID"/>
+                    <PropertyRef Name="FILE_ID"/>
+                </Key>
+                <Property Name="REFERENCE_ID" Type="Edm.Int64" Nullable="false"/>
+                <Property Name="FILE_ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="FILE_NAME" Type="Edm.String" MaxLength="100"/>
+                <Property Name="FILE_MIMETYPE" Type="Edm.String" MaxLength="100"/>
+                <Property Name="FILE_TYPE" Type="Edm.String" MaxLength="100"/>
+            </EntityType>
+            <EntityType Name="stockistNames">
+                <Key>
+                    <PropertyRef Name="STOCKIST_NAME"/>
+                </Key>
+                <Property Name="STOCKIST_NAME" Type="Edm.String" MaxLength="100" Nullable="false"/>
+            </EntityType>
+            <ComplexType Name="User_Details">
+                <Property Name="USER_ROLE" Type="Edm.String" MaxLength="50"/>
+                <Property Name="USER_ID" Type="Edm.String" MaxLength="50"/>
+                <Property Name="USER_NAME" Type="Edm.String" MaxLength="50"/>
+            </ComplexType>
+            <Association Name="PrHeader_TO_STATUS">
+                <End Role="PrHeader" Type="ideal_bsv_purchase_order_srv.PrHeader" Multiplicity="*"/>
+                <End Role="MasterPrStatus" Type="ideal_bsv_purchase_order_srv.MasterPrStatus" Multiplicity="0..1"/>
+                <ReferentialConstraint>
+                    <Principal Role="MasterPrStatus">
+                        <PropertyRef Name="CODE"/>
+                    </Principal>
+                    <Dependent Role="PrHeader">
+                        <PropertyRef Name="STATUS"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="PrHeader_TO_ITEMS">
+                <End Role="PrHeader" Type="ideal_bsv_purchase_order_srv.PrHeader" Multiplicity="*"/>
+                <End Role="PrItems" Type="ideal_bsv_purchase_order_srv.PrItems" Multiplicity="*"/>
+            </Association>
+            <Association Name="PrHeader_TO_EVENT">
+                <End Role="PrHeader" Type="ideal_bsv_purchase_order_srv.PrHeader" Multiplicity="*"/>
+                <End Role="PrEventLog" Type="ideal_bsv_purchase_order_srv.PrEventLog" Multiplicity="*"/>
+            </Association>
+            <Association Name="PrEventLog_TO_EVENT_STATUS">
+                <End Role="PrEventLog" Type="ideal_bsv_purchase_order_srv.PrEventLog" Multiplicity="*"/>
+                <End Role="MasterPrEvent" Type="ideal_bsv_purchase_order_srv.MasterPrEvent" Multiplicity="0..1"/>
+                <ReferentialConstraint>
+                    <Principal Role="MasterPrEvent">
+                        <PropertyRef Name="CODE"/>
+                    </Principal>
+                    <Dependent Role="PrEventLog">
+                        <PropertyRef Name="EVENT_CODE"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="SchemeHeader_TO_ATTACHMENT">
+                <End Role="SchemeHeader" Type="ideal_bsv_purchase_order_srv.SchemeHeader" Multiplicity="*"/>
+                <End Role="SchemeAttachment" Type="ideal_bsv_purchase_order_srv.SchemeAttachment" Multiplicity="0..1"/>
+            </Association>
+            <Annotations Target="ideal_bsv_purchase_order_srv.PrHeader/PURCHASE_REQUEST_NO" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="Label" String="Purchase Request No"/>
+                        <PropertyValue Property="CollectionPath" String="PrHeader"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="PURCHASE_REQUEST_NO"/>
+                                    <PropertyValue Property="ValueListProperty" String="PURCHASE_REQUEST_NO"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="PURCHASE_REQUEST_NO"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Description" String="Purchase Request No"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.PrHeader/STOCKIST_NAME" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="Label" String="Stockist Name"/>
+                        <PropertyValue Property="CollectionPath" String="stockistNames"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="STOCKIST_NAME"/>
+                                    <PropertyValue Property="ValueListProperty" String="STOCKIST_NAME"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="STOCKIST_NAME"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Description" String="Stockist Name"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.PrHeader/STATUS" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="Label" String="Status"/>
+                        <PropertyValue Property="CollectionPath" String="MasterPrStatus"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="STATUS"/>
+                                    <PropertyValue Property="ValueListProperty" String="CODE"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="DESC"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Description" String="Status"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.PrTemplate" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Core.MediaType" Path="TEMPLATE_MIMETYPE"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.PrTemplate/TEMPLATE_MIMETYPE" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Core.IsMediaType" Bool="true"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.MasterPrStatus/CODE" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Text" Path="DESC">
+                    <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.StockistOrderCount/STOCKIST_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Label" String="STOCKIST_ID: STOCKIST_ID"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.StockistOrderCount/STOCKIST_NAME" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Label" String="STOCKIST_NAME: STOCKIST_NAME"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.StockistOrderCount/ORDER_TYPE_COUNT" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Label" String="ORDER_TYPE_COUNT: ORDER_TYPE"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.StockistOrderCount/DESC" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Label" String="DESC: DESC"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.StockistStatusCount/STOCKIST_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Label" String="STOCKIST_ID: STOCKIST_ID"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.StockistStatusCount/STOCKIST_NAME" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Label" String="STOCKIST_NAME: STOCKIST_NAME"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.StockistStatusCount/STATUS_COUNT" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Label" String="STATUS: STATUS"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.StockistStatusCount/DESC" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Label" String="DESC: DESC"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.SchemeHeader/REFERENCE_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="Label" String="Reference Id"/>
+                        <PropertyValue Property="CollectionPath" String="SchemeHeader"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="REFERENCE_ID"/>
+                                    <PropertyValue Property="ValueListProperty" String="REFERENCE_ID"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="REFERENCE_ID"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Description" String="Reference Id"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.SchemeHeader/CREATION_DATE" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="Label" String="Creation Date"/>
+                        <PropertyValue Property="CollectionPath" String="SchemeHeader"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="CREATION_DATE"/>
+                                    <PropertyValue Property="ValueListProperty" String="CREATION_DATE"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="CREATION_DATE"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Description" String="Creation Date"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.SchemeAttachment" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Core.MediaType" Path="FILE_MIMETYPE"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.SchemeAttachment/FILE_MIMETYPE" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Core.IsMediaType" Bool="true"/>
+            </Annotations>
+            <Annotations Target="ideal_bsv_purchase_order_srv.stockistNames/STOCKIST_NAME" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueListWithFixedValues" Bool="true"/>
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="Label" String="Stockist Name"/>
+                        <PropertyValue Property="CollectionPath" String="stockistNames"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="STOCKIST_NAME"/>
+                                    <PropertyValue Property="ValueListProperty" String="STOCKIST_NAME"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="STOCKIST_NAME"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Description" String="Stockist Name"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

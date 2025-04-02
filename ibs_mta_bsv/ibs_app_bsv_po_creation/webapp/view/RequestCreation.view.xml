@@ -1,0 +1,659 @@
+<mvc:View
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    controllerName="com.ibs.bsv.ibsappbsvpocreation.controller.RequestCreation"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:layout="sap.ui.layout"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns="sap.uxap"
+    xmlns:u="sap.ui.unified"
+    class="viewPadding"
+    xmlns:ui="sap.ui.table"
+    xmlns:table="sap.ui.table"
+>
+    <m:Page
+        showHeader="false"
+        showNavButton="false"
+        navButtonPress="onBack"
+        class="sapUiSizeCompact"
+        enableScrolling="false"
+    >
+        <ObjectPageLayout class="sapUiSizeCompact">
+            <headerTitle>
+                <ObjectPageDynamicHeaderTitle>
+                    <expandedHeading>
+                        <m:HBox id="idHb">
+                            <m:Title
+                                id="idTxtOrdCre"
+                                text="Sales Order Creation"
+                                wrapping="true"
+                            />
+                        </m:HBox>
+                    </expandedHeading>
+                    <snappedHeading>
+                        <m:FlexBox
+                            id="idFB"
+                            fitContainer="true"
+                            alignItems="Center"
+                        >
+                            <m:Title
+                                id="idAvatarTitle"
+                                text="Sales Order Creation"
+                                wrapping="true"
+                            />
+                        </m:FlexBox>
+                    </snappedHeading>
+                    <actions>
+                        <m:OverflowToolbar
+                            class="TopNavBar NavPlaceOrder"
+                            style="Clear"
+                        >
+                            <m:ToolbarSpacer />
+                            <m:HBox
+                                id="idHox"
+                                visible="{PropertyModel>/HBOx}"
+                            >
+                                <m:Button
+                                    id="idLinka"
+                                    press="onNavigateDashboard"
+                                    text="Home"
+                                    type="Transparent"
+                                    icon="sap-icon://home"
+                                />
+                                <m:Button
+                                    text="Place Order"
+                                    press=""
+                                    type="Emphasized"
+                                />
+                                <m:Button
+                                    text="Order Status"
+                                    press="onNavigateOrderStatus"
+                                    type="Transparent"
+                                />
+                                <m:Button
+                                    text="GRN"
+                                    press="onNavigateGRN"
+                                    type="Transparent"
+                                />
+                                <m:Button
+                                    text="GRN Report"
+                                    press="onNavigateGRNReport"
+                                    type="Transparent"
+                                />
+                                <m:Button
+                                    text="Ledger Report"
+                                    press="onNavigateLedger"
+                                    type="Transparent"
+                                />
+                                <m:Button
+                                    text="Order History"
+                                    press="onNavigateOrderHistory"
+                                    type="Transparent"
+                                />
+                                <m:Button
+                                    text="Scheme"
+                                    press="onNavigateScheme"
+                                    type="Transparent"
+                                />
+                            </m:HBox>
+
+                            <m:MenuButton
+                                text="Menu"
+                                visible="{PropertyModel>/Menu}"
+                            >
+                                <m:menu>
+                                    <m:Menu>
+                                        <m:MenuItem
+                                            text="Home"
+                                            press="onNavigateDashboard"
+                                            icon="sap-icon://home"
+                                        />
+                                        <m:MenuItem
+                                            text="Order Status"
+                                            press="onNavigateOrderStatus"
+                                            icon="sap-icon://order-status"
+                                        />
+                                        <m:MenuItem
+                                            text="GRN"
+                                            press="onNavigateGRN"
+                                            icon="sap-icon://customer-order-entry"
+                                        />
+                                        <m:MenuItem
+                                            text="GRN Report"
+                                            press="onNavigateGRNReport"
+                                            icon="sap-icon://sales-order-item"
+                                        />
+                                        <m:MenuItem
+                                            text="Ledger Report"
+                                            press="onNavigateLedger"
+                                            icon="sap-icon://document-text"
+                                        />
+                                        <m:MenuItem
+                                            text="Order History"
+                                            press="onNavigateOrderHistory"
+                                            icon="sap-icon://history"
+                                        />
+                                        <m:MenuItem
+                                            text="Scheme"
+                                            press="onNavigateScheme"
+                                            icon="sap-icon://notification-2"
+                                        />
+                                    </m:Menu>
+                                </m:menu>
+                            </m:MenuButton>
+                        </m:OverflowToolbar>
+                    </actions>
+                </ObjectPageDynamicHeaderTitle>
+            </headerTitle>
+            <headerContent>
+                <m:HBox
+                    id="idHBox1"
+                    visible="{PropertyModel>/CreditHbox}"
+                >
+                    <m:ObjectStatus
+                        class="sapUiSmallMarginBottom sapUiSmallMarginBegin"
+                        title="Credit Limit"
+                        text="{path:'creditdetails>/CreditLimit',formatter:'.formatter.formatterAmount'} ₹"
+                        state="Indication05"
+                    />
+                    <m:ObjectStatus
+                        class="sapUiSmallMarginBottom sapUiSmallMarginBegin"
+                        title="Exposure"
+                        text="{path:'creditdetails>/ExposureAmount',formatter:'.formatter.formatterAmount'} ₹"
+                        state="Indication06"
+                    />
+                    <m:ObjectStatus
+                        class="sapUiSmallMarginBottom sapUiSmallMarginBegin"
+                        title="Utilization"
+                        text="{path:'creditdetails>/Utilization',formatter:'.formatter.formatterAmount'}%"
+                        state="Indication07"
+                    />
+                    <m:ObjectStatus
+                        class="sapUiSmallMarginBottom sapUiSmallMarginBegin"
+                        title="Credit Exposure"
+                        text="{path:'creditdetails>/CreditExposure',formatter:'.formatter.formatterAmount'} ₹"
+                        state="Indication08"
+                    />
+                </m:HBox>
+                <m:HBox
+                    justifyContent="SpaceBetween"
+                    visible="{PropertyModel>/HBox1}"
+                >
+                    <m:Label
+                        design="Bold"
+                        text="Credit Limit : "
+                        class="sapUiSmallMarginBegin"
+                    />
+                    <m:ObjectStatus
+                        text="{path:'creditdetails>/CreditLimit',formatter:'.formatter.formatterAmount'} ₹"
+                        state="Indication05"
+                        class="sapUiSmallMarginEnd"
+                    />
+                </m:HBox>
+
+                <m:HBox
+                    justifyContent="SpaceBetween"
+                    visible="{PropertyModel>/HBox2}"
+                >
+                    <m:Label
+                        design="Bold"
+                        text="Exposure : "
+                        class="sapUiSmallMarginBegin sapUiSmallMarginTop"
+                    />
+
+                    <m:ObjectStatus
+                        text="{path:'creditdetails>/ExposureAmount',formatter:'.formatter.formatterAmount'} ₹"
+                        state="Indication05"
+                        class="sapUiSmallMarginEnd sapUiSmallMarginTop"
+                    />
+                </m:HBox>
+
+                <m:HBox
+                    justifyContent="SpaceBetween"
+                    visible="{PropertyModel>/HBox3}"
+                >
+                    <m:Label
+                        design="Bold"
+                        text="Utilization : "
+                        class="sapUiSmallMarginBegin sapUiSmallMarginTop"
+                    />
+                    <m:ObjectStatus
+                        text="{path:'creditdetails>/Utilization',formatter:'.formatter.formatterAmount'}%"
+                        state="Indication05"
+                        class="sapUiSmallMarginEnd sapUiSmallMarginTop"
+                    />
+                </m:HBox>
+
+                <m:HBox
+                    justifyContent="SpaceBetween"
+                    visible="{PropertyModel>/HBox4}"
+                >
+                    <m:Label
+                        design="Bold"
+                        text="Credit Exposure : "
+                        class="sapUiSmallMarginBegin sapUiSmallMarginTop"
+                    />
+                    <m:ObjectStatus
+                        text="{path:'creditdetails>/CreditExposure',formatter:'.formatter.formatterAmount'} ₹"
+                        state="Indication05"
+                        class="sapUiSmallMarginEnd sapUiSmallMarginTop"
+                    />
+                </m:HBox>
+            </headerContent>
+            <sections>
+                <ObjectPageSection
+                    titleUppercase="false"
+                    title=""
+                >
+                    <subSections>
+                        <ObjectPageSubSection
+                            title="Order Details"
+                            titleUppercase="false"
+                            mode="Expanded"
+                        >
+                            <blocks>
+                                <m:VBox>
+                                    <m:Toolbar style="Clear">
+                                        <m:ObjectStatus
+                                            id="orderStatusMessage"
+                                            class="MessageStrip"
+                                            text="Only one order type request can be submitted at a time."
+                                            state="Information"
+                                            icon="sap-icon://information"
+                                            inverted="true"
+                                        />
+                                        <m:ToolbarSpacer />
+                                        <m:Button
+                                            text="Reset"
+                                            type="Emphasized"
+                                            press="onClickRefresh"
+                                            tooltip="Reset"
+                                            visible="{PropertyModel>/ResetFirst}"
+                                        />
+                                    </m:Toolbar>
+                                    <m:Toolbar
+                                        style="Clear"
+                                        id="idToolBar2"
+                                        visible="{PropertyModel>/ToolBar2}"
+                                    >
+                                        <m:ToolbarSpacer />
+                                        <m:Button
+                                            text="Reset"
+                                            type="Emphasized"
+                                            press="onClickRefresh"
+                                            tooltip="Reset"
+                                        />
+                                    </m:Toolbar>
+                                    <f:SimpleForm
+                                        editable="true"
+                                        layout="ResponsiveGridLayout"
+                                        backgroundDesign="Solid"
+                                        labelSpanXL="5"
+                                        labelSpanL="5"
+                                        labelSpanM="5"
+                                        adjustLabelSpan="false"
+                                        columnsXL="4"
+                                        columnsL="3"
+                                        columnsM="2"
+                                        class="sapUiSizeCompact"
+                                    >
+                                        <f:content>
+                                            <core:Title text="text" />
+                                            <m:Label
+                                                text="Order Reference"
+                                                design="Bold"
+                                                required="true"
+                                            />
+                                            <m:Input
+                                                id="idReferenceID"
+                                                value="{propertyModel>/referenceId}"
+                                                placeholder="Order Reference"
+                                                change="RefereneceIDChange"
+                                            />
+                                            <m:Label
+                                                text="Ship From"
+                                                design="Bold"
+                                            />
+                                            <m:Text
+                                                id="id_ShipF"
+                                                text="{path:'headerModel>/ShipFromName'}"
+                                            />
+
+                                            <m:Label
+                                                text="Order Type"
+                                                design="Bold"
+                                                id="idOrderType"
+                                                visible="true"
+                                                required="true"
+                                            />
+                                            <m:ComboBox
+                                                selectionChange="handleOrderType"
+                                                id="idType"
+                                                valueState="None"
+                                                placeholder="Select Order Type"
+                                                visible="true"
+                                                valueStateText="Only one order type request can be submitted at a time."
+                                            >
+                                                <core:Item
+                                                    key="1"
+                                                    text="ORDER WITH SCHEME"
+                                                />
+
+                                                <core:Item
+                                                    key="3"
+                                                    text="ORDER WITH SPECIAL RATE"
+                                                />
+                                            </m:ComboBox>
+
+                                            <core:Title text="" />
+                                            <m:Label
+                                                text="Request Date"
+                                                design="Bold"
+                                            />
+                                            <m:Text
+                                                id="id_Date"
+                                                text=""
+                                            />
+                                            <m:Label
+                                                text="Ship To"
+                                                design="Bold"
+                                            />
+                                            <m:Text
+                                                id="idShiTo"
+                                                text="{path:'ShipToModel>/ShipToName'}"
+                                            />
+
+                                            <m:Label
+                                                text="Product"
+                                                design="Bold"
+                                                id="textpro"
+                                                required="true"
+                                            />
+                                            <m:Input
+                                                id="id_Item"
+                                                value=""
+                                                enabled="{val>/val}"
+                                                valueHelpOnly="true"
+                                                width="100%"
+                                                valueHelpRequest="handleValueProductHelp"
+                                                placeholder="Select Product"
+                                                showValueHelp="true"
+                                                valueState="None"
+                                            />
+
+                                            <core:Title />
+                                            <m:Label
+                                                text="Payment Method"
+                                                design="Bold"
+                                            />
+                                            <m:Text
+                                                id="id_payMeth"
+                                                text="{headerModel>/PaymentTermName}"
+                                                wrapping="true"
+                                            />
+                                            <m:Label
+                                                text="Product Scheme"
+                                                design="Bold"
+                                                id="idMatScheme"
+                                                visible="false"
+                                            />
+                                            <m:ComboBox
+                                                items="{path: 'MaterialSchemeModel>/results'}"
+                                                selectionChange="handleScheme"
+                                                id="idSchmeComBo"
+                                                valueState="None"
+                                                placeholder="Select Product Scheme"
+                                                visible="false"
+                                            >
+                                                <core:Item
+                                                    key="{MaterialSchemeModel>Schemecode}"
+                                                    text="{MaterialSchemeModel>DisplayText}"
+                                                />
+                                            </m:ComboBox>
+                                        </f:content>
+                                    </f:SimpleForm>
+                                    <m:Table
+                                        items="{path:'PriceModel>/results',sorter : { path : 'MaterialCode',descending : false}}"
+                                        id="idTemporaryTable"
+                                    >
+                                        <m:columns>
+                                            <m:Column
+                                                hAlign="Begin"
+                                                width="13rem"
+                                                demandPopin="true"
+                                                minScreenWidth="Phone"
+                                            >
+                                                <m:Label
+                                                    text="{PropertyModel>/Count}"
+                                                    design="Bold"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                hAlign="Center"
+                                                demandPopin="true"
+                                                minScreenWidth="Desktop"
+                                            >
+                                                <m:Label
+                                                    text="HSN Code"
+                                                    design="Bold"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                hAlign="End"
+                                                demandPopin="true"
+                                                minScreenWidth="Phone"
+                                            >
+                                                <m:Label
+                                                    text="Quantity"
+                                                    design="Bold"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                hAlign="Center"
+                                                demandPopin="true"
+                                                minScreenWidth="Desktop"
+                                            >
+                                                <m:Label
+                                                    text="UOM"
+                                                    design="Bold"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                hAlign="Center"
+                                                demandPopin="true"
+                                                minScreenWidth="Desktop"
+                                            >
+                                                <m:Label
+                                                    text="MRP(₹)"
+                                                    design="Bold"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                hAlign="Center"
+                                                demandPopin="true"
+                                                minScreenWidth="Desktop"
+                                            >
+                                                <m:Label
+                                                    text="NIR(₹)"
+                                                    design="Bold"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                width="6rem"
+                                                hAlign="End"
+                                                demandPopin="true"
+                                                minScreenWidth="Desktop"
+                                                id="idRequestedRate"
+                                                visible="false"
+                                            >
+                                                <m:Label
+                                                    text="REQ.Rate(₹)"
+                                                    design="Bold"
+                                                    wrapping="true"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                hAlign="Center"
+                                                demandPopin="true"
+                                                minScreenWidth="Desktop"
+                                            >
+                                                <m:Label
+                                                    text="CGST(%)"
+                                                    design="Bold"
+                                                />
+                                            </m:Column>
+
+                                            <m:Column
+                                                hAlign="Center"
+                                                demandPopin="true"
+                                                minScreenWidth="Desktop"
+                                            >
+                                                <m:Label
+                                                    text="SGST(%)"
+                                                    design="Bold"
+                                                />
+                                            </m:Column>
+
+                                            <m:Column
+                                                hAlign="Center"
+                                                demandPopin="true"
+                                                minScreenWidth="Desktop"
+                                            >
+                                                <m:Label
+                                                    text="IGST(%)"
+                                                    design="Bold"
+                                                />
+                                            </m:Column>
+
+                                            <m:Column
+                                                hAlign="End"
+                                                demandPopin="true"
+                                                minScreenWidth="Desktop"
+                                            >
+                                                <m:Label
+                                                    text="Amount(₹)"
+                                                    design="Bold"
+                                                    wrapping="true"
+                                                    wrappingType="Normal"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                hAlign="Center"
+                                                demandPopin="true"
+                                                minScreenWidth="Desktop"
+                                            >
+                                                <m:Label
+                                                    text="Delete"
+                                                    design="Bold"
+                                                />
+                                            </m:Column>
+                                        </m:columns>
+                                        <m:items>
+                                            <m:ColumnListItem>
+                                                <m:cells>
+                                                    <m:Label
+                                                        text="{PriceModel>MaterialDesc}"
+                                                        design="Bold"
+                                                    />
+                                                    <m:Label
+                                                        text="{PriceModel>HsnCode}"
+                                                    />
+                                                    <m:Input
+                                                        value="{PriceModel>OrderQuantity}"
+                                                        textAlign="End"
+                                                        change="priceChange"
+                                                        editable="{PriceModel>isEditable}"
+                                                        type="Number"
+                                                    />
+                                                    <m:Label
+                                                        text="{PriceModel>UnitOfMeasure}"
+                                                    />
+                                                    <m:Label
+                                                        text="{path:'PriceModel>MrpPrice',formatter:'.formatter.formatterAmount'}"
+                                                        textAlign="End"
+                                                    />
+                                                    <m:Label
+                                                        text="{path:'PriceModel>NirPrice',formatter:'.formatter.formatterAmount'}"
+                                                        textAlign="End"
+                                                    />
+                                                    <m:Input
+                                                        value="{PriceModel>RequestRate}"
+                                                        visible="{=${PriceModel>Ordertype} === '3' ? true : false}"
+                                                        change="onChangeRequestRate"
+                                                        textAlign="End"
+                                                        type="Number"
+                                                    />
+                                                    <m:Label
+                                                        text="{PriceModel>CgstPercentage}"
+                                                    />
+                                                    <m:Label
+                                                        text="{PriceModel>SgstPercentage}"
+                                                    />
+                                                    <m:Label
+                                                        text="{PriceModel>IgstPercentage}"
+                                                    />
+                                                    <m:Label
+                                                        text="{path:'PriceModel>TotalAmount',formatter:'.formatter.formatterAmount'}"
+                                                        textAlign="End"
+                                                    />
+                                                    <m:Button
+                                                        press="onDelete"
+                                                        type="Reject"
+                                                        enabled="true"
+                                                        tooltip="Delete"
+                                                        icon="sap-icon://delete"
+                                                        visible="{PriceModel>isEditable}"
+                                                    />
+                                                </m:cells>
+                                            </m:ColumnListItem>
+                                        </m:items>
+                                    </m:Table>
+                                </m:VBox>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+
+                <ObjectPageSection
+                    titleUppercase="false"
+                    title=""
+                >
+                    <subSections>
+                        <ObjectPageSubSection
+                            title="Remark"
+                            titleUppercase="false"
+                        >
+                            <m:VBox>
+                                <m:TextArea
+                                    maxLength="50"
+                                    showExceededText="true"
+                                    width="100%"
+                                    value="{propertyModel>/Remark}"
+                                    placeholder="Enter remark"
+                                    id="idRemark"
+                                    change="onChangeRemark"
+                                />
+                            </m:VBox>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+            </sections>
+        </ObjectPageLayout>
+
+        <m:footer>
+            <m:Bar>
+                <m:contentRight>
+                    <m:Button
+                        text="Review Order"
+                        type="Success"
+                        press="onSubmitData"
+                        enabled="true"
+                        id="excelorder"
+                    />
+                </m:contentRight>
+            </m:Bar>
+        </m:footer>
+    </m:Page>
+</mvc:View>

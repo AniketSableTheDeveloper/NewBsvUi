@@ -1,0 +1,46 @@
+/* Enter your custom styles here */
+/* .sapMObjStatusIndication05 .sapMObjStatusText, .sapMObjStatusIndication05 .sapMObjStatusIcon {
+    color: #0070f2;
+    font-weight: bold !important;
+}
+.sapMObjStatus:not(.sapMObjStatusInverted) .sapMObjStatusText, .sapMObjStatus:not(.sapMObjStatusInverted) .sapMObjStatusIcon, .sapMObjStatusInverted .sapMObjStatusLink:active .sapMObjStatusText, .sapMObjStatusInverted .sapMObjStatusLink:active .sapMObjStatusIcon {
+    text-shadow: 0 0 .125rem #fff;
+    font-weight: bold !important;
+} */
+
+
+.marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+    flex-grow: 1;
+}
+
+.marquee {
+    display: inline-block;
+    animation: marquee 50s linear infinite;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* 
+.sapMObjStatusInverted.sapMObjStatusInformation .sapMObjStatusText, .sapMObjStatusInverted.sapMObjStatusInformation .sapMObjStatusIcon {
+    text-shadow: 0 0 .125rem #fff;
+    font-size: 0.9rem !important;
+} */
+
+
+
+
+
+
+
+

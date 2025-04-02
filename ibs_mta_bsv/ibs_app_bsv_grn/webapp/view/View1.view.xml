@@ -1,0 +1,190 @@
+<mvc:View controllerName="com.ibs.bsv.ibsappbsvgrn.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m">
+	<App id="idApp">
+	<pages>
+    <Page id="page" showHeader="false">
+          <OverflowToolbar class="TopNavBar">
+                        <ToolbarSpacer />
+                        <HBox
+                            id="idHox"
+                            visible="{PropertyModel>/HBOx}"
+                        >
+                          <Button id="idButton" press="onNavigateDashboard" text="Home" type="Default" icon="sap-icon://home"/>
+
+
+                          <Button
+                                text="Place Order"
+                                press="onNavigateOrderCreation"
+                                type="Transparent"
+                                 class="sapUiTinyMargiEnd"
+                            />
+                            <Button
+                                text="Order Status"
+                                press="onNavigateOrderStatus"
+                                type="Transparent"
+                            />
+                             <Button
+                                text="GRN"
+                                press=""
+                                type="Emphasized"
+                            />
+                            <Button
+                                text="GRN Report"
+                                press="onNavigateGRNReport"
+                                type="Transparent"
+                            />
+                            <Button
+                                text="Ledger Report"
+                                press="onNavigateLedger"
+                                type="Transparent"
+                            />
+                             <Button
+                                text="Order History"
+                                press="onNavigateOrderHistory"
+                                type="Transparent"
+                            />
+                             <Button
+                                text="Scheme"
+                                press="onNavigateScheme"
+                                type="Transparent"
+                            />
+                      
+                        </HBox>
+
+                        <MenuButton
+                            text="Menu"
+                            visible="{PropertyModel>/Menu}"
+                        >
+                            <menu>
+                                <Menu>
+                                    <MenuItem
+                                        text="Home"
+                                        press="onNavigateDashboard"
+                                        icon="sap-icon://home"
+                                    />
+                                    <MenuItem
+                                        text="Place Order"
+                                        press="onNavigateOrderCreation"
+                                          icon="sap-icon://add-document"
+                                    />
+                                    <MenuItem
+                                        text="Order Status"
+                                        press="onNavigateOrderStatus"
+                                          icon="sap-icon://order-status"
+                                    />
+                                    <MenuItem
+                                        text="GRN Report"
+                                        press="onNavigateGRNReport"
+                                           	icon="sap-icon://sales-order-item"
+                                    />
+                                     <MenuItem
+                                         text="Ledger Report"
+                                        press="onNavigateLedger"
+                                        	 icon="sap-icon://document-text"
+                                    />
+                                     <MenuItem
+                                        text="Order History"
+                                        press="onNavigateOrderHistory"
+                                        icon="sap-icon://history"
+                                    />
+                                    <MenuItem
+                                        text="Scheme"
+                                        press="onNavigateScheme"
+                                          icon="sap-icon://notification-2"
+                                    />
+                                </Menu>
+                            </menu>
+                        </MenuButton>
+
+
+                    </OverflowToolbar>
+    
+        <content>
+		<Table id="idOrdersTable" inset="false" items="{path:'grnHeaderSet>/', sorter : { path : 'DeliveryNo',descending : true}}" sticky="ColumnHeaders,HeaderToolbar" class="sapUiContentPadding"
+		growing="true" growingThreshold="50" autoPopinMode="true" contextualWidth="Auto" fixedLayout="true">
+		<dependents>
+	    </dependents>
+            <headerToolbar>
+            <OverflowToolbar visible="true">
+            <Title id="id_totalItems" width="25%" wrapping="true" class="sapUiContentPadding sapUiResponsiveContentPadding"/>
+            <content>
+            <ToolbarSpacer/>
+            <SearchField id="oSearchMasterData" visible="true" width="39%" placeholder="Search by Invoice Number,Sales Order No"
+            showRefreshButton="false" liveChange="onSearch">
+            <layoutData>
+            <OverflowToolbarLayoutData priority="NeverOverflow" />
+            </layoutData>
+            </SearchField>
+            <Button icon="sap-icon://refresh" press="onRefresh" type="Transparent">
+                <layoutData>
+                <OverflowToolbarLayoutData priority="NeverOverflow" />
+            </layoutData>
+            </Button>
+             <!-- <Button id="idLinka" press="onNavigateDashboard" text="Home" type="Emphasized"/> -->
+            </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>            
+            <Column hAlign="Center">
+                <Label text="Invoice Number" design="Bold" wrapping="true"/>
+            </Column>
+            <Column hAlign="Center">
+                <Label text="Invoice Date" design="Bold" wrapping="true"/>
+            </Column>
+            <Column hAlign="Center" >
+                <Label text="Sales Order No" design="Bold" wrapping="true"/>
+            </Column>
+            
+             <Column hAlign="Center">
+                <Label text="Transporter" design="Bold" wrapping="true"/>
+            </Column>
+             <Column hAlign="Center">
+                <Label text="LR No" design="Bold" wrapping="true"/>
+            </Column>
+             <Column hAlign="Center">
+                <Label text="LR Date" design="Bold" wrapping="true"/>
+            </Column>
+             <Column hAlign="Center">
+                <Label text="EWay Bill No" design="Bold" wrapping="true"/>
+            </Column>
+            
+            <Column hAlign="End" width="9rem">
+                <Label text="Amount(₹)" design="Bold" wrapping="true"/>
+            </Column>
+            <!-- <Column hAlign="Center" >
+                <Label text="Delivery Date" design="Bold" wrapping="true"/>
+            </Column>
+            <Column hAlign="Right">
+                <Label text="Delivery Amount(₹)" design="Bold" wrapping="true"/>
+            </Column> -->
+            <Column hAlign="Center">
+                <Label text="Order Recevied" design="Bold" wrapping="true"/>
+            </Column>
+        </columns>
+        <items>
+        <ColumnListItem>
+            <cells>
+                <Text text= "{path:'grnHeaderSet>InvoiceNo', formatter:'.formatter.getDataNullValue'}"/>
+                <Text text= "{path:'grnHeaderSet>InvoiceDate' , formatter:'.formatter.getDataNullValue',type: 'sap.ui.model.type.DateTime', formatOptions: {pattern: 'dd.MM.yyyy' , UTC: false }}"/>
+                <Text text = "{path:'grnHeaderSet>SalesorderNo', formatter:'.formatter.getDataNullValue'}" />
+                 <Text text= "{path:'grnHeaderSet>Trans'}"/>
+                <Text text= "{path:'grnHeaderSet>Lrno', formatter:'.formatter.getDataNullValue'}"/>
+                <Text text= "{path:'grnHeaderSet>Lrdat', formatter:'.formatter.getDataNullValue',type: 'sap.ui.model.type.DateTime', formatOptions: {pattern: 'dd.MM.yyyy' , UTC: false }}"/>
+               
+                <Text text= "{path:'grnHeaderSet>EwayBillNo', formatter:'.formatter.getDataNullValue'}"/>        
+                
+                <!-- <Text text= "{path:'grnHeaderSet>DeliveryNo', formatter:'.formatter.getDataNullValue'}"/>
+                <Text text= "{path:'grnHeaderSet>DeliveryDate', formatter:'.formatter.getDataNullValue',type: 'sap.ui.model.type.DateTime', formatOptions: {pattern: 'dd.MM.yyyy' , UTC: false }}"/> -->
+                <Text text = "{path:'grnHeaderSet>DeliveryAmount', formatter:'.formatter.formatterAmount'}" />
+                <Button  text="Accept" type="Accept" press="onFragUpload"/>
+                <!-- icon="sap-icon://accept" -->
+            </cells>
+        </ColumnListItem>
+	    </items>
+		</Table>
+	</content>
+    </Page>
+	</pages>
+	</App>
+</mvc:View>

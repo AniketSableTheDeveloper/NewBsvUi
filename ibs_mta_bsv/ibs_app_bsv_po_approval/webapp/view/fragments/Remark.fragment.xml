@@ -1,0 +1,19 @@
+<core:FragmentDefinition 	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+    <Dialog title="Do you want to Reject this Sales Order?" icon="sap-icon://information">
+   	<VBox class="sapUiSmallMargin">
+		
+				<Label text="Enter Remark" required="true"/>
+				<TextArea id="idRemark"  width="30rem" height="4rem" change="onChangeRemark"/>
+		
+	</VBox>
+      <buttons>
+    <Button text="Yes" press="onRejectOrder" type="Emphasized"></Button>
+    <Button text="No" press="closeDialog"></Button>
+    </buttons>
+    </Dialog>
+  
+    
+</core:FragmentDefinition>

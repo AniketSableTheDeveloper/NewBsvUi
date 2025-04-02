@@ -1,0 +1,35 @@
+/* Enter your custom styles here */
+
+/* table, th, td {
+    margin-top: 4rem;
+    margin-left: 1.2rem;
+} */
+
+
+/* 
+sapMBtnText {
+    visibility: hidden !important;
+} */
+
+/* .highlightedRowforSpecialOrder {
+    background-color: #87CEEB !important; 
+}
+.highlightedRowforSpecial {
+    background-color: white !important; 
+} */
+
+
+
+/* .sapMObjStatus>.sapMObjStatusTitle {
+    color: #556b82;
+    font-weight: bold !important;
+}
+.sapMObjStatus:not(.sapMObjStatusInverted) .sapMObjStatusText, .sapMObjStatus:not(.sapMObjStatusInverted) .sapMObjStatusIcon, .sapMObjStatusInverted .sapMObjStatusLink:active .sapMObjStatusText, .sapMObjStatusInverted .sapMObjStatusLink:active .sapMObjStatusIcon {
+    text-shadow: 0 0 .125rem #fff;
+    font-weight: bold !important;
+} */
+
+
+/* .toolbar {
+    margin-top: -1rem !important;
+} */
