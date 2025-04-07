@@ -239,7 +239,7 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,Filter,FilterO
         var fileSizeInMB = fileSizeInKB / 1024;
 
         var fName = sbfileDetails[0].name;
-
+        debugger
         if (fileSizeInMB > 5) {
             BusyIndicator.hide();
             MessageBox.warning("File size should be less than or equal to 5MB", {
@@ -358,6 +358,30 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,Filter,FilterO
             }
         });
         },
+        isValidJsonString: function (sDataString) {
+			var value = null;
+			var oArrObj = null;
+			var sErrorMessage = "";
+			try {
+				if (sDataString === null || sDataString === "" || sDataString === undefined) {
+					throw "No data found.";
+				}
+				value = JSON.parse(sDataString);
+				if (toString.call(value) === '[object Object]' && Object.keys(value).length > 0) {
+					return true;
+				} else {
+					throw "Error";
+				}
+			} catch (errorMsg) {
+				if (errorMsg === "No data found.") {
+					sErrorMessage = errorMsg;
+				} else {
+					sErrorMessage = "Invalid JSON data."
+				}
+				return false;
+			}
+        	return true;
+		},
         onSchemeFrom:function(oEvent){
             that.getView().byId("DvalidToId").setValue();
 

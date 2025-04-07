@@ -229,6 +229,30 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,Fi
             }
         });
         },
+        isValidJsonString: function (sDataString) {
+			var value = null;
+			var oArrObj = null;
+			var sErrorMessage = "";
+			try {
+				if (sDataString === null || sDataString === "" || sDataString === undefined) {
+					throw "No data found.";
+				}
+				value = JSON.parse(sDataString);
+				if (toString.call(value) === '[object Object]' && Object.keys(value).length > 0) {
+					return true;
+				} else {
+					throw "Error";
+				}
+			} catch (errorMsg) {
+				if (errorMsg === "No data found.") {
+					sErrorMessage = errorMsg;
+				} else {
+					sErrorMessage = "Invalid JSON data."
+				}
+				return false;
+			}
+        	return true;
+		},
         fileType : function(vReferenceId, data){
             var vReferenceId = "(REFERENCE_ID eq " + vReferenceId + ")";
             var path = appModulePath + "/odata/v4/ideal-bsv-scheme-srv/SchemeAttachment?$filter=" + vReferenceId;
