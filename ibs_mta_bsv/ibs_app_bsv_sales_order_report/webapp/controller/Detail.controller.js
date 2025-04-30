@@ -3,12 +3,11 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageBox",
     "sap/ui/core/BusyIndicator",
-    "com/ibs/bsv/ibsappbsvpoapproval/model/formatter",
+    "com/ibs/bsv/ibsappbsvsalesorderreport/model/formatter",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/m/library"
+     "sap/m/library"
 ],
-
     function (Controller, JSONModel, MessageBox, BusyIndicator, formatter, Filter, FilterOperator,mobileLibrary) {
         "use strict";
         var URLHelper = mobileLibrary.URLHelper;
@@ -25,10 +24,12 @@ sap.ui.define([
         var login_ID;
         var PropertyModel;
 
-        return Controller.extend("com.ibs.bsv.ibsappbsvpoapproval.controller.Detail", {
+        return Controller.extend("com.ibs.bsv.ibsappbsvsalesorderreport.controller.Detail", {
             formatter: formatter,
             onInit: function () {
                 that = this;
+               // 
+
                sapModel = that.getOwnerComponent().getModel("ZIDEAL_ODATA_SALESORDER_SRV");
                PropertyModel = that.getOwnerComponent().getModel("PropertyModel");
 
@@ -53,19 +54,20 @@ sap.ui.define([
                 //Refresh smart table
                 //  var oView = that.getView().byId("idOrderList")
                 //  oView.rebindTable();
-                 
                 var g = this.getView().getParent().getParent();
                 g.toBeginColumnPage(this.getView());
-
                 this.getView().byId("idFullSc").setIcon("sap-icon://full-screen");
                 prno = Number(oEvent.getParameters().arguments.PURCHASE_REQUEST_NO)
                 // var selectedObject =  that.getOwnerComponent().getModel("RequestModel").getData();
+
                 // var model = new JSONModel(selectedObject);
                 // that.getView().setModel(model,"requestModel")
+
                 // var myJSONModel = new JSONModel();
                 // myJSONModel.setData(selectedObject);
                 // that.getView().setModel(myJSONModel, "requestModel");
                 // var RequestNo = Number(oEvent.getParameters().arguments.PO_Number)
+
                 // previousData =that.getOwnerComponent().getModel("orderDetails").getData()
                 var appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
                 var appPath = appId.replaceAll(".", "/");
@@ -110,15 +112,7 @@ sap.ui.define([
                         MessageBox.error(e.responseText);
                     }
                 });
-
-
-
-
-
-
             },
-
-
               // added 22-10-2024
       _userdetails:function()
       {
@@ -182,7 +176,6 @@ sap.ui.define([
             }
         });
     },
-
             readUserMasterEntities: function (url) {
                 //
                 BusyIndicator.show(0);
@@ -193,7 +186,6 @@ sap.ui.define([
                     data: null,
                     contentType: 'application/json',
                     success: function (data, responce) {
-                        debugger
                         BusyIndicator.hide();
                         if(data.d.results[0].TO_ATTACHMENT == null){
                             that.getView().byId("idpo").setVisible(false);
@@ -247,17 +239,18 @@ sap.ui.define([
 
                 this.getView().getModel("appView").setProperty("/layout", "OneColumn");
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                oRouter.navTo("MasterPage"
-
-                );
-
-                // that.getView().byId("sapNO").setVisible(false)
+                oRouter.navTo("RouteView1");
+            },
+            downloadPo : function(){
+                var fileId = 1;
+             
+                var appId = that.getOwnerComponent().getManifestEntry("/sap.app/id");
+                var appPath = appId.replaceAll(".", "/");
+                var appModulePath = jQuery.sap.getModulePath(appPath);
+                var url = appModulePath + "/odata/v2/ideal-bsv-purchase-approval-srv/PrPoUpload(PURCHASE_REQUEST_NO=" + prno + ",FILE_ID=" + fileId + ")/$value";
+                URLHelper.redirect(url, true);
             },
             Content: function () {
-                ////
-                // BusyIndicator.show();
-                // oDataModel.refresh(true);
-
                 var dynamicSideContentState = this.getView().byId("DynamicSideContent").getShowSideContent();
                 var iWindowWidth = window.innerWidth;
                 if (dynamicSideContentState === true) {
@@ -501,6 +494,8 @@ sap.ui.define([
             
           
             onApproveOrdr: function () {
+               // 
+
                 MessageBox.confirm("Do you want to Approve this request?", {
                     actions: [MessageBox.Action.YES, MessageBox.Action.CANCEL],
                     emphasizedAction: MessageBox.Action.YES,
@@ -512,15 +507,7 @@ sap.ui.define([
                     }
                 })
             },
-            downloadPo : function(){
-                var fileId = 1;
-             
-                var appId = that.getOwnerComponent().getManifestEntry("/sap.app/id");
-                var appPath = appId.replaceAll(".", "/");
-                var appModulePath = jQuery.sap.getModulePath(appPath);
-                var url = appModulePath + "/odata/v2/ideal-bsv-purchase-approval-srv/PrPoUpload(PURCHASE_REQUEST_NO=" + prno + ",FILE_ID=" + fileId + ")/$value";
-                URLHelper.redirect(url, true);
-            },
+
             formatDate: function (creationDate) {
                 // let creationDate = "/Date(1723635218145+0000)/";
 
@@ -970,9 +957,7 @@ sap.ui.define([
                         
                     }
                 });
-
             }
-
               },
               onChangeRemark:function(oEvent)
               {
@@ -982,7 +967,5 @@ sap.ui.define([
                     sap.ui.getCore().byId("idRemark").setValueState("None")
                 }
               }
-
-
         });
     });

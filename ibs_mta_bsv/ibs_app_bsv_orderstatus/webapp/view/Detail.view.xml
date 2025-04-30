@@ -104,6 +104,13 @@
                                 icon="sap-icon://print"
                             />
                             <m:Button
+                                id="idpo" 
+                                type="Transparent"  
+                                text="Download PO" 
+                                press="downloadPo" 
+                                visible="true"
+                            />
+                            <m:Button
                                 id="idViewEvent"
                                 type="Transparent"
                                 text="View Events"

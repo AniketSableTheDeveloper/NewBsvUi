@@ -1,0 +1,101 @@
+<mvc:View controllerName="com.ibs.bsv.ibsappbsvsalesorderreport.controller.View1"
+    	xmlns:mvc="sap.ui.core.mvc"
+		xmlns:core="sap.ui.core"
+		xmlns="sap.m"
+		xmlns:f="sap.f"
+		xmlns:fb="sap.ui.comp.filterbar"
+		xmlns:svm="sap.ui.comp.smartvariants">
+    <f:DynamicPage headerExpanded="{/headerExpanded}">
+			<f:header>
+				<f:DynamicPageHeader>
+					<f:content>
+						<fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad" clear="onReset" showClearOnFB="true">
+							<fb:filterGroupItems>
+								<fb:FilterGroupItem name="Stockist" label="Stockist" groupName="Group1" visibleInFilterBar="true">
+									<fb:control>
+										<ComboBox
+											name="Stockist"
+											selectionChange=".onSelectionChange"
+											items="{
+												path: 'stockist>/',
+												templateShareable: true
+											}"
+                                            placeholder="Select Stockist"
+											id="idStockistCombo"
+										>
+											<core:Item key="{stockist>STOCKIST_ID}" text="{stockist>STOCKIST_NAME}"/>
+										</ComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+
+								<fb:FilterGroupItem name="Sales Order Date" label="Sales Order Date" groupName="Group1" visibleInFilterBar="true">
+									<fb:control>
+									<DateRangeSelection id="idDateRangeSelection" placeholder="Select Date Range">
+                                    
+                                    </DateRangeSelection>
+									</fb:control>
+								</fb:FilterGroupItem>
+								
+							</fb:filterGroupItems>
+						</fb:FilterBar>
+					</f:content>
+				</f:DynamicPageHeader>
+			</f:header>
+			<f:content>
+				<Table
+					id="idOrderTable"
+					inset="false"
+					items="{
+						path: 'stockistDetails>/',sorter : { path : 'PURCHASE_REQUEST_NO',descending : true}
+					}"
+                    mode="None"
+                    selectionChange="onSelectRow"
+                    sticky="ColumnHeaders"
+				>
+                <headerToolbar>
+                <OverflowToolbar>
+				  <!-- <SearchField id="idSearch" width="10rem" placeholder="Search by Sales Order No." liveChange="onSearchField"></SearchField> -->
+                <Label  text="{PropertyModel>/count}" id="idSalesOrderCount"></Label>
+                <ToolbarSpacer/>
+                <SearchField id="idSearch" width="25%" placeholder="Search by Sales Order No." liveChange="onSearchField"></SearchField>
+                <!-- <Button text="Approve" type="Success"  press="onApproveOrdr" visible="{PropertyModel>/ApproveBtton}"/> -->
+                <!-- <Button text="" icon="sap-icon://excel-attachment" press="onDownloadExcel"/> -->
+                </OverflowToolbar>
+                </headerToolbar>
+					<columns>
+						<Column minScreenWidth="Phone" demandPopin="true" hAlign="Center">
+							<Label text="Sales Order Number" design="Bold" wrapping="true"/>
+						</Column>
+						<Column width="16rem" minScreenWidth="Desktop" demandPopin="true" hAlign="Center" popinDisplay="Inline">
+							<Label text="Stockist" design="Bold"/>
+						</Column>
+						<Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center" popinDisplay="Inline">
+							<Label text="Sales Order Date" design="Bold"/>
+						</Column>
+						<Column minScreenWidth="Phone" demandPopin="true" hAlign="Center">
+							<Label text="Order Type" design="Bold"/>
+						</Column>
+						<Column minScreenWidth="Desktop" demandPopin="true" hAlign="End" popinDisplay="Inline">
+							<Label text="Amount(₹)" design="Bold"/>
+						</Column>
+						<Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center" popinDisplay="Inline">
+							<Label text="Status" design="Bold"/>
+						</Column>
+					</columns>
+
+					<items>
+						<ColumnListItem type="Navigation" press="onNavigateToDetails">
+							<cells>
+                            <Label text="{stockistDetails>PURCHASE_REQUEST_NO}" design="Bold"></Label>    
+                            <Label text="{stockistDetails>STOCKIST_NAME}"></Label>    
+                            <Label text="{path:'stockistDetails>CREATION_DATE',formatter:'.formatter.formatDateTable'}" ></Label>    
+                            <Label text="{path:'stockistDetails>ORDER_TYPE',formatter:'.formatter.ordertypeformat'}"></Label>    
+                            <Label text="{path:'stockistDetails>GRAND_TOTAL',formatter:'.formatter.formatterAmount'}"></Label>    
+                            <ObjectStatus id="idStatus" text="{path:'stockistDetails>TO_STATUS/DESC'}" state="{path: 'stockistDetails>TO_STATUS/CODE',formatter: '.formatter.formatStatusColor'}"></ObjectStatus>  
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</f:content>
+		</f:DynamicPage>
+</mvc:View>

@@ -43,6 +43,7 @@ sap.ui.define([
       formatter: formatter,
       onInit: function () {
         that = this;
+        window.oFileUploader = that.getView().byId("fileUploader");
         temObject = {
           results: []
         }
@@ -93,8 +94,7 @@ sap.ui.define([
             url: url,
             type: 'GET',
             contentType: 'application/json',
-            success: function (data, response) {
-              
+            success: function (data, response) {              
               login_ID = data.name // fetching login_name value to name property
               // login_ID = data.login_name[0]; // commented on 26-11-2024 
               that.readHeaderSet(login_ID)
@@ -102,7 +102,7 @@ sap.ui.define([
               that.readCredit(login_ID);
             },
             error: function (oError) {
-              
+                MessageBox.error("Error while reading user attributes");
             }
           });
         }); // after deploy
@@ -143,7 +143,37 @@ sap.ui.define([
           that.getView().getModel("PriceModel").refresh();
         }
       },
+      uploadPoFile:function(oEvent){
+          debugger
+          if(oEvent.mParameters.files[0].size == undefined || oEvent.mParameters.files[0].size == null){
 
+          }else{
+          var filesize = oEvent.mParameters.files[0].size;
+          var fileSizeInKB = filesize / 1024;
+          var fileSizeInMB = fileSizeInKB / 1024;
+          if (fileSizeInMB > 5) {
+            MessageBox.warning("File size should be less than or equal to 5MB", {
+                icon: MessageBox.Icon.WARNING,
+                title: "WARNING",
+                actions: sap.m.MessageBox.Action.OK,
+                emphasizedAction: sap.m.MessageBox.Action.OK
+            });
+          }else{
+          var oPoUpload = [{
+            PURCHASE_REQUEST_NO : 1,
+            FILE_ID : 1,
+            FILE_NAME : oEvent.mParameters.files[0].name,
+            FILE_CONTENT : "",
+            FILE_MIMETYPE : oEvent.mParameters.files[0].type
+          }]
+          var PoUploadModel = new JSONModel(oPoUpload);
+          that.getOwnerComponent().setModel(PoUploadModel, "mPoUploadModel");
+          window.oFileUploader = that.getView().byId("fileUploader");
+        }
+
+        }
+          // that.getView().setModel("")
+      },
       //Order Type drop-down select function(Not in use)
       handleScheme: function (oEvent) {
         Schemecode = oEvent.getParameters().selectedItem.mProperties.key
@@ -916,6 +946,9 @@ sap.ui.define([
         that.getView().byId("idSchmeComBo").setValue("");
         that.getView().byId("idSchmeComBo").setSelectedKey("");
         that.getView().byId("idType").setValue("");
+        that.getView().byId("fileUploader").setValue("");
+        var PoUploadModel = new JSONModel([]);
+        that.getOwnerComponent().setModel(PoUploadModel, "mPoUploadModel");
         that.getView().byId("idType").setSelectedKey("");
         that.getView().byId("idMatScheme").setVisible(false);
         that.getView().byId("idSchmeComBo").setVisible(false);

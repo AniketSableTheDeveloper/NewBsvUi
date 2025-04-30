@@ -382,6 +382,7 @@
                                                 showValueHelp="true"
                                                 valueState="None"
                                             />
+                                           
 
                                             <core:Title />
                                             <m:Label
@@ -393,6 +394,16 @@
                                                 text="{headerModel>/PaymentTermName}"
                                                 wrapping="true"
                                             />
+                                             <!-- //To File uploader -->
+                                             <m:Label
+                                                text="PO Upload"
+                                                design="Bold"
+                                            />
+                                            <u:FileUploader
+                                            id="fileUploader"
+                                            name="myFileUpload"
+                                            tooltip="Upload your file"
+                                            change="uploadPoFile"/>
                                             <m:Label
                                                 text="Product Scheme"
                                                 design="Bold"

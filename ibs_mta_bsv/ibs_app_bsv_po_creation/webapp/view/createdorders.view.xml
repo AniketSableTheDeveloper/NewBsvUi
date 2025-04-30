@@ -160,13 +160,8 @@
                                         class="sapUiTinyMarginBegin"
                                     />
                                 </layout:HorizontalLayout> -->
-                              
-									   
                             </layout:VerticalLayout>
-
                             <layout:VerticalLayout>
-
-							
                                 <layout:HorizontalLayout class="sapUiTinyMarginTop">
                                     <m:Label
                                         text="Ship From"
@@ -180,15 +175,19 @@
                                 </layout:HorizontalLayout>
 
                                  <layout:HorizontalLayout id="idShipToLayout" class="sapUiTinyMarginTop">
-                                    <m:Label
-                                        text="Ship To"
-                                        design="Bold"
-                                        showColon="true"
-										
-                                        
-                                    />
+                                <m:Label text="Ship To" design="Bold" showColon="true"/>
                                     <m:Text
                                         text="{headerDetails>/SHIP_NAME}"
+                                        class="sapUiTinyMarginBegin"
+                                    />
+                                </layout:HorizontalLayout>
+
+								<layout:HorizontalLayout id="idpoUpload" class="sapUiTinyMarginTop">
+                                <m:Label id="idpoUploadLbl" text="PO Uploaded" design="Bold" showColon="true" visible="true"/>
+                                    <m:Text
+										id="idpoUploadTxt"
+                                        text=""
+										visible="true"
                                         class="sapUiTinyMarginBegin"
                                     />
                                 </layout:HorizontalLayout>
@@ -376,7 +375,6 @@
                                 mode="Expanded"
                                 titleUppercase="false"
                             >
-                            
                         <m:TextArea value="{EventsmModel>/COMMENTS}" id="idTextEvent" width="100%" editable="false"></m:TextArea>
 
                             </ObjectPageSubSection>
@@ -386,7 +384,6 @@
 						<footer>
 			<m:OverflowToolbar>
 				<m:ToolbarSpacer />
-				
 				<m:Button type="Success" text="Place order" press="ApporveOrder" />
 			</m:OverflowToolbar>
 		</footer>

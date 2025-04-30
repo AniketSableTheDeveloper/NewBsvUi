@@ -1,0 +1,15 @@
+<mvc:View controllerName="com.ibs.bsv.ibsappbsvsalesorderreport.controller.App"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns="sap.f">
+    <m:App id="app">
+    <m:pages>
+            <FlexibleColumnLayout 
+            id="layout" 
+            backgroundDesign="Solid" 
+            layout="{appView>/layout}" 
+             restoreFocusOnBackNavigation="true"/>
+        </m:pages>
+    </m:App>
+</mvc:View>

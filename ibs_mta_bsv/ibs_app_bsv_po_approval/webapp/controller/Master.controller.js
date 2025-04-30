@@ -23,7 +23,6 @@ sap.ui.define([
         return Controller.extend("com.ibs.bsv.ibsappbsvpoapproval.controller.Master", {
             formatter: formatter,
             onInit: function () {
-
                 that = this;
                 that.checkDevice();
                 sapModel = that.getOwnerComponent().getModel("ZIDEAL_ODATA_SALESORDER_SRV");
@@ -33,86 +32,51 @@ sap.ui.define([
                 oRouter.getRoute("MasterPage").attachPatternMatched(this._onRouteMatched, this);
                 // that.readUserMasterEntities()
                 // that.readStockist()
-
             },
-
             _onRouteMatched: function (oEvent) {
-
-                //
-
                 PropertyModel.setProperty("/ApproveBtton", false);
                 that._userdetails();
-
                 var g = this.getView().getParent().getParent();
                 g.toBeginColumnPage(this.getView());
             },
-
-
             // Device funtion check (Phone/Tablet/Desktop)
             checkDevice: function () {
-
                 if (sap.ui.Device.system.phone === true) {
-
                     that.getView().byId("idSalesOrderCount").setVisible(false);
-                
                     // PropertyModel.setProperty("/Menu", true);
                     // that.getView().byId("idShipFrom").addStyleClass("sapUiSmallMarginEnd")
                     // that.getView().byId("idShipTo").addStyleClass("sapUiSmallMarginEnd")
                     // PropertyModel.setProperty("/HBOx", false);
-
                     // that.getView().byId("idTotAmtObjStatus").addStyleClass("sapMObjectStatusTiny");
                     // that.getView().byId("idTaxAmtObjStatus").addStyleClass("sapMObjectStatusTiny");
                     // that.getView().byId("idGrdAmtObjStatus").addStyleClass("sapMObjectStatusTiny");
-
-
-                    
                     // that.getView().byId("idTotAmtVLayout").addStyleClass("sapUiSmallMarginEnd");
                     // that.getView().byId("idTotTaxVLayout").addStyleClass("sapUiSmallMarginEnd");
-                    // that.getView().byId("idGrdAmtVLayout").addStyleClass("sapUiSmallMarginEnd");
-
-                   
-                    
+                    // that.getView().byId("idGrdAmtVLayout").addStyleClass("sapUiSmallMarginEnd");    
                 }
                 else if (sap.ui.Device.system.tablet === true) {
-
                     that.getView().byId("idSalesOrderCount").setVisible(true);
-                 
                     // that.getView().byId("idShipFrom").addStyleClass("sapUiLargeMarginBegin")
                     // that.getView().byId("idShipTo").addStyleClass("sapUiLargeMarginBegin")
-                    
-                   
-                    
                     // that.getView().byId("idTotAmtObjStatus").addStyleClass("sapMObjectStatusLarge");
                     // that.getView().byId("idTaxAmtObjStatus").addStyleClass("sapMObjectStatusLarge");
                     // that.getView().byId("idGrdAmtObjStatus").addStyleClass("sapMObjectStatusLarge");
-
-
                     // that.getView().byId("idTotAmtVLayout").addStyleClass("sapUiSmallMarginBegin");
                     // that.getView().byId("idTotTaxVLayout").addStyleClass("sapUiSmallMarginBegin");
                     // that.getView().byId("idGrdAmtVLayout").addStyleClass("sapUiSmallMarginBegin");
-
-                   
                 }
-
                 else if (sap.ui.Device.system.desktop === true) {
-
                     that.getView().byId("idSalesOrderCount").setVisible(true);
-
                     // that.getView().byId("idShipFrom").addStyleClass("sapUiLargeMarginBegin")
                     // that.getView().byId("idShipTo").addStyleClass("sapUiLargeMarginBegin")
-                    
                     // that.getView().byId("idTotAmtObjStatus").addStyleClass("sapMObjectStatusLarge");
                     // that.getView().byId("idTaxAmtObjStatus").addStyleClass("sapMObjectStatusLarge");
                     // that.getView().byId("idGrdAmtObjStatus").addStyleClass("sapMObjectStatusLarge");
-                   
                     // that.getView().byId("idTotAmtVLayout").addStyleClass("sapUiSmallMarginBegin");
                     // that.getView().byId("idTotTaxVLayout").addStyleClass("sapUiSmallMarginBegin");
                     // that.getView().byId("idGrdAmtVLayout").addStyleClass("sapUiSmallMarginBegin");
-
-                   
                 }
             },
-    
             // added 22-10-2024
             _userdetails: function () {
 
@@ -143,14 +107,11 @@ sap.ui.define([
                             that.readgetUserAttributes();
                         },
                         error: function (oError) {
-                            
+                            MessageBox.error("Error while reading User Attributes");
                         }
                     });
                 });
-
             },
-
-
             onBeforeRebindTable: function (oEvent) {
                 //;
                 var Ship_From = login_ID;

@@ -27,7 +27,7 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,Fi
         },
         _onRouteMatched:function(){
             var oTable = that.getView().byId("idSchemeTable");
-            oTable.rebindTable();
+            oTable.idSalesTable();
         },
         onSelectionChange:function(oEvent){
             

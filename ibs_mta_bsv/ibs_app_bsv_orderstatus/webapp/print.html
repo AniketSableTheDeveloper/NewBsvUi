@@ -223,12 +223,7 @@ var grntotal = Number(headerData.d.results[0].GRAND_TOTAL).toLocaleString('en-US
         if (OrderType === 3) {
             tr.append("<td class='request-rate' style='text-align:right'>" + Number(item.REQUEST_RATE).toLocaleString('en-US', { minimumFractionDigits: 2 }) + " ₹</td>");
         }
-
-
-            
             // tr.append("<td style='text-align:right'>" + Number(item.REQUEST_RATE).toLocaleString('en-US', { minimumFractionDigits: 2 }) + " ₹</td>");
-
-
            // Bind address data to the corresponding elements
         $('#companyName').text(Address.CompanyName);                     // Bharat Serums and Vaccines Limited
         $('#street').text(Address.CompanyStreet);   
@@ -236,9 +231,6 @@ var grntotal = Number(headerData.d.results[0].GRAND_TOTAL).toLocaleString('en-US
         // $('#str3').text(Address.CompanyStr3);                            // 65 Behind Reliable Plaza, Kalwa Industrial State
         // $('#location').text(Address.CompanyLocation);                    // Thane
         $('#cityPostal').text(Address.CompanyCity + ", " + Address.CompanyPostalcode);  // Maharashtra, 400708
-
-
-
 
             // tr.append("<td class='cgst-col'>" + item.CGST_PERCENTAGE + "</td>");
             // tr.append("<td class='sgst-col'>" + item.SGST_PERCENTAGE + "</td>");
@@ -252,9 +244,7 @@ var grntotal = Number(headerData.d.results[0].GRAND_TOTAL).toLocaleString('en-US
             // tr.append("<td style='text-align:right'>" + sgstAmt.toLocaleString('en-US', { minimumFractionDigits: 2 }) + "</td>");
             $('#table').append(tr);
         });
-
     });
-
 </script>
 </head>
 <body class="sapUiBody1">
@@ -275,8 +265,7 @@ var grntotal = Number(headerData.d.results[0].GRAND_TOTAL).toLocaleString('en-US
                             <strong id="to">ABC Private Limited</strong><br>
                             <Label id="add1">6th Floor, Technocity, X-5/3, Mahape,</Label>
                             <Label id="add2"> Navi Mumbai, Maharashtra 400710</Label> -->
-                            
-                           
+                       
                             <!-- <strong id="companyName"></strong><br>
                             <label id="street"></label><br>
                             <label id="city"></label><br>
@@ -362,15 +351,15 @@ var grntotal = Number(headerData.d.results[0].GRAND_TOTAL).toLocaleString('en-US
                                     <table class="table table-condensed" id="table1">
                                         <thead>
                                             <tr >
-                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">Product</th>
-                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">Qty (Uom)</th>
-                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">MRP</th>
-                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">NIR</th>
-                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">REQ.Rate</th>
-                                                <th class="text-right" style="width: 3rem; border-bottom: 2px solid #080808;"">CGST(%)</th>
-                                                <th class="text-right" style="width: 3rem; border-bottom: 2px solid #080808;"" >SGST(%)</th>
-                                                <th class="text-right" style="width: 3rem; border-bottom: 2px solid #080808;">IGST(%)</th>
-                                                <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">Amount</th>
+                                            <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">Product</th>
+                                            <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">Qty (Uom)</th>
+                                            <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">MRP</th>
+                                            <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">NIR</th>
+                                            <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">REQ.Rate</th>
+                                            <th class="text-right" style="width: 3rem; border-bottom: 2px solid #080808;"">CGST(%)</th>
+                                            <th class="text-right" style="width: 3rem; border-bottom: 2px solid #080808;"" >SGST(%)</th>
+                                            <th class="text-right" style="width: 3rem; border-bottom: 2px solid #080808;">IGST(%)</th>
+                                            <th class="text-right" width="20rem" style="border-bottom: 2px solid #080808;">Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table">
@@ -391,7 +380,6 @@ var grntotal = Number(headerData.d.results[0].GRAND_TOTAL).toLocaleString('en-US
                 <address class="address" style="white-space: pre-line">
                 </address>
             </div> -->
-
 
             <div class="col-xs-6" style="width: 30%; float: inline-end;">
                 <table class="table table-condensed" style="width:100%; table-layout: fixed; text-align: right;">

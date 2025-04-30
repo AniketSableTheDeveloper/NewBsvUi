@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="com.ibs.bsv.ibsappbsvpoapproval.controller.Detail"
+    controllerName="com.ibs.bsv.ibsappbsvsalesorderreport.controller.Detail"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
     xmlns:smartTable="sap.ui.comp.smarttable"
@@ -77,8 +77,8 @@
                         </snappedTitleOnMobile>
 
                         <actions>
-                            <m:Button id="idprint" type="Transparent" press="printReq" icon="sap-icon://print" visible="true"/>
-                            <m:Button id="idpo" type="Transparent"  text="Download PO" press="downloadPo" visible="true"/>
+                        <m:Button id="idpo" type="Transparent"  text="Download PO" press="downloadPo" visible="true"/>
+                        	<!-- <m:Button id="idprint" type="Transparent" press="printReq" icon="sap-icon://print" visible="true"/> -->
                             <m:Button
                                 id="idViewEvent"
                                 type="Transparent"
@@ -222,10 +222,6 @@
                                     />
                                 </layout:HorizontalLayout>
                             </layout:VerticalLayout>
-
-                            
-                  
-
                         <layout:HorizontalLayout
                             id="id1sthl"
                             class="sapUiTinyMarginTop"
@@ -297,22 +293,11 @@
                                 titleUppercase="false"
                                 mode="Expanded"
                             >
-
-                            
 <m:Table id="idMTable" autoPopinMode="false" inset="false" items="{path:'itemsModel>/'}" sticky="ColumnHeaders,HeaderToolbar" class="sapUiContentPadding"
 						growing="true" growingThreshold="10"  contextualWidth="Auto" fixedLayout="true" visible="true">
 					
 						<m:columns>
 							<m:Column hAlign="Begin" width="12rem" demandPopin="true" minScreenWidth="Phone" importance="High">
-
-
-                             <!-- <m:HBox>
-                        <m:Label  text="Product  (   "/>
-                    	<core:Icon  src="sap-icon://favorite"  color="blue"/>
-                        <m:Label   text=" - Special Order)" />
-
-   </m:HBox> -->
-
 								<m:Label id="MS2G2T1F1" text="Product" design="Bold" wrapping="true"/>
 							</m:Column>
 							<m:Column hAlign="Center" width="6rem" demandPopin="true" minScreenWidth="Phone" importance="High">
@@ -347,45 +332,11 @@
 							<m:Column hAlign="End" demandPopin="true" minScreenWidth="Desktop" width="8rem" importance="High">
 								<m:Label id="MS2G2T1F9_name" width="8rem" text="Total Amount(₹)" design="Bold" wrapping="true"/>
 							</m:Column>
-
-
-
-                            	<!-- <m:Column id="idSpecialOrder" hAlign="Center" demandPopin="true" visible="false" width="8rem" minScreenWidth="Phone" importance="High">
-								<m:Label id="MS2G2T1F9_nam2" text="Special Order" design="Bold" wrapping="true"/>
-							</m:Column>
-							<m:Column hAlign="Center" width="8rem" visible="false" id="idReRate" demandPopin="true" minScreenWidth="10000px" popinDisplay="Inline">
-								<m:Label id="idRequestRate" text="Requested Rate(₹)" design="Bold" wrapping="true"/>
-							</m:Column>
-							
-							<m:Column hAlign="Center" width="8rem" visible ="false" id="idFromDat" demandPopin="true" minScreenWidth="10000px" popinDisplay="Inline">
-								<m:Label id="idFrom" text="From Date" design="Bold" wrapping="true"/>
-							</m:Column>
-							
-							<m:Column hAlign="Center" width="8rem" visible="false" id="idToDat" demandPopin="true" minScreenWidth="10000px" popinDisplay="Inline">
-								<m:Label id="idTo" text="To Date" design="Bold" wrapping="true"/>
-							</m:Column> -->
-
-
-
-							
-						
-							
 						</m:columns>
 						<m:items>
 							<m:ColumnListItem type="Inactive">
 								<m:cells>	
-
-                                <!-- <m:HBox>
-                       <m:ObjectIdentifier title="{itemsModel>MATERIAL_CODE}" text="{itemsModel>MATERIAL_DESC}"></m:ObjectIdentifier>
-                       <m:Label text=" " textAlign="Begin"></m:Label>
-                    	<core:Icon class="sapUiTinyMarginBegin" id="staricon" src="sap-icon://favorite" color="blue"  visible="{= ${itemsModel>SPECIAL_ORDER} === 'X' }"/>
-		</m:HBox> -->
 									<m:ObjectIdentifier title="{itemsModel>MATERIAL_CODE}" text="{itemsModel>MATERIAL_DESC}"/>
-
-
-
-
-
 									<m:Label text="{itemsModel>HSN_CODE}" textAlign="End"/>
 					<m:Text text="{itemsModel>ORDER_QUANTITY}  {itemsModel>UNIT_OF_MEASURE}" textAlign="End"></m:Text>
 					
@@ -397,263 +348,11 @@
 					<m:Label text="{path:'itemsModel>SGST_PERCENTAGE',formatter:'.formatter.formatterAmount'}" textAlign="End"></m:Label>
 					<m:Label text="{path:'itemsModel>IGST_PERCENTAGE',formatter:'.formatter.formatterAmount'}" textAlign="End"></m:Label>
 					<m:Label text="{path:'itemsModel>TOTAL_AMOUNT',formatter:'.formatter.formatterAmount'}" textAlign="End"></m:Label>
-				
-                 	<!-- <m:CheckBox select="onSelectSpecialRate" id="idSpecialRate">
-					
-					</m:CheckBox>
-					<m:Input id="idRequestR"  visible="false" placeholder="Requested Rate" width="8rem" change="onChangeRequestRate"></m:Input>
-					<m:DatePicker id="idFromDate"   visible="false" placeholder="From Date" width="8rem" change="onChangeFromDate"></m:DatePicker>
-					<m:DatePicker id="idToDate"  visible="false" placeholder="To Date" width="8rem" change="onChangeToDate"></m:DatePicker> -->
 
 									</m:cells>
 							</m:ColumnListItem>
 						</m:items>
 					</m:Table> 
-
-
-
-
-
-                                <!-- <smartTable:SmartTable
-                                    id="idOrderList"
-                                    editable="false"
-                                    width="100%"
-                                    entitySet="PrItems"
-                                    useExportToExcel="true"
-                                    useVariantManagement="true"
-                                    useTablePersonalisation="true"
-                                    enableAutoBinding="true"
-                                    showRowCount="false"
-                                    demandPopin="true"
-                                    tableType="ResponsiveTable"
-                                    beforeRebindTable="onBeforeRebindTable"
-                                    enableAutoColumnWidth="true"
-                                    enableCopy="false"
-                                    showFullScreenButton="true"
-                                >
-                                    <m:Table id="idSuppQuoTable">
-                                        <m:columns>
-                                            <m:Column
-                                                id="idColumnSuppQtnItem"
-                                                hAlign="Begin"
-                                                width="13rem"
-                                            >
-                                                <m:customData>
-                                                    <core:CustomData
-                                                        key="p13nData"
-                                                        value='\{"columnKey": "MATERIAL_DESC,MATERIAL_CODE", "leadingProperty": "MATERIAL_DESC,MATERIAL_CODE", "sortProperty": "MATERIAL_DESC,MATERIAL_CODE", "filterProperty": "MATERIAL_DESC,MATERIAL_CODE", "columnIndex": 0 }'
-                                                    />
-                                                </m:customData>
-                                                <m:Text
-                                                    id="idTxtSuppQtnItem"
-                                                    text="Material"
-                                                />
-                                            </m:Column>
-
-                                            <m:Column
-                                                id="idColumnMat"
-                                                hAlign="Center"
-                                            >
-                                                <m:customData>
-                                                    <core:CustomData
-                                                        key="p13nData"
-                                                        value='\{"columnKey": "HSN_CODE", "leadingProperty": "HSN_CODE", "columnIndex": 1 }'
-                                                    />
-                                                </m:customData>
-                                                <m:Text
-                                                    id="idTxtHsnCode"
-                                                    text="HSN Code"
-                                                />
-                                            </m:Column>
-                                            <m:Column
-                                                id="idColumnMaterial"
-                                                 hAlign="End"
-                                            >
-                                                <m:customData>
-                                                    <core:CustomData
-                                                        key="p13nData"
-                                                        value='\{"columnKey": "ORDER_QUANTITY", "leadingProperty": "ORDER_QUANTITY", "columnIndex": 3}'
-                                                    />
-                                                </m:customData>
-                                                <m:Text
-                                                    id="idTxtMaterial"
-                                                    text="{i18n>Quantity}"
-                                                />
-                                            </m:Column>
-
-                                            <m:Column
-                                                id="idColumnRfqItem"
-                                                hAlign="Center"
-                                            >
-                                                <m:customData>
-                                                    <core:CustomData
-                                                        key="p13nData"
-                                                        value='\{"columnKey": "UNIT_OF_MEASURE", "leadingProperty": "UNIT_OF_MEASURE", "columnIndex": 2}'
-                                                    />
-                                                </m:customData>
-                                                <m:Text
-                                                    id="idTxtRfqItem"
-                                                    text="{i18n>UOM}"
-                                                />
-                                            </m:Column>
-
-                                            
-
-                                            <m:Column
-                                                id="idColumnPrice"
-                                                hAlign="End"
-                                            >
-                                                <m:customData>
-                                                    <core:CustomData
-                                                        key="p13nData"
-                                                        value='\{"columnKey": "MRP_PRICE", "leadingProperty": "MRP_PRICE", "columnIndex": 4}'
-                                                    />
-                                                </m:customData>
-                                                <m:Text
-                                                    id="idTxtRfqPrice"
-                                                    text="MRP(₹)"
-                                                />
-                                            </m:Column>
-
-                                             <m:Column
-                                                id="idNIRColumn"
-                                                 hAlign="End"
-                                            >
-                                                <m:customData>
-                                                    <core:CustomData
-                                                        key="p13nData"
-                                                        value='\{"columnKey": "NIR_PRICE", "leadingProperty": "NIR_PRICE", "columnIndex": 4}'
-                                                    />
-                                                </m:customData>
-                                                <m:Text
-                                                    id="idNIR"
-                                                    text="NIR(₹)"
-                                                />
-                                            </m:Column>
-
-                                            <m:Column
-                                                id="idColumnRequestQty"
-                                                hAlign="End"
-                                            >
-                                                <m:customData>
-                                                    <core:CustomData
-                                                        key="p13nData"
-                                                        value='\{"columnKey": "CGST_PERCENTAGE", "leadingProperty": "CGST_PERCENTAGE", "columnIndex": 5}'
-                                                    />
-                                                </m:customData>
-                                                <m:Text
-                                                    id="idTxtRequestQty"
-                                                    text="CGST(%)"
-                                                />
-                                            </m:Column>
-
-                                            <m:Column
-                                                id="idColumnScheuleOrdQty"
-                                                 hAlign="End"
-                                            >
-                                                <m:customData>
-                                                    <core:CustomData
-                                                        key="p13nData"
-                                                        value='\{"columnKey": "SGST_PERCENTAGE", "leadingProperty": "SGST_PERCENTAGE", "columnIndex": 6}'
-                                                    />
-                                                </m:customData>
-                                                <m:Text
-                                                    id="idTxtScheuleOrdQty"
-                                                    text="SGST(%)"
-                                                />
-                                            </m:Column>
-
-                                            <m:Column
-                                                id="idColumnAwardQty"
-                                               hAlign="End"
-                                            >
-                                                <m:customData>
-                                                    <core:CustomData
-                                                        key="p13nData"
-                                                        value='\{"columnKey": "IGST_PERCENTAGE", "leadingProperty": "IGST_PERCENTAGE", "columnIndex": 7 }'
-                                                    />
-                                                </m:customData>
-                                                <m:Text
-                                                    id="idTxtAwardQty"
-                                                    text="IGST(%)"
-                                                />
-                                            </m:Column>
-
-                                            <m:Column
-                                                id="idColumnOrdPrice"
-                                                hAlign="End"
-                                                
-                                            >
-                                                <m:customData>
-                                                    <core:CustomData
-                                                        key="p13nData"
-                                                        value='\{"columnKey": "TOTAL_AMOUNT", "leadingProperty": "TOTAL_AMOUNT", "columnIndex": 8 }'
-                                                    />
-                                                </m:customData>
-                                                <m:Text
-                                                    id="idTxtOrdPrice"
-                                                    text="Total Amount(₹)"
-                                                    wrapping="true"
-                                                />
-                                            </m:Column>
-                                        </m:columns>
-
-                                        <m:items>
-                                            <m:ColumnListItem
-                                                id="idColumnListI"
-                                            >
-                                                <m:cells>
-                                                    <m:ObjectIdentifier
-                                                        id="idTxtMat"
-                                                        title="{MATERIAL_CODE}"
-                                                        text="{MATERIAL_DESC}"
-                                                      
-                                                    />
-                                                    <m:Text
-                                                        id="idTxtHsnCod"
-                                                        text="{HSN_CODE}"
-                                                    />
-                                                      <m:Text
-                                                        id="idTxtQty"
-                                                        text="{ORDER_QUANTITY}"
-                                                        textAlign="End"
-                                                    />
-                                                    <m:Text
-                                                        id="idTxtUom"
-                                                        text="{UNIT_OF_MEASURE}"
-                                                    />
-                                                  
-                                                    <m:Text
-                                                        id="idTxtPrc"
-                                                        text="{path:'MRP_PRICE',formatter:'.formatter.formatterAmount'}"
-                                                    />
-                                                    <m:Text
-                                                        id="idnirprice"
-                                                        text="{path:'NIR_PRICE',formatter:'.formatter.formatterAmount'}"
-                                                    />
-                                                    <m:Text
-                                                        id="idTxtCGST"
-                                                        text="{CGST_PERCENTAGE}"
-                                                    />
-                                                    <m:Text
-                                                        id="idSGST"
-                                                        text="{SGST_PERCENTAGE}"
-                                                    />
-                                                    <m:Text
-                                                        id="idNetPrice"
-                                                        text="{IGST_PERCENTAGE}"
-                                                    />
-                                                    <m:Text
-                                                        id="idQtnNetAmt"
-                                                        text="{TOTAL_AMOUNT}"
-                                                        textAlign="End"
-                                                    />
-                                                </m:cells>
-                                            </m:ColumnListItem>
-                                        </m:items>
-                                    </m:Table>
-                                </smartTable:SmartTable> -->
-
                             </ObjectPageSubSection>
                         </subSections>
                     </ObjectPageSection>
@@ -671,27 +370,13 @@
                                 mode="Expanded"
                                 titleUppercase="false"
                             >
-                        
-
                         <m:TextArea value="{com>/COMMENTS}" id="idTextEvent" width="100%" editable="false"></m:TextArea>
-
-                          
-                            </ObjectPageSubSection>
+                        </ObjectPageSubSection>
                         </subSections>
                     </ObjectPageSection>
                 </sections>
-                	<footer>
-			<m:OverflowToolbar>
-				<m:ToolbarSpacer />
-				<m:Button text="Approve" type="Success"  visible="true"   press="onApproveOrdr"/>
-				<m:Button text="Reject" type="Reject" icon="sap-icon://decline"  visible="true"   press="openRemarkDilog"/>
-			</m:OverflowToolbar>
-		</footer>
             </ObjectPageLayout>
-
-          
         </layout:mainContent>
-
         <layout:sideContent>
             <m:Toolbar id="idTb">
                 <m:Title
@@ -743,12 +428,5 @@
         </layout:sideContent>
       
     </layout:DynamicSideContent>
-      <!-- <m:footer>
-			<m:Bar>
-				<m:contentRight>
-					<m:Button text="Save" type="Emphasized" press="onPostPress" id="idPostBtn"/>
-				</m:contentRight>
-			</m:Bar>
-		</m:footer> -->
     
 </mvc:View>

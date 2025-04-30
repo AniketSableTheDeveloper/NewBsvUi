@@ -5,10 +5,12 @@ sap.ui.define([
     "sap/ui/core/BusyIndicator",
     "com/ibs/bsv/ibsappbsvorderstatus/model/formatter",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
+    "sap/ui/model/FilterOperator",
+    "sap/m/library"
 ],
-function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Filter,FilterOperator) {
+function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Filter,FilterOperator,mobileLibrary) {
     "use strict";
+    var URLHelper = mobileLibrary.URLHelper;
     var that;
     var localmodel, oProductModel;
     var prno, url
@@ -60,7 +62,7 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Filter,FilterO
             var appPath = appId.replaceAll(".", "/");
             var appModulePath = jQuery.sap.getModulePath(appPath);
 
-            url = appModulePath + "/odata/v2/ideal-bsv-purchase-order-srv/PrHeader?$filter=PURCHASE_REQUEST_NO eq " + prno + "&$expand=TO_STATUS";
+            url = appModulePath + "/odata/v2/ideal-bsv-purchase-order-srv/PrHeader?$filter=PURCHASE_REQUEST_NO eq " + prno + "&$expand=TO_STATUS,TO_ATTACHMENT";
 
             that._userdetails();
            that.readUserMasterEntities(url);
@@ -187,13 +189,17 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Filter,FilterO
                 data: null,
                 contentType: 'application/json',
                 success: function (data, responce) {
-                    //
                     BusyIndicator.hide();
                    var selectedObject = data.d.results[0];
                     ordertype = data.d.results[0].ORDER_TYPE;
                     ShipFrom = data.d.results[0].SHIP_FROM;
                     stockist = data.d.results[0].STOCKIST_ID;
 
+                    if(data.d.results[0].TO_ATTACHMENT == null){
+                        that.getView().byId("idpo").setVisible(false);
+                    }else{
+                        that.getView().byId("idpo").setVisible(true);
+                    }
                     if(data.d.results[0].STATUS === 1 || data.d.results[0].STATUS === 3 || data.d.results[0].STATUS === 4)
                     {
                         that.getView().byId("idStstusSection").setVisible(false) //added instead of processflow
@@ -269,6 +275,15 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Filter,FilterO
                     MessageBox.error(e.responseText);
                 }
             });
+        },
+        downloadPo : function(){
+            var fileId = 1;
+         
+            var appId = that.getOwnerComponent().getManifestEntry("/sap.app/id");
+            var appPath = appId.replaceAll(".", "/");
+            var appModulePath = jQuery.sap.getModulePath(appPath);
+            var url = appModulePath + "/odata/v2/ideal-bsv-purchase-order-srv/PrPoUpload(PURCHASE_REQUEST_NO=" + prno + ",FILE_ID=" + fileId + ")/$value";
+            URLHelper.redirect(url, true);
         },
         isValidJsonString: function (sDataString) {
 			var value = null;

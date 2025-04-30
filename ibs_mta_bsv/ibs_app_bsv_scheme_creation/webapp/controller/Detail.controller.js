@@ -239,7 +239,6 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,Filter,FilterO
         var fileSizeInMB = fileSizeInKB / 1024;
 
         var fName = sbfileDetails[0].name;
-        debugger
         if (fileSizeInMB > 5) {
             BusyIndicator.hide();
             MessageBox.warning("File size should be less than or equal to 5MB", {

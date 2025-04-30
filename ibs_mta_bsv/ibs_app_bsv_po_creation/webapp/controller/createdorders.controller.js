@@ -15,33 +15,22 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
     var login_ID;
     var UserData;
     var Role
-
-
     return Controller.extend("com.ibs.bsv.ibsappbsvpocreation.controller.createdorders", {
         formatter:formatter,
         onInit: function () {
             that = this;
-            // 
-            
-       
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("createdorders").attachPatternMatched(this._onRouteMatched, this);
             that.getOwnerComponent().getModel("headerModel").getData().oData;
             PropertyModel = that.getOwnerComponent().getModel("PropertyModel");
             PropertyModel.setProperty("/RequestRateColumn",false);
-            
             PropertyModel.setProperty("/RemarkSection",false);
-
-
-
-
         },
 
         _onRouteMatched: function (oEvent) {
             // 
             that.checkDevice();
            var headerDetails = that.getOwnerComponent().getModel("headerModel").getData().oData;
-        //    debugger
            var ordetype = headerDetails.ORDER_TYPE;
            if(ordetype === '1')
            {
@@ -53,7 +42,18 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
            }
            var hedaerModel = new JSONModel(headerDetails);
            that.getView().setModel(hedaerModel,"headerDetails");
-
+           
+           if(window.oFileUploader.oFileUpload.files.length > 0){
+                var aFileUploader = window.oFileUploader;
+                var oFile = aFileUploader.oFileUpload.files[0];
+                that.getView().byId("idpoUploadTxt").setVisible(true);
+                that.getView().byId("idpoUploadLbl").setVisible(true);
+                that.getView().byId("idpoUploadTxt").setText(oFile.name);
+           }else{
+            that.getView().byId("idpoUploadTxt").setVisible(false);
+            that.getView().byId("idpoUploadLbl").setVisible(false);
+           }
+           
            that._userdetails();
 
 
@@ -145,19 +145,13 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
                             UserData = data
                             that.readgetUserAttributes();
                         
-
                         },
                         error: function (oError) {
-                            
+                            MessageBox.error("User attributes issue");
                         }
                     });
                 });
-
-
-
-
       },
-        
         backNav: function () {
             // 
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -168,18 +162,14 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
 
                     "Stockist":login_ID
                 });
-           
                 },
-
                 ApporveOrder:function()
                 {
-                    // 
                     MessageBox.confirm("Do you want to confirm your request?", {
                         actions: [MessageBox.Action.YES, MessageBox.Action.CANCEL],
                         emphasizedAction: MessageBox.Action.YES,
                         onClose: function (oAction) {
                             if (oAction === 'YES') {
-
                                 that.finalPost(UserData,Role);
                             }
                         }
@@ -194,8 +184,6 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
                  padToThreeDigits:function(number) {
                     return number.toString().padStart(3, '0');
                 },
-
-
                 readgetUserAttributes: function () {
                     BusyIndicator.show(0);
                     var appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
@@ -260,6 +248,12 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
                 EndDate = EndDate.split('T')[0];
                 // var EndDate = dateEnd.toISOString();
                 var headerDetails = that.getOwnerComponent().getModel("headerModel").getData().oData;
+                var PoUploadDetails;
+                if(window.oFileUploader.oFileUpload.files.length > 0){
+                    PoUploadDetails = that.getOwnerComponent().getModel("mPoUploadModel").getData();
+                }else{
+                    PoUploadDetails = [];
+                }
                 var fromdate = new Date(headerDetails.CREATION_DATE)
                 var FromDate = dateFormat.format(fromdate);
                 FromDate = FromDate.split('T')[0];
@@ -290,6 +284,7 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
                         "SAP_SALES_ORDER_NO": null,
                         "CREATION_DATE": headerDetails.CREATION_DATE,
                         "STOCKIST_ID": UserData.name,
+                        // "STOCKIST_ID": "101486",
                         // "STOCKIST_ID": UserData.login_name[0],
                         "STOCKIST_NAME": fullName,
                         "REFERENCE_ID":headerDetails.REFERENCE_ID,
@@ -345,6 +340,8 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
                             "EVENT_NO": 1,
                             "EVENT_CODE": "1",
                             "USER_ID": UserData.email,
+                            // "USER_ID": "aniket.s@intellectbizware.com",
+                            // "USER_ROLE": "STOCKIST",
                             "USER_ROLE": Role,
                             "USER_NAME": fullName,
                             "COMMENTS": Events.COMMENTS,
@@ -360,8 +357,12 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
                     "sAction": "CREATE",
                     "aPrHeader": aPRHeader,
                     "aPrItems": aPRItems,
+                    "aPrPoUpload": PoUploadDetails,
                     "aPrEvent":aEvents,
                     "oUserDetails": {
+                        // "USER_ROLE": "STOCKIST",
+                        // "USER_ID": "aniket.s@intellectbizware.com",
+                        // "USER_NAME":fullName
                         "USER_ROLE": Role,
                         "USER_ID": UserData.email,
                         "USER_NAME":fullName
@@ -377,50 +378,72 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (result) {
-                        // ;
-                        BusyIndicator.hide();
-                        MessageBox.success(result.d.CreatePurchase.OUT_SUCCESS, {
-                            actions: [MessageBox.Action.OK],
-                            emphasizedAction: MessageBox.Action.OK,
-                            onClose: function (oAction) {
-                                if (oAction === 'OK') {
-                                    
-
-                                    
-
-                                    var param = {};
-                                    var oSemantic = "orderstatustracking";
-                                    var hash = {};
-                                    var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
-                                    var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
-                                        target: {
-                                            semanticObject: oSemantic,
-                                            action: "display"
-                                        }
-                                        ,
-                                        params: param
-                                    })) || ""; // generate the Hash to display a Supplier
                         
-                        
-                                    oCrossAppNavigator.toExternal({
-                                        target: {
-                                            shellHash: hash
-                                        }
-                                    });
-                                    
-                                    // var router = sap.ui.core.UIComponent.getRouterFor(that);
-                                    // router.navTo("RouteMaster");
-
-                                }
-                            }
-                        }
-                        );
+                        var purchaseNo = result.d.CreatePurchase.OUT_SUCCESS;
+                        var spurchaseNumber = purchaseNo.match(/\d+/)[0];
+                        that.secondHit(spurchaseNumber,1,result.d.CreatePurchase.OUT_SUCCESS);
                     },
-
                     error: function (oError) {
                         // ;
                         BusyIndicator.hide();
                         MessageBox.error(oError.responseText);
+                    }
+                });
+            },
+            secondHit:function(purchaseNo,fileId,success){
+                
+                var appId = that.getOwnerComponent().getManifestEntry("/sap.app/id");
+                var appPath = appId.replaceAll(".", "/");
+                var appModulePath = jQuery.sap.getModulePath(appPath);
+
+                var content = that.getOwnerComponent().getModel("mPoUploadModel").getData();
+                var url = appModulePath + "/odata/v4/ideal-bsv-purchase-order-srv/PrPoUpload(PURCHASE_REQUEST_NO=" + purchaseNo + ",FILE_ID=" + fileId + ")/FILE_CONTENT"
+
+                var oFileUploader = window.oFileUploader;
+                var oFile = oFileUploader.oFileUpload.files[0];
+                // type
+                var oBlob = new Blob([oFile ], { type: oFile.type });
+ 
+                // Use FormData to send the file
+                var oFormData = new FormData();
+                oFormData.append("file", oBlob, oFile.name);
+
+                // Perform AJAX PUT request
+                $.ajax({
+                    url: url,
+                    type: "PUT",
+                    data: oBlob, // Send binary data directly
+                    processData: false, // Prevent jQuery from processing data
+                    contentType: oFile.FILE_TYPE, // Set correct Content-Type
+                    success: function () {
+                        BusyIndicator.hide();
+                        MessageBox.success(success, {
+                            actions: [MessageBox.Action.OK],
+                            emphasizedAction: MessageBox.Action.OK,
+                            onClose: function (oAction) {
+                            if (oAction === 'OK') {
+                                var param = {};
+                                var oSemantic = "orderstatustracking";
+                                var hash = {};
+                                var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
+                                var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+                                    target: {
+                                        semanticObject: oSemantic,
+                                        action: "display"
+                                    },
+                                    params: param
+                                })) || ""; // generate the Hash to display a Supplier
+                                oCrossAppNavigator.toExternal({
+                                    target: {
+                                        shellHash: hash
+                                    }
+                                });
+                                }
+                            }
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        MessageBox.error("Upload failed: " + textStatus + " - " + errorThrown);
                     }
                 });
             },
@@ -463,10 +486,6 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
                     that.getView().byId("idTotAmtObjStatus").addStyleClass("sapMObjectStatusTiny");
                     that.getView().byId("idTaxAmtObjStatus").addStyleClass("sapMObjectStatusTiny");
                     that.getView().byId("idGrdAmtObjStatus").addStyleClass("sapMObjectStatusTiny");
-                   
-
-                  
-                  
                 }
                 else if (sap.ui.Device.system.tablet === true) {
   

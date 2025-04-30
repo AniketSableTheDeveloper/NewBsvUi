@@ -82,6 +82,10 @@ modules:
       - comibsbsvibsappbsvorderhistory.zip
       name: comibsbsvibsappbsvorderhistory
       target-path: resources/
+    - artifacts:
+      - comibsbsvibsappbsvsalesorderreport.zip
+      name: comibsbsvibsappbsvsalesorderreport
+      target-path: resources/
 - name: comibsbsvibsappbsvschemecreation
   type: html5
   path: ibs_app_bsv_scheme_creation
@@ -182,6 +186,16 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
+- name: comibsbsvibsappbsvsalesorderreport
+  type: html5
+  path: ibs_app_bsv_sales_order_report
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
 resources:
 - name: ibs_mta_bsv-destination-service
   type: org.cloudfoundry.managed-service
@@ -216,3 +230,4 @@ resources:
     service-plan: application
 parameters:
   deploy_mode: html5-repo
+  enable-parallel-deployments: true
