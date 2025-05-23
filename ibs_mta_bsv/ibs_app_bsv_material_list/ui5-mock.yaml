@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "3.1"
+metadata:
+  name: com.ibs.bsv.ibsappbsvmateriallist
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+        backend:
+          - path: /sap
+            url: http://bsdevapp:44300
+            destination: IDEAL_S4
+          - url: https://bsv-ideal-test-test-ideal-bsv-srv.cfapps.in30.hana.ondemand.com
+            authenticationType: OAuth2JWTBearer
+            destination: IDEAL_CAPM
+            path: /odata/v4/ideal-bsv-purchase-order-srv/
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        flp:
+          theme: sap_horizon
+    - name: sap-fe-mockserver
+      beforeMiddleware: csp
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /sap/opu/odata/sap/ZIDEAL_ODATA_SALESORDER_SRV
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            mockdataPath: ./webapp/localService/mainService/data
+            generateMockData: true
+          - urlPath: /odata/v4/ideal-bsv-purchase-order-srv
+            metadataPath: ./webapp/localService/ideal-bsv-purchase-order-srv/metadata.xml
+            mockdataPath: ./webapp/localService/ideal-bsv-purchase-order-srv/data
+            generateMockData: true
+        annotations: []

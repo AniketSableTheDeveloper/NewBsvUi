@@ -63,7 +63,7 @@ sap.ui.define([
                 // url = appModulePath + "/user-api/currentUser";
                 url = appModulePath + "/user-api/attributes";
                 
-                // login_ID = "100555"
+                // login_ID = "101486"
                 // that.readLatestData(login_ID);
                 // that.readCredit(login_ID);
                 // that.readOutstanding(login_ID);  // locally

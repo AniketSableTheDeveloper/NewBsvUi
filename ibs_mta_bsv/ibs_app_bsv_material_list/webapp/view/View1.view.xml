@@ -1,0 +1,73 @@
+<mvc:View controllerName="com.ibs.bsv.ibsappbsvmateriallist.controller.View1"
+      xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m">
+  <App id="idApp">
+	<pages>
+    <Page id="page" showHeader="false">
+        <!-- <OverflowToolbar class="TopNavBar">
+            <ToolbarSpacer />
+        </OverflowToolbar> -->
+        <content>
+		<Table id="idMaterialTable" inset="false" items="{path:'materialSet>/', sorter : { path : 'material',descending : true}}" sticky="ColumnHeaders,HeaderToolbar" class="sapUiContentPadding"
+		growing="true" growingThreshold="100" autoPopinMode="true" contextualWidth="Auto" fixedLayout="true" showSeparators="Inner">
+		<dependents>
+	    </dependents>
+            <headerToolbar>
+            <OverflowToolbar visible="true">
+            <Title id="id_totalItems" width="25%" wrapping="true" class="sapUiContentPadding sapUiResponsiveContentPadding"/>
+            <content>
+            <ToolbarSpacer/>
+            <SearchField id="oSearchMasterData" visible="true" width="30%" placeholder="Search by material or description"
+            showRefreshButton="false" liveChange="onSearch">
+            <layoutData>
+            <OverflowToolbarLayoutData priority="NeverOverflow" />
+            </layoutData>
+            </SearchField>
+            <Button icon="sap-icon://refresh" press="onRefresh" type="Transparent" tooltip="Refresh">
+                <layoutData>
+                <OverflowToolbarLayoutData priority="NeverOverflow" />
+            </layoutData>
+            </Button>
+            <Button text="Add Material" type="Transparent" press="onAddMaterial" tooltip="Add Material"></Button>
+            </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>            
+            <Column hAlign="Center">
+                <Label text="Material" design="Bold" wrapping="true"/>
+            </Column>
+            <Column hAlign="Center">
+                <Label text="Description" design="Bold" wrapping="true"/>
+            </Column>
+            <Column hAlign="Center">
+                <Label text="Active" design="Bold" wrapping="true"/>
+            </Column>
+            <Column hAlign="Center" width="10rem">
+                <Label text="Action" design="Bold" wrapping="true"/>
+            </Column>          
+        </columns>
+        <items>
+        <ColumnListItem>
+            <cells>
+                <Text text= "{path:'materialSet>Material'}"/>
+                <Text text= "{path:'materialSet>Description'}"/>
+               <Switch state="{= ${materialSet>Status} === 'ACTIVE' ? true : false}" type="AcceptReject" change="onSwitch">
+				<!-- <layoutData>
+					<FlexItemData growFactor="1" />
+				</layoutData> -->
+			</Switch>
+                <!-- <HBox justifyContent="Center" alignContent="Center" alignItems="Center"> -->
+                <!-- <Button  icon="sap-icon://edit" type="Accept" tooltip="Edit Material" press="onEdit"/> -->
+                <!-- class="sapUiMediumMarginBegin" -->
+                <Button  icon="sap-icon://delete" type="Reject" tooltip="Delete Material" press="onDelete" />
+                <!-- </HBox> -->
+               
+            </cells>
+        </ColumnListItem>
+	    </items>
+		</Table>
+	</content>
+    </Page>
+	</pages>
+	</App>
+</mvc:View>

@@ -23,7 +23,6 @@ sap.ui.define([
         formatter: formatter,
         onInit() {
             that = this;
-            that = this;
             that.checkDevice();
             // sapModel = that.getOwnerComponent().getModel("ZIDEAL_ODATA_SALESORDER_SRV");
             PropertyModel = that.getOwnerComponent().getModel("PropertyModel");

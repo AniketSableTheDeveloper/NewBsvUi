@@ -140,7 +140,7 @@ function (Controller,MessageBox,MessageToast,BusyIndicator,JSONModel,formatter,d
                         var oXMLMsg, oXML;
                         if (that.isValidJsonString(error.responseText)) {
                             oXML = JSON.parse(error.responseText);
-                            oXMLMsg = oXML.error["message"];
+                            oXMLMsg = oXML.error["message"].value;
                         } else {
                             oXMLMsg = error.responseText
                         }
@@ -204,7 +204,7 @@ function (Controller,MessageBox,MessageToast,BusyIndicator,JSONModel,formatter,d
                 var oXMLMsg, oXML;
                 if (that.isValidJsonString(error.responseText)) {
                     oXML = JSON.parse(error.responseText);
-                    oXMLMsg = oXML.error["message"];
+                    oXMLMsg = oXML.error["message"].value;
                 } else {
                     oXMLMsg = error.responseText
                 }
@@ -521,7 +521,7 @@ function (Controller,MessageBox,MessageToast,BusyIndicator,JSONModel,formatter,d
                 var oXMLMsg, oXML;
                 if (that.isValidJsonString(e.responseText)) {
                     oXML = JSON.parse(e.responseText);
-                    oXMLMsg = oXML.error["message"];
+                    oXMLMsg = oXML.error["message"].value;
                 } else {
                     oXMLMsg = e.responseText;
                 }

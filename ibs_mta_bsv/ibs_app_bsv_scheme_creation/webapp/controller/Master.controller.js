@@ -79,7 +79,7 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,Fi
                 contentType: 'application/json',
                 success: function (data, response) {
                     
-                    for(var i =0; i<data.value.lengh; i++){
+                    for(var i =0; i<data.value.length; i++){
                         if(data.value[i] === "BSV_ADMIN"){
                             vRole = "ADMIN";
                         }
@@ -191,7 +191,7 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,Fi
                 var oXMLMsg, oXML;
                 if (that.isValidJsonString(error.responseText)) {
                     oXML = JSON.parse(error.responseText);
-                    oXMLMsg = oXML.error["message"];
+                    oXMLMsg = oXML.error["message"].value;
                 } else {
                     oXMLMsg = error.responseText;
                 }
@@ -221,7 +221,7 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,Fi
                 var oXMLMsg, oXML;
                 if (that.isValidJsonString(error.responseText)) {
                     oXML = JSON.parse(error.responseText);
-                    oXMLMsg = oXML.error["message"];
+                    oXMLMsg = oXML.error["message"].value;
                 } else {
                     oXMLMsg = error.responseText;
                 }
@@ -273,7 +273,7 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,Fi
             var oXMLMsg, oXML;
             if (that.isValidJsonString(error.responseText)) {
                 oXML = JSON.parse(error.responseText);
-                oXMLMsg = oXML.error["message"];
+                oXMLMsg = oXML.error["message"].value;
             } else {
                 oXMLMsg = error.responseText;
             }

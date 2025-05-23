@@ -86,6 +86,10 @@ modules:
       - comibsbsvibsappbsvsalesorderreport.zip
       name: comibsbsvibsappbsvsalesorderreport
       target-path: resources/
+    - artifacts:
+      - comibsbsvibsappbsvmateriallist.zip
+      name: comibsbsvibsappbsvmateriallist
+      target-path: resources/
 - name: comibsbsvibsappbsvschemecreation
   type: html5
   path: ibs_app_bsv_scheme_creation
@@ -189,6 +193,16 @@ modules:
 - name: comibsbsvibsappbsvsalesorderreport
   type: html5
   path: ibs_app_bsv_sales_order_report
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comibsbsvibsappbsvmateriallist
+  type: html5
+  path: ibs_app_bsv_material_list
   build-parameters:
     build-result: dist
     builder: custom

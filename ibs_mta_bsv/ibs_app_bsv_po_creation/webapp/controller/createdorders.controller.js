@@ -377,18 +377,109 @@ function (Controller,JSONModel,MessageBox,BusyIndicator,formatter,Device) {
                     data: payloadstring,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    success: function (result) {
-                        
+                    success: function (result) { 
+                        if(PoUploadDetails.length > 0){     
                         var purchaseNo = result.d.CreatePurchase.OUT_SUCCESS;
                         var spurchaseNumber = purchaseNo.match(/\d+/)[0];
                         that.secondHit(spurchaseNumber,1,result.d.CreatePurchase.OUT_SUCCESS);
+                        }else{
+                            MessageBox.success(result.d.CreatePurchase.OUT_SUCCESS, {
+                                actions: [MessageBox.Action.OK],
+                                emphasizedAction: MessageBox.Action.OK,
+                                onClose: function (oAction) {
+                                if (oAction === 'OK') {
+                                    var param = {};
+                                    var oSemantic = "orderstatustracking";
+                                    var hash = {};
+                                    var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
+                                    var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+                                        target: {
+                                            semanticObject: oSemantic,
+                                            action: "display"
+                                        },
+                                        params: param
+                                    })) || ""; // generate the Hash to display a Supplier
+                                    oCrossAppNavigator.toExternal({
+                                        target: {
+                                            shellHash: hash
+                                        }
+                                    });
+                                    }
+                                }
+                            });
+                        }
                     },
-                    error: function (oError) {
-                        // ;
+                    error: function (error) {
+                        // debugger
                         BusyIndicator.hide();
-                        MessageBox.error(oError.responseText);
+                        var oXMLMsg, oXML;
+                        if (that.isValidJsonString(error.responseText)) {
+                            oXML = JSON.parse(error.responseText);
+                            oXMLMsg = oXML.error["message"].value;;
+                        } else {
+                            oXMLMsg = error.responseText;
+                        }
+                        if(oXMLMsg.value.value === "Email Configuration Issue"){
+                            var oSuccess = "Sales Order Created : "+ oXMLMsg.value.OUT_SUCCESS;
+                            if(PoUploadDetails.length > 0){ 
+                                // var oSuccess = "Sales Order Created : "+ oXMLMsg.value.OUT_SUCCESS;
+                                that.secondHit(oXMLMsg.value.OUT_SUCCESS,1,oSuccess);
+                            }else{
+                                MessageBox.success(oSuccess, {
+                                    actions: [MessageBox.Action.OK],
+                                    emphasizedAction: MessageBox.Action.OK,
+                                    onClose: function (oAction) {
+                                    if (oAction === 'OK') {
+                                        var param = {};
+                                        var oSemantic = "orderstatustracking";
+                                        var hash = {};
+                                        var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
+                                        var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+                                            target: {
+                                                semanticObject: oSemantic,
+                                                action: "display"
+                                            },
+                                            params: param
+                                        })) || ""; // generate the Hash to display a Supplier
+                                        oCrossAppNavigator.toExternal({
+                                            target: {
+                                                shellHash: hash
+                                            }
+                                        });
+                                        }
+                                    }
+                                });
+                            }
+                            
+                        }else{
+                        MessageBox.error(oXMLMsg);
+                        }
                     }
                 });
+            },
+            isValidJsonString: function (sDataString) {
+                var value = null;
+                var oArrObj = null;
+                var sErrorMessage = "";
+                try {
+                    if (sDataString === null || sDataString === "" || sDataString === undefined) {
+                        throw "No data found.";
+                    }
+                    value = JSON.parse(sDataString);
+                    if (toString.call(value) === '[object Object]' && Object.keys(value).length > 0) {
+                        return true;
+                    } else {
+                        throw "Error";
+                    }
+                } catch (errorMsg) {
+                    if (errorMsg === "No data found.") {
+                        sErrorMessage = errorMsg;
+                    } else {
+                        sErrorMessage = "Invalid JSON data."
+                    }
+                    return false;
+                }
+                return true;
             },
             secondHit:function(purchaseNo,fileId,success){
                 

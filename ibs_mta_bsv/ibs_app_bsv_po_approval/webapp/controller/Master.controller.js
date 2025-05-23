@@ -593,7 +593,7 @@ sap.ui.define([
                                     var oXMLMsg, oXML;
                                     if ((oError.responseText)) {
                                         oXML = JSON.parse(oError.responseText);
-                                        oXMLMsg = oXML.error["message"];
+                                        oXMLMsg = oXML.error["message"].value;
                                     } else {
                                         oXMLMsg = oError.responseText;
                                     }
@@ -779,7 +779,7 @@ sap.ui.define([
                     var oXMLMsg;
                     if ((oError.responseText)) {
                         var oXML = JSON.parse(oError.responseText);
-                        oXMLMsg = oXML.error["message"];
+                        oXMLMsg = oXML.error["message"].value;
                     } else {
                         oXMLMsg = oError.responseText;
                     }
