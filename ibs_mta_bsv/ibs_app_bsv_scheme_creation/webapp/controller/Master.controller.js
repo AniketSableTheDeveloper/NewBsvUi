@@ -7,10 +7,12 @@ sap.ui.define([
     "com/ibs/bsv/ibsappbsvschemecreation/model/down",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/ui/export/library"
+    "sap/ui/export/library",
+    "sap/m/library"
 ],
-function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,FilterOperator,exportLibrary) {
+function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,FilterOperator,exportLibrary,mobileLibrary) {
     "use strict";
+    var URLHelper = mobileLibrary.URLHelper;
     var that,appId,appPath,appModulePath,vRole;
     var EdmType = exportLibrary.EdmType;
     return Controller.extend("com.ibs.bsv.ibsappbsvschemecreation.controller.Master", {
@@ -19,7 +21,7 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,Fi
             
             that = this;
             var oRouter = this.getOwnerComponent().getRouter();
-            // that.getUserAttributes();
+            that.getUserAttributes();
             oRouter.getRoute("RouteMaster");
             var getRoute = oRouter.getRoute("RouteMaster");
             // this.getView().byId('idCreationDatefltr').destroyDefaultFilterValues();
@@ -27,7 +29,8 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,Fi
         },
         _onRouteMatched:function(){
             var oTable = that.getView().byId("idSchemeTable");
-            oTable.idSalesTable();
+            oTable.rebindTable();
+            // oTable.getBinding("items").refresh();
         },
         onSelectionChange:function(oEvent){
             
@@ -68,10 +71,11 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,Fi
         },
         getUserRole:function(){
             that = this;
+            var count = 0;
             appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
             appPath = appId.replaceAll(".", "/");
             appModulePath = jQuery.sap.getModulePath(appPath);
-            var attr = appModulePath + "/odata/v4/ideal-bsv-purchase-order-srv/getUserAttributes";
+            var attr = appModulePath + "/odata/v4/ideal-bsv-scheme-srv/getUserAttributes";
             return new Promise(function (resolve, reject) {
                 $.ajax({
                 url: attr,
@@ -82,7 +86,13 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,Fi
                     for(var i =0; i<data.value.length; i++){
                         if(data.value[i] === "BSV_ADMIN"){
                             vRole = "ADMIN";
+                            count++;
                         }
+                    }
+                    if(count > 0){
+                        
+                    }else{
+                        MessageBox.error("Only Admin User Are Allowed");
                     }
                 },
                 error: function (oError) {
@@ -202,32 +212,43 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,down,Filter,Fi
         },
         onDownload : function(oEvent){
             BusyIndicator.show();
-            appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
+
+            var fileId = 1;
+            appId = that.getOwnerComponent().getManifestEntry("/sap.app/id");
             appPath = appId.replaceAll(".", "/");
             appModulePath = jQuery.sap.getModulePath(appPath);
             var vReferenceId = Number(oEvent.getSource().getParent().getAggregation('cells')[0].mProperties.text);
-            // var vReferenceId = oEvent.getSource().getBindingContext('SchemeHeaderData').getObject().REFERENCE_ID;
-            var vFile_Id = 1;
-            var path = appModulePath + "/odata/v4/ideal-bsv-scheme-srv/SchemeAttachment(REFERENCE_ID="+vReferenceId+",FILE_ID="+vFile_Id+")/$value";
-            $.ajax({
-            url: path,
-            type: 'GET',
-            contentType: 'application/json',
-            success: function (data, responce) {
-                that.fileType(vReferenceId, data);            
-            },
-            error: function (error) {
-                BusyIndicator.hide();
-                var oXMLMsg, oXML;
-                if (that.isValidJsonString(error.responseText)) {
-                    oXML = JSON.parse(error.responseText);
-                    oXMLMsg = oXML.error["message"].value;
-                } else {
-                    oXMLMsg = error.responseText;
-                }
-                MessageBox.error(oXMLMsg);
-            }
-        });
+            var url = appModulePath + "/odata/v4/ideal-bsv-scheme-srv/SchemeAttachment(REFERENCE_ID="+vReferenceId+",FILE_ID="+fileId+")/$value";
+            URLHelper.redirect(url, true);
+            BusyIndicator.hide();
+
+
+        //     appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
+        //     appPath = appId.replaceAll(".", "/");
+        //     appModulePath = jQuery.sap.getModulePath(appPath);
+        //     var vReferenceId = Number(oEvent.getSource().getParent().getAggregation('cells')[0].mProperties.text);
+        //     // var vReferenceId = oEvent.getSource().getBindingContext('SchemeHeaderData').getObject().REFERENCE_ID;
+        //     var vFile_Id = 1;
+        //     var path = appModulePath + "/odata/v4/ideal-bsv-scheme-srv/SchemeAttachment(REFERENCE_ID="+vReferenceId+",FILE_ID="+vFile_Id+")/$value";
+        //     $.ajax({
+        //     url: path,
+        //     type: 'GET',
+        //     contentType: 'application/json',
+        //     success: function (data, responce) {
+        //         that.fileType(vReferenceId, data);            
+        //     },
+        //     error: function (error) {
+        //         BusyIndicator.hide();
+        //         var oXMLMsg, oXML;
+        //         if (that.isValidJsonString(error.responseText)) {
+        //             oXML = JSON.parse(error.responseText);
+        //             oXMLMsg = oXML.error["message"].value;
+        //         } else {
+        //             oXMLMsg = error.responseText;
+        //         }
+        //         MessageBox.error(oXMLMsg);
+        //     }
+        // });
         },
         isValidJsonString: function (sDataString) {
 			var value = null;

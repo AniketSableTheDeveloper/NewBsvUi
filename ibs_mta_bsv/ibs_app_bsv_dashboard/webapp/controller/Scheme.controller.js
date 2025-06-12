@@ -6,10 +6,12 @@ sap.ui.define([
     "com/ibs/bsv/ibsappbsvdashboard/model/formatter",
     "com/ibs/bsv/ibsappbsvdashboard/model/down",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
+    "sap/ui/model/FilterOperator",
+    "sap/m/library"
 ],
-    function (Controller, JSONModel, BusyIndicator, MessageBox, formatter, down, Filter, FilterOperator) {
+    function (Controller, JSONModel, BusyIndicator, MessageBox, formatter, down, Filter, FilterOperator,mobileLibrary) {
         "use strict";
+        var URLHelper = mobileLibrary.URLHelper;
         var that, appId, appPath, appModulePath;
         var PropertyModel;
         return Controller.extend("com.ibs.bsv.ibsappbsvdashboard.controller.Scheme", {
@@ -111,31 +113,37 @@ sap.ui.define([
             //To download scheme attachment
             onDownload: function (oEvent) {
                 BusyIndicator.show();
-                appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
+               
+                var fileId = 1;
+                appId = that.getOwnerComponent().getManifestEntry("/sap.app/id");
                 appPath = appId.replaceAll(".", "/");
                 appModulePath = jQuery.sap.getModulePath(appPath);
                 var vReferenceId = Number(oEvent.getSource().getParent().getAggregation('cells')[0].mProperties.text);
-                var vFile_Id = 1;
-                var path = appModulePath + "/odata/v2/ideal-bsv-purchase-order-srv/SchemeAttachment(REFERENCE_ID=" + vReferenceId + ",FILE_ID=" + vFile_Id + ")/$value";
-                $.ajax({
-                    url: path,
-                    type: 'GET',
-                    contentType: 'application/json',
-                    success: function (data, responce) {
-                        that.fileType(vReferenceId, data);
-                    },
-                    error: function (error) {
-                        BusyIndicator.hide();
-                        var oXMLMsg, oXML;
-                        if (that.isValidJsonString(error.responseText)) {
-                            oXML = JSON.parse(error.responseText);
-                            oXMLMsg = oXML.error["message"];
-                        } else {
-                            oXMLMsg = error.responseText;
-                        }
-                        MessageBox.error(oXMLMsg);
-                    }
-                });
+                var url = appModulePath + "/odata/v2/ideal-bsv-purchase-order-srv/SchemeAttachment(REFERENCE_ID="+vReferenceId+",FILE_ID="+fileId+")/$value";
+                URLHelper.redirect(url, true);
+                BusyIndicator.hide();
+                
+                // var vFile_Id = 1;
+                // var path = appModulePath + "/odata/v2/ideal-bsv-purchase-order-srv/SchemeAttachment(REFERENCE_ID=" + vReferenceId + ",FILE_ID=" + vFile_Id + ")/$value";
+                // $.ajax({
+                //     url: path,
+                //     type: 'GET',
+                //     contentType: 'application/json',
+                //     success: function (data, responce) {
+                //         that.fileType(vReferenceId, data);
+                //     },
+                //     error: function (error) {
+                //         BusyIndicator.hide();
+                //         var oXMLMsg, oXML;
+                //         if (that.isValidJsonString(error.responseText)) {
+                //             oXML = JSON.parse(error.responseText);
+                //             oXMLMsg = oXML.error["message"];
+                //         } else {
+                //             oXMLMsg = error.responseText;
+                //         }
+                //         MessageBox.error(oXMLMsg);
+                //     }
+                // });
             },
 
             fileType: function (vReferenceId, data) {

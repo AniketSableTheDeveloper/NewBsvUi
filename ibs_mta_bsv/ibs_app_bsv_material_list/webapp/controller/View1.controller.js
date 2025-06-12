@@ -21,7 +21,7 @@ sap.ui.define([
         appPath = appId.replaceAll(".", "/");
         appModulePath = jQuery.sap.getModulePath(appPath);
         that.getUserAttributes();
-        
+        // BusyIndicator.hide(); 
         
     },
     getUserAttributes:function(){
@@ -45,7 +45,6 @@ sap.ui.define([
                 },
                 error: function (oError) {
                     BusyIndicator.hide();
-                    that.getUserRole();
                     MessageBox.error("Error while reading User Attributes");
                 }
             });
@@ -57,7 +56,7 @@ sap.ui.define([
         appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
         appPath = appId.replaceAll(".", "/");
         appModulePath = jQuery.sap.getModulePath(appPath);
-        var attr = appModulePath + "/odata/v4/ideal-bsv-purchase-order-srv/getUserAttributes";
+        var attr = appModulePath + "/odata/v4/ideal-bsv-scheme-srv/getUserAttributes";
         return new Promise(function (resolve, reject) {
             $.ajax({
             url: attr,
@@ -68,15 +67,13 @@ sap.ui.define([
                 for(var i =0; i<data.value.length; i++){
                     if(data.value[i] === "BSV_ADMIN"){
                         var vRole = "ADMIN";
-                    }else{
                         count++;
                     }
                 }
                 if(count > 0){
-                    MessageBox.error("Only Admin User Are Allowed");
-                }else{
                     that.readMaterialData();
-                    that.getView().byId("oSearchMasterData").setValue("");
+                }else{
+                    MessageBox.error("Only Admin User Are Allowed");
                 }
             },
             error: function (oError) {
@@ -182,7 +179,7 @@ sap.ui.define([
         sap.ui.getCore().byId("id_material").setValue("");
     },
     MaterialSelection1: function (oEvent) {
-        
+        sap.ui.getCore().byId("materialSearchfield_Id").setValue("");
         var selectedObject = oEvent.getSource().getSelectedItem().getBindingContext("materialsModel").getObject();
         var productSelected = selectedObject.MaterialCode;
         sap.ui.getCore().byId("id_material").setValue(productSelected);

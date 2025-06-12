@@ -36,7 +36,7 @@ server:
           - url: https://bsv-ideal-test-test-ideal-bsv-srv.cfapps.in30.hana.ondemand.com
             authenticationType: OAuth2JWTBearer
             destination: IDEAL_CAPM
-            path: /odata/v4/ideal-bsv-purchase-order-srv/
+            path: /odata/v4/ideal-bsv-scheme-srv/
     - name: sap-fe-mockserver
       beforeMiddleware: csp
       configuration:

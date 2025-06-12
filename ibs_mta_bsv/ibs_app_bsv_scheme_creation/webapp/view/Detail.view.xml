@@ -93,8 +93,8 @@
                         <m:ColumnListItem visible="true">
                             <m:cells>
                             <m:Text text="{schemeJson>ATTACH_NAME}"/>
-                            <u:FileUploader id="fileUploaderid" name="myFileUpload" uploadUrl="upload/" buttonOnly="true" buttonText="Choose File" sameFilenameAllowed="true"
-                            change="handleUpload" enabled="true" fileType="txt,jpg,docx,docm,pdf,xlsx"/>
+                            <u:FileUploader id="fileUploader" name="myFileUpload" buttonOnly="true" buttonText="Choose File" sameFilenameAllowed="true"
+                            change="handleUploadNew" enabled="true" fileType="txt,jpg,docx,docm,pdf,xlsx"/>
                             <m:Text text="{schemeJson>FILE_NAME}"/> 
                             <m:Button press="onDelete" type="Reject" enabled="false" tooltip="Delete" icon="sap-icon://delete"></m:Button>
                             </m:cells>

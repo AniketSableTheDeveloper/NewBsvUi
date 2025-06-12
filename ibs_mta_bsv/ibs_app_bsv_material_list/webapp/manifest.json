@@ -25,12 +25,12 @@
           "odataVersion": "2.0"
         }
       },
-      "ideal-bsv-purchase-order-srv": {
-        "uri": "/odata/v4/ideal-bsv-purchase-order-srv/",
+      "ideal-bsv-scheme-srv": {
+        "uri": "/odata/v4/ideal-bsv-scheme-srv/",
         "type": "OData",
         "settings": {
           "annotations": [],
-          "localUri": "localService/ideal-bsv-purchase-order-srv/metadata.xml",
+          "localUri": "localService/ideal-bsv-scheme-srv/metadata.xml",
           "odataVersion": "4.0"
         }
       }
@@ -40,7 +40,7 @@
           "materiallist-display": {
               "semanticObject": "materiallist",
               "action": "display",
-              "icon":"sap-icon://customer",
+              "icon":"sap-icon://add-product",
               "title": "{{flpTitle}}",
               "signature": {
                   "parameters": {},
@@ -91,8 +91,8 @@
         "preload": true,
         "settings": {}
       },
-      "ideal-bsv-purchase-order-srv": {
-        "dataSource": "ideal-bsv-purchase-order-srv",
+      "ideal-bsv-scheme-srv": {
+        "dataSource": "ideal-bsv-scheme-srv",
         "preload": true,
         "settings": {
           "operationMode": "Server",

@@ -16,6 +16,7 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,Filter,FilterO
         onInit: function () {
             
             that = this;
+            window.oFileUploader = [];
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("Edit");
             var getRoute = oRouter.getRoute("Edit");
@@ -161,11 +162,18 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,Filter,FilterO
 
             // var oUserData = that.getOwnerComponent().getModel("userModel");
             BusyIndicator.show();
+            var successMsg;
             var userid ="cfa2@gmail.com";
             var dateFrom = this.getView().byId("DvalidFromId2").getValue();
             var dateTo = this.getView().byId("DvalidToId2").getValue();
             var vComment = this.getView().byId("commentId2").getValue();
-            var attachData = this.getView().getModel("schemeJson").getData();
+            var attachData;
+            
+            if(window.oFileUploader.length > 0){
+                attachData = that.getOwnerComponent().getModel("schemeModelAlis").getData();
+            }else{
+                attachData = [];
+            }
 
             if(dateFrom === "" || dateTo === "" || dateFrom === null || dateTo === null || dateFrom === undefined || dateTo === undefined){
                 MessageBox.warning("Please fill mandatory field")
@@ -173,14 +181,16 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,Filter,FilterO
                 return;
             }
             if(vType === "Scheme"){
-
-            if(attachData[0].FILE_NAME === undefined || attachData[0].FILE_NAME === null || attachData[0].FILE_NAME === ""){
+                
+            if(attachData.length == 0){
                 MessageBox.warning("Please Upload file");
                 BusyIndicator.hide();
                 return;
             }
+            successMsg = "Scheme edited successfully";
             }
             if(vType === "Broadcast"){
+                successMsg = "Broadcast edited successfully";
                 if(!vComment){
                     MessageBox.warning("Please Add Comment");
                     BusyIndicator.hide();
@@ -196,7 +206,7 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,Filter,FilterO
             var vValidFromCon = vValidFrom.toISOString().split('T')[0];
             var vValidToCon = vValidTo.toISOString().split('T')[0];
             var oPayload;
-            if(attachData[0].FILE_CONTENT === undefined){
+            // if(attachData[0].FILE_CONTENT === undefined){
                 oPayload = {
                     "sAction":"EDIT",
                     "aSchemeHeader":[{
@@ -210,35 +220,26 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,Filter,FilterO
                         "TYPE": vType
                 
                     }],
-                    "aSchemeAttachment":[]
+                    "aSchemeAttachment":attachData
                 }
-            }
-            else{
-                 oPayload = {
-                    "sAction":"EDIT",
-                    "aSchemeHeader":[{
+            // }
+            // else{
+            //      oPayload = {
+            //         "sAction":"EDIT",
+            //         "aSchemeHeader":[{
                 
-                        "REFERENCE_ID":aRefernceId,
-                        "VALID_FROM":vValidFromCon,
-                        "VALID_TO":vValidToCon,
-                        "COMMENTS":vComment,
-                        "CREATION_DATE":"2024-06-03T07:09:49.069Z",
-                        "CREATED_BY": userid,
-                        "TYPE": vType
+            //             "REFERENCE_ID":aRefernceId,
+            //             "VALID_FROM":vValidFromCon,
+            //             "VALID_TO":vValidToCon,
+            //             "COMMENTS":vComment,
+            //             "CREATION_DATE":"2024-06-03T07:09:49.069Z",
+            //             "CREATED_BY": userid,
+            //             "TYPE": vType
                 
-                    }],
-                    "aSchemeAttachment":[{
-                
-                        "REFERENCE_ID":aRefernceId,
-                        "FILE_ID":1,
-                        "FILE_NAME": attachData[0].FILE_NAME,
-                        "FILE_CONTENT": attachData[0].FILE_CONTENT,
-                        "FILE_MIMETYPE": attachData[0].FILE_MIMETYPE,
-                        "FILE_TYPE": attachData[0].FILE_TYPE
-                
-                    }]
-                }
-            }
+            //         }],
+            //         "aSchemeAttachment":attachData
+            //     }
+            // }
             
             var url = appModulePath + "/odata/v4/ideal-bsv-scheme-srv/schemeCreation";
             var Postdata = JSON.stringify(oPayload);
@@ -248,13 +249,71 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,Filter,FilterO
                 data: Postdata,
                 contentType: 'application/json',
                 success: function (data, responce) {
+                    if(attachData.length > 0){
+                        that.secondHitAttachment(data.value.OUT_SUCCESS,1,successMsg);
+                    }else{
+                        BusyIndicator.hide();
+                        MessageBox.success(successMsg, {
+                            actions: [MessageBox.Action.OK],
+                            emphasizedAction: MessageBox.Action.OK,
+                            onClose: function (oAction) {
+                            if (oAction === 'OK') {
+                                var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
+                                    oRouter.navTo("RouteMaster");
+                                }
+                            }
+                        });
+                    }
+                    that.onCancel();
+                },
+                error: function (e) {
+                    var oXMLMsg, oXML;
                     BusyIndicator.hide();
-                    MessageBox.success(data.value.OUT_SUCCESS, {
+                    if (that.isValidJsonString(e.responseText)) {
+                        oXML = JSON.parse(e.responseText);
+                        oXMLMsg = oXML.error["message"].value;
+                    } else {
+                        oXMLMsg = e.responseText;
+                    }
+                    MessageBox.error(oXMLMsg);
+                }
+            });
+        },
+        secondHitAttachment:function(referenceNo,fileId,successMsg){
+            var appId = that.getOwnerComponent().getManifestEntry("/sap.app/id");
+            var appPath = appId.replaceAll(".", "/");
+            var appModulePath = jQuery.sap.getModulePath(appPath);
+
+            var content = that.getOwnerComponent().getModel("schemeModelAlis").getData();
+            var url = appModulePath + "/odata/v4/ideal-bsv-scheme-srv/SchemeAttachment(REFERENCE_ID=" + referenceNo +",FILE_ID=" + fileId + ")/FILE_CONTENT"
+
+            var oFileUploader = window.oFileUploader;
+            var oFile = oFileUploader[0];
+            // type
+            var oBlob = new Blob([oFile ], { type: oFile.type });
+
+            // Use FormData to send the file
+            var oFormData = new FormData();
+            oFormData.append("file", oBlob, oFile.name);
+
+            // Perform AJAX PUT request
+            $.ajax({
+                url: url,
+                type: "PUT",
+                data: oBlob,
+                processData: false, 
+                contentType: oFile.FILE_TYPE, 
+                success: function () {
+                    BusyIndicator.hide();
+                    window.oFileUploader = [];
+                    MessageBox.success(successMsg, {
                         actions: [MessageBox.Action.OK],
+                        emphasizedAction: MessageBox.Action.OK,
                         onClose: function (oAction) {
-                            if (oAction === "OK") {
-                                BusyIndicator.hide();
-                                that.onCancel();
+                        if (oAction === 'OK') {
+                            // window.oFileUploader = [];
+                            var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
+                                oRouter.navTo("RouteMaster");
                             }
                         }
                     });
@@ -271,6 +330,56 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,Filter,FilterO
                     MessageBox.error(oXMLMsg);
                 }
             });
+        },
+        handleUploadNew : function(oEvent){
+            BusyIndicator.show();
+            if(oEvent.mParameters.files[0].size == undefined || oEvent.mParameters.files[0].size == null){
+
+            }else{
+            var filesize = oEvent.mParameters.files[0].size;
+            var fileSizeInKB = filesize / 1024;
+            var fileSizeInMB = fileSizeInKB / 1024;
+            if (fileSizeInMB > 5) {
+              MessageBox.warning("File size should be less than or equal to 5MB", {
+                  icon: MessageBox.Icon.WARNING,
+                  title: "WARNING",
+                  actions: sap.m.MessageBox.Action.OK,
+                  emphasizedAction: sap.m.MessageBox.Action.OK
+              });
+            }else{
+            this.sbIndex = parseInt(oEvent.getSource().getBindingContext("schemeJson").getPath().split("/")[1]);
+            var oSchemeUpload = [{
+              REFERENCE_ID : 1,
+              FILE_ID : 1,
+              FILE_NAME : oEvent.mParameters.files[0].name,
+              FILE_CONTENT : "",
+              FILE_MIMETYPE : oEvent.mParameters.files[0].type,
+              FILE_TYPE :  oEvent.mParameters.files[0].type
+            }]
+            var schemeModel = new JSONModel(oSchemeUpload);
+            that.getOwnerComponent().setModel(schemeModel, "schemeModelAlis");
+            
+            window.oFileUploader = oEvent.getParameter('files');
+
+            BusyIndicator.hide();
+            MessageBox.success("Your file has been uploaded successfully", {
+                actions: [MessageBox.Action.OK],
+                onClose: function (oAction) {
+                if (oAction === "OK") {
+                // attachdata[that.sbIndex].FILE_CONTENT = that.sbAttachmentArr.FILE_CONTENT;
+                // attachdata[that.sbIndex].FILE_MIMETYPE = that.sbAttachmentArr.FILE_MIMETYPE;
+                // attachdata[that.sbIndex].FILE_NAME = that.sbAttachmentArr.FILE_NAME;
+                // attachdata[that.sbIndex].FILE_TYPE = that.sbAttachmentArr.FILE_TYPE;
+
+                that.getView().byId("priceDifferentTable2").getItems()[that.sbIndex].getCells()[1].setEnabled(false);
+                that.getView().byId("priceDifferentTable2").getItems()[that.sbIndex].getCells()[3].setEnabled(true);
+                that.getView().getModel("schemeJson").setProperty('/'+that.sbIndex+'/FILE_NAME', oEvent.mParameters.files[0].name)
+                that.getView().getModel("schemeJson").refresh(true);
+                }
+                }
+            })
+          }
+          }
         },
         handleUpload : function(oEvent){
         BusyIndicator.show();
@@ -407,6 +516,7 @@ function (Controller,JSONModel,BusyIndicator,MessageBox,formatter,Filter,FilterO
         onDelete : function(oEvent){
             
             BusyIndicator.show();
+            window.oFileUploader = [];
             this.sbIndex = parseInt(oEvent.getSource().getBindingContext("schemeJson").getPath().split("/")[1]);
             BusyIndicator.hide();
             MessageBox.information("Are you sure you want to delete the file ?",{
